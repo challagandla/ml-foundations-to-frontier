@@ -1,0 +1,422 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Machine Learning, Beginner to Advanced</title>
+<link rel="stylesheet" href="shared/css/theme.css">
+<link rel="stylesheet" href="shared/css/components.css">
+</head>
+<body>
+<div class="course-shell course-shell--wide">
+
+  <nav class="course-nav">
+    <div class="course-nav__crumbs">Machine Learning Course</div>
+    <button class="theme-toggle" data-theme-toggle type="button">Dark mode</button>
+  </nav>
+
+  <h1>Machine Learning, Beginner to Advanced</h1>
+  <p class="text-secondary">42 modules, four phases: Foundations, Classical ML, Deep
+  Learning, and an Applied/LLM track. Built one module at a time -- see
+  <a href="curriculum.md">curriculum.md</a> for the full plan. Start at
+  <a href="modules/00-orientation/index.html">Module 00 -- Orientation</a>.</p>
+
+  <div class="progress-summary">
+    <span class="progress-summary__label" id="progress-label">0 / 42 complete</span>
+    <div class="progress-bar"><div class="progress-bar__fill" id="progress-fill" style="width:0%"></div></div>
+  </div>
+
+  <section class="phase-section">
+    <div class="phase-section__head">
+      <span class="badge badge--phase-0">Phase 0</span>
+      <h2>Foundations</h2>
+    </div>
+    <div class="module-grid">
+      <a class="module-card is-done" href="modules/00-orientation/index.html" data-module="00">
+        <div class="module-card__top">
+          <span class="module-card__num">00</span>
+          <span class="badge badge--status"><span class="dot dot--done"></span>Done</span>
+        </div>
+        <div class="module-card__title">Orientation & How This Course Works</div>
+        <div class="module-card__blurb">How the HTML + notebook format works, how deep-dive sections work, how progress is tracked.</div>
+      </a>
+      <a class="module-card is-done" href="modules/01-linear-algebra/index.html" data-module="01">
+        <div class="module-card__top">
+          <span class="module-card__num">01</span>
+          <span class="badge badge--status"><span class="dot dot--done"></span>Done</span>
+        </div>
+        <div class="module-card__title">Linear Algebra Essentials</div>
+        <div class="module-card__blurb">Vectors, matrices, dot products, norms, and matrix multiplication as geometric transformations.</div>
+      </a>
+      <a class="module-card" href="modules/02-calculus-for-ml/index.html" data-module="02">
+        <div class="module-card__top">
+          <span class="module-card__num">02</span>
+          <span class="badge badge--status"><span class="dot dot--todo"></span>Not started</span>
+        </div>
+        <div class="module-card__title">Calculus for ML</div>
+        <div class="module-card__blurb">Derivatives, partial derivatives, gradients, the chain rule, and optimization as walking downhill.</div>
+      </a>
+      <a class="module-card" href="modules/03-probability-statistics/index.html" data-module="03">
+        <div class="module-card__top">
+          <span class="module-card__num">03</span>
+          <span class="badge badge--status"><span class="dot dot--todo"></span>Not started</span>
+        </div>
+        <div class="module-card__title">Probability & Statistics Essentials</div>
+        <div class="module-card__blurb">Distributions, mean/variance/std, correlation vs. causation, Bayes' theorem intuition, sampling.</div>
+      </a>
+      <a class="module-card" href="modules/04-numpy-vectorized-computing/index.html" data-module="04">
+        <div class="module-card__top">
+          <span class="module-card__num">04</span>
+          <span class="badge badge--status"><span class="dot dot--todo"></span>Not started</span>
+        </div>
+        <div class="module-card__title">Python for ML: NumPy & Vectorized Computing</div>
+        <div class="module-card__blurb">Arrays, broadcasting, vectorized operations vs. loops, and why vectorization matters for ML.</div>
+      </a>
+      <a class="module-card" href="modules/05-pandas-data-wrangling/index.html" data-module="05">
+        <div class="module-card__top">
+          <span class="module-card__num">05</span>
+          <span class="badge badge--status"><span class="dot dot--todo"></span>Not started</span>
+        </div>
+        <div class="module-card__title">Python for ML: Pandas & Data Wrangling</div>
+        <div class="module-card__blurb">DataFrames, cleaning, merging, groupby, and handling missing data.</div>
+      </a>
+      <a class="module-card" href="modules/06-data-visualization-basics/index.html" data-module="06">
+        <div class="module-card__top">
+          <span class="module-card__num">06</span>
+          <span class="badge badge--status"><span class="dot dot--todo"></span>Not started</span>
+        </div>
+        <div class="module-card__title">Data Visualization Basics</div>
+        <div class="module-card__blurb">matplotlib/plotly fundamentals used as the visualization toolkit for the rest of the course.</div>
+      </a>
+      <a class="module-card" href="modules/07-what-is-machine-learning/index.html" data-module="07">
+        <div class="module-card__top">
+          <span class="module-card__num">07</span>
+          <span class="badge badge--status"><span class="dot dot--todo"></span>Not started</span>
+        </div>
+        <div class="module-card__title">What is Machine Learning?</div>
+        <div class="module-card__blurb">Supervised / unsupervised / reinforcement learning, the ML workflow, and an overfitting preview.</div>
+      </a>
+    </div>
+  </section>
+
+  <section class="phase-section">
+    <div class="phase-section__head">
+      <span class="badge badge--phase-1">Phase 1</span>
+      <h2>Classical ML</h2>
+    </div>
+    <div class="module-grid">
+      <a class="module-card" href="modules/08-linear-regression-simple/index.html" data-module="08">
+        <div class="module-card__top">
+          <span class="module-card__num">08</span>
+          <span class="badge badge--status"><span class="dot dot--todo"></span>Not started</span>
+        </div>
+        <div class="module-card__title">Linear Regression I: Simple Linear Regression</div>
+        <div class="module-card__blurb">Fitting a line, the cost function (MSE), least squares vs. gradient descent, and residuals. The flagship module.</div>
+      </a>
+      <a class="module-card" href="modules/09-multiple-regression-gradient-descent/index.html" data-module="09">
+        <div class="module-card__top">
+          <span class="module-card__num">09</span>
+          <span class="badge badge--status"><span class="dot dot--todo"></span>Not started</span>
+        </div>
+        <div class="module-card__title">Linear Regression II: Multiple Regression & Gradient Descent</div>
+        <div class="module-card__blurb">Multiple features, the normal equation, gradient descent mechanics, and feature scaling.</div>
+      </a>
+      <a class="module-card" href="modules/10-regularization/index.html" data-module="10">
+        <div class="module-card__top">
+          <span class="module-card__num">10</span>
+          <span class="badge badge--status"><span class="dot dot--todo"></span>Not started</span>
+        </div>
+        <div class="module-card__title">Regularization: Ridge, Lasso, Elastic Net</div>
+        <div class="module-card__blurb">Why regularize, L1 vs. L2 geometrically, and the effect on bias and variance.</div>
+      </a>
+      <a class="module-card" href="modules/11-polynomial-regression-bias-variance/index.html" data-module="11">
+        <div class="module-card__top">
+          <span class="module-card__num">11</span>
+          <span class="badge badge--status"><span class="dot dot--todo"></span>Not started</span>
+        </div>
+        <div class="module-card__title">Polynomial Regression, Feature Engineering & Bias-Variance Tradeoff</div>
+        <div class="module-card__blurb">Nonlinear fits via feature transforms, and diagnosing underfit/overfit visually.</div>
+      </a>
+      <a class="module-card" href="modules/12-model-evaluation-validation/index.html" data-module="12">
+        <div class="module-card__top">
+          <span class="module-card__num">12</span>
+          <span class="badge badge--status"><span class="dot dot--todo"></span>Not started</span>
+        </div>
+        <div class="module-card__title">Model Evaluation & Validation I</div>
+        <div class="module-card__blurb">Train/test split, k-fold cross-validation, and regression metrics (MSE, RMSE, MAE, R^2).</div>
+      </a>
+      <a class="module-card" href="modules/13-logistic-regression-classification/index.html" data-module="13">
+        <div class="module-card__top">
+          <span class="module-card__num">13</span>
+          <span class="badge badge--status"><span class="dot dot--todo"></span>Not started</span>
+        </div>
+        <div class="module-card__title">Logistic Regression & Classification Basics</div>
+        <div class="module-card__blurb">Sigmoid, decision boundaries, and log-loss.</div>
+      </a>
+      <a class="module-card" href="modules/14-classification-metrics/index.html" data-module="14">
+        <div class="module-card__top">
+          <span class="module-card__num">14</span>
+          <span class="badge badge--status"><span class="dot dot--todo"></span>Not started</span>
+        </div>
+        <div class="module-card__title">Classification Metrics</div>
+        <div class="module-card__blurb">Confusion matrix, precision/recall/F1, ROC/AUC, and class imbalance.</div>
+      </a>
+      <a class="module-card" href="modules/15-k-nearest-neighbors/index.html" data-module="15">
+        <div class="module-card__top">
+          <span class="module-card__num">15</span>
+          <span class="badge badge--status"><span class="dot dot--todo"></span>Not started</span>
+        </div>
+        <div class="module-card__title">k-Nearest Neighbors</div>
+        <div class="module-card__blurb">Instance-based learning, distance metrics, and the curse of dimensionality.</div>
+      </a>
+      <a class="module-card" href="modules/16-decision-trees/index.html" data-module="16">
+        <div class="module-card__top">
+          <span class="module-card__num">16</span>
+          <span class="badge badge--status"><span class="dot dot--todo"></span>Not started</span>
+        </div>
+        <div class="module-card__title">Decision Trees</div>
+        <div class="module-card__blurb">Splitting criteria (Gini/entropy), overfitting a tree, and pruning.</div>
+      </a>
+      <a class="module-card" href="modules/17-ensembles-bagging-random-forests/index.html" data-module="17">
+        <div class="module-card__top">
+          <span class="module-card__num">17</span>
+          <span class="badge badge--status"><span class="dot dot--todo"></span>Not started</span>
+        </div>
+        <div class="module-card__title">Ensemble Methods I: Bagging & Random Forests</div>
+        <div class="module-card__blurb">Variance reduction via averaging, and feature importance.</div>
+      </a>
+      <a class="module-card" href="modules/18-ensembles-boosting/index.html" data-module="18">
+        <div class="module-card__top">
+          <span class="module-card__num">18</span>
+          <span class="badge badge--status"><span class="dot dot--todo"></span>Not started</span>
+        </div>
+        <div class="module-card__title">Ensemble Methods II: Boosting</div>
+        <div class="module-card__blurb">AdaBoost, gradient boosting, and XGBoost/LightGBM concepts.</div>
+      </a>
+      <a class="module-card" href="modules/19-support-vector-machines/index.html" data-module="19">
+        <div class="module-card__top">
+          <span class="module-card__num">19</span>
+          <span class="badge badge--status"><span class="dot dot--todo"></span>Not started</span>
+        </div>
+        <div class="module-card__title">Support Vector Machines</div>
+        <div class="module-card__blurb">Margins and kernel-trick intuition, visually rather than by heavy derivation.</div>
+      </a>
+      <a class="module-card" href="modules/20-naive-bayes/index.html" data-module="20">
+        <div class="module-card__top">
+          <span class="module-card__num">20</span>
+          <span class="badge badge--status"><span class="dot dot--todo"></span>Not started</span>
+        </div>
+        <div class="module-card__title">Naive Bayes</div>
+        <div class="module-card__blurb">Probabilistic classification and the conditional independence assumption.</div>
+      </a>
+      <a class="module-card" href="modules/21-clustering/index.html" data-module="21">
+        <div class="module-card__top">
+          <span class="module-card__num">21</span>
+          <span class="badge badge--status"><span class="dot dot--todo"></span>Not started</span>
+        </div>
+        <div class="module-card__title">Unsupervised Learning I: Clustering</div>
+        <div class="module-card__blurb">k-means, hierarchical clustering, DBSCAN, and choosing k.</div>
+      </a>
+      <a class="module-card" href="modules/22-dimensionality-reduction/index.html" data-module="22">
+        <div class="module-card__top">
+          <span class="module-card__num">22</span>
+          <span class="badge badge--status"><span class="dot dot--todo"></span>Not started</span>
+        </div>
+        <div class="module-card__title">Unsupervised Learning II: Dimensionality Reduction</div>
+        <div class="module-card__blurb">PCA (geometric intuition) and t-SNE/UMAP for visualization.</div>
+      </a>
+      <a class="module-card" href="modules/23-model-selection-hyperparameter-tuning/index.html" data-module="23">
+        <div class="module-card__top">
+          <span class="module-card__num">23</span>
+          <span class="badge badge--status"><span class="dot dot--todo"></span>Not started</span>
+        </div>
+        <div class="module-card__title">Model Selection, Hyperparameter Tuning & the ML Workflow</div>
+        <div class="module-card__blurb">Pipelines, grid/random search, and avoiding data leakage -- ties Phase 1 together.</div>
+      </a>
+      <a class="module-card" href="modules/24-classical-ml-capstone/index.html" data-module="24">
+        <div class="module-card__top">
+          <span class="module-card__num">24</span>
+          <span class="badge badge--status"><span class="dot dot--todo"></span>Not started</span>
+        </div>
+        <div class="module-card__title">Classical ML Capstone Project</div>
+        <div class="module-card__blurb">An end-to-end mini project applying the full Phase 1 toolkit to one dataset.</div>
+      </a>
+    </div>
+  </section>
+
+  <section class="phase-section">
+    <div class="phase-section__head">
+      <span class="badge badge--phase-2">Phase 2</span>
+      <h2>Deep Learning</h2>
+    </div>
+    <div class="module-grid">
+      <a class="module-card" href="modules/25-nn-fundamentals-feedforward/index.html" data-module="25">
+        <div class="module-card__top">
+          <span class="module-card__num">25</span>
+          <span class="badge badge--status"><span class="dot dot--todo"></span>Not started</span>
+        </div>
+        <div class="module-card__title">Neural Network Fundamentals I: Perceptron & Feedforward Nets</div>
+        <div class="module-card__blurb">Neurons, layers, and the forward pass.</div>
+      </a>
+      <a class="module-card" href="modules/26-nn-activations-losses/index.html" data-module="26">
+        <div class="module-card__top">
+          <span class="module-card__num">26</span>
+          <span class="badge badge--status"><span class="dot dot--todo"></span>Not started</span>
+        </div>
+        <div class="module-card__title">Neural Network Fundamentals II: Activations & Loss Functions</div>
+        <div class="module-card__blurb">ReLU/sigmoid/softmax and cross-entropy.</div>
+      </a>
+      <a class="module-card" href="modules/27-backpropagation/index.html" data-module="27">
+        <div class="module-card__top">
+          <span class="module-card__num">27</span>
+          <span class="badge badge--status"><span class="dot dot--todo"></span>Not started</span>
+        </div>
+        <div class="module-card__title">Backpropagation Deep Dive</div>
+        <div class="module-card__blurb">The chain rule applied through a network via computational graphs.</div>
+      </a>
+      <a class="module-card" href="modules/28-training-neural-networks/index.html" data-module="28">
+        <div class="module-card__top">
+          <span class="module-card__num">28</span>
+          <span class="badge badge--status"><span class="dot dot--todo"></span>Not started</span>
+        </div>
+        <div class="module-card__title">Training Neural Networks</div>
+        <div class="module-card__blurb">Optimizers (SGD/Adam), regularization, batch norm, and dropout.</div>
+      </a>
+      <a class="module-card" href="modules/29-intro-pytorch/index.html" data-module="29">
+        <div class="module-card__top">
+          <span class="module-card__num">29</span>
+          <span class="badge badge--status"><span class="dot dot--todo"></span>Not started</span>
+        </div>
+        <div class="module-card__title">Intro to a DL Framework (PyTorch)</div>
+        <div class="module-card__blurb">Tensors, autograd, and a basic training loop.</div>
+      </a>
+      <a class="module-card" href="modules/30-cnns-convolutions-pooling/index.html" data-module="30">
+        <div class="module-card__top">
+          <span class="module-card__num">30</span>
+          <span class="badge badge--status"><span class="dot dot--todo"></span>Not started</span>
+        </div>
+        <div class="module-card__title">CNNs I: Convolutions & Pooling Intuition</div>
+        <div class="module-card__blurb">A visual, filter-as-feature-detector intuition for convolutions and pooling.</div>
+      </a>
+      <a class="module-card" href="modules/31-cnn-architectures/index.html" data-module="31">
+        <div class="module-card__top">
+          <span class="module-card__num">31</span>
+          <span class="badge badge--status"><span class="dot dot--todo"></span>Not started</span>
+        </div>
+        <div class="module-card__title">CNNs II: Architectures</div>
+        <div class="module-card__blurb">LeNet -> AlexNet -> ResNet concepts, and transfer learning.</div>
+      </a>
+      <a class="module-card" href="modules/32-rnns-lstms-grus/index.html" data-module="32">
+        <div class="module-card__top">
+          <span class="module-card__num">32</span>
+          <span class="badge badge--status"><span class="dot dot--todo"></span>Not started</span>
+        </div>
+        <div class="module-card__title">Sequence Models I: RNNs, LSTMs, GRUs</div>
+        <div class="module-card__blurb">Sequential data and the vanishing gradient problem.</div>
+      </a>
+      <a class="module-card" href="modules/33-embeddings-language-modeling/index.html" data-module="33">
+        <div class="module-card__top">
+          <span class="module-card__num">33</span>
+          <span class="badge badge--status"><span class="dot dot--todo"></span>Not started</span>
+        </div>
+        <div class="module-card__title">Sequence Models II: Embeddings & Language Modeling Basics</div>
+        <div class="module-card__blurb">Word2Vec/embeddings and next-token prediction.</div>
+      </a>
+      <a class="module-card" href="modules/34-attention-transformers/index.html" data-module="34">
+        <div class="module-card__top">
+          <span class="module-card__num">34</span>
+          <span class="badge badge--status"><span class="dot dot--todo"></span>Not started</span>
+        </div>
+        <div class="module-card__title">Attention & the Transformer Architecture</div>
+        <div class="module-card__blurb">Self-attention, multi-head attention, and positional encoding -- the bridge to Phase 3.</div>
+      </a>
+      <a class="module-card" href="modules/35-deep-learning-capstone/index.html" data-module="35">
+        <div class="module-card__top">
+          <span class="module-card__num">35</span>
+          <span class="badge badge--status"><span class="dot dot--todo"></span>Not started</span>
+        </div>
+        <div class="module-card__title">Deep Learning Capstone Project</div>
+        <div class="module-card__blurb">An end-to-end deep learning project applying the Phase 2 toolkit.</div>
+      </a>
+    </div>
+  </section>
+
+  <section class="phase-section">
+    <div class="phase-section__head">
+      <span class="badge badge--phase-3">Phase 3</span>
+      <h2>Applied / LLM Track</h2>
+    </div>
+    <div class="module-grid">
+      <a class="module-card" href="modules/36-how-llms-work/index.html" data-module="36">
+        <div class="module-card__top">
+          <span class="module-card__num">36</span>
+          <span class="badge badge--status"><span class="dot dot--todo"></span>Not started</span>
+        </div>
+        <div class="module-card__title">How LLMs Work</div>
+        <div class="module-card__blurb">Pretraining, tokenization, and scaling laws, conceptually.</div>
+      </a>
+      <a class="module-card" href="modules/37-prompt-engineering/index.html" data-module="37">
+        <div class="module-card__top">
+          <span class="module-card__num">37</span>
+          <span class="badge badge--status"><span class="dot dot--todo"></span>Not started</span>
+        </div>
+        <div class="module-card__title">Prompt Engineering</div>
+        <div class="module-card__blurb">Patterns, few-shot prompting, and chain-of-thought.</div>
+      </a>
+      <a class="module-card" href="modules/38-fine-tuning-llms/index.html" data-module="38">
+        <div class="module-card__top">
+          <span class="module-card__num">38</span>
+          <span class="badge badge--status"><span class="dot dot--todo"></span>Not started</span>
+        </div>
+        <div class="module-card__title">Fine-Tuning LLMs</div>
+        <div class="module-card__blurb">Full fine-tuning vs. LoRA/PEFT concepts.</div>
+      </a>
+      <a class="module-card" href="modules/39-retrieval-augmented-generation/index.html" data-module="39">
+        <div class="module-card__top">
+          <span class="module-card__num">39</span>
+          <span class="badge badge--status"><span class="dot dot--todo"></span>Not started</span>
+        </div>
+        <div class="module-card__title">Retrieval-Augmented Generation (RAG)</div>
+        <div class="module-card__blurb">Embeddings, vector search, and retrieval pipelines.</div>
+      </a>
+      <a class="module-card" href="modules/40-evaluating-llm-systems/index.html" data-module="40">
+        <div class="module-card__top">
+          <span class="module-card__num">40</span>
+          <span class="badge badge--status"><span class="dot dot--todo"></span>Not started</span>
+        </div>
+        <div class="module-card__title">Evaluating LLM Systems</div>
+        <div class="module-card__blurb">Benchmarks, human eval, LLM-as-judge, and hallucination detection.</div>
+      </a>
+      <a class="module-card" href="modules/41-capstone-next-steps/index.html" data-module="41">
+        <div class="module-card__top">
+          <span class="module-card__num">41</span>
+          <span class="badge badge--status"><span class="dot dot--todo"></span>Not started</span>
+        </div>
+        <div class="module-card__title">Course Capstone & Where to Go Next</div>
+        <div class="module-card__blurb">Build a small LLM app/agent, wrap up the course, and plan further learning.</div>
+      </a>
+    </div>
+  </section>
+
+</div>
+<script src="shared/js/course-common.js"></script>
+<script src="shared/js/progress.js"></script>
+<script>
+  (function () {
+    var moduleNums = ['00', '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30', '31', '32', '33', '34', '35', '36', '37', '38', '39', '40', '41'];
+    var doneCount = 0;
+    moduleNums.forEach(function (num) {
+      var status = CourseProgress.get(num);
+      var card = document.querySelector('.module-card[data-module="' + num + '"]');
+      if (status === CourseProgress.STATUS.DONE) {
+        doneCount++;
+        if (card) card.classList.add('is-done');
+      }
+    });
+    var pct = Math.round((doneCount / moduleNums.length) * 100);
+    document.getElementById('progress-fill').style.width = pct + '%';
+    document.getElementById('progress-label').textContent = doneCount + ' / ' + moduleNums.length + ' complete';
+  })();
+</script>
+</body>
+</html>

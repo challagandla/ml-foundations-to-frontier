@@ -1,0 +1,432 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>01 · Linear Algebra Essentials · ML Course</title>
+<link rel="stylesheet" href="../../shared/css/theme.css">
+<link rel="stylesheet" href="../../shared/css/components.css">
+</head>
+<body>
+<div class="course-shell">
+
+  <nav class="course-nav">
+    <div class="course-nav__crumbs">
+      <a href="../../index.html">Course</a> / Foundations / Module 01
+    </div>
+    <button class="theme-toggle" data-theme-toggle type="button">Dark mode</button>
+  </nav>
+
+  <span class="badge badge--phase-0">Foundations</span>
+  <h1><span class="module-header__num">01 ·</span> Linear Algebra Essentials</h1>
+  <p class="text-secondary">A linear regression model, a neural network layer, and an
+  attention head are all, underneath, vectors and matrices moving through space.
+  If you can picture what a matrix <em>does</em> to a grid of points, most of the
+  rest of this course is a variation on that one picture.</p>
+
+  <div class="objectives">
+    <h3>Learning objectives</h3>
+    <ul>
+      <li>Read and write vector/matrix notation</li>
+      <li>Compute dot products and norms by hand</li>
+      <li>Picture a matrix as a transformation of space</li>
+    </ul>
+  </div>
+
+  <h2>A vector is an arrow</h2>
+  <p>A vector like <code>v = (3, 1)</code> is just a list of numbers — but
+  geometrically, it's an arrow from the origin to the point (3, 1). The two
+  numbers are how far to go along each axis. Every operation in this module
+  has both a "list of numbers" reading and an "arrow" reading — use whichever
+  makes a given step click.</p>
+
+  <figure>
+    <svg viewBox="0 0 300 300" role="img" aria-label="A single vector (3,1) drawn as an arrow from the origin">
+      <line x1="20" y1="260" x2="280" y2="260" stroke="var(--baseline)" stroke-width="1.5"></line>
+      <line x1="40" y1="280" x2="40" y2="20" stroke="var(--baseline)" stroke-width="1.5"></line>
+      <defs>
+        <marker id="hero-arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+          <path d="M0,0 L0,6 L7,3 z" fill="var(--phase-0)"></path>
+        </marker>
+      </defs>
+      <line x1="40" y1="260" x2="220" y2="140" stroke="var(--phase-0)" stroke-width="3" marker-end="url(#hero-arrow)"></line>
+      <line x1="40" y1="260" x2="220" y2="260" stroke="var(--text-muted)" stroke-width="1" stroke-dasharray="4 3"></line>
+      <line x1="220" y1="260" x2="220" y2="140" stroke="var(--text-muted)" stroke-width="1" stroke-dasharray="4 3"></line>
+      <text x="130" y="278" text-anchor="middle" fill="var(--text-secondary)" font-size="13" font-family="var(--font-sans)">3 (x-component)</text>
+      <text x="238" y="205" fill="var(--text-secondary)" font-size="13" font-family="var(--font-sans)">1 (y-component)</text>
+      <text x="228" y="132" fill="var(--phase-0)" font-size="14" font-weight="700" font-family="var(--font-sans)">v = (3, 1)</text>
+    </svg>
+    <figcaption class="text-muted">The vector (3, 1): go 3 right, 1 up, from the origin.</figcaption>
+  </figure>
+
+  <h2>Demo 1 — vector addition</h2>
+  <p>Adding two vectors, <code>u + v</code>, means: walk along <code>u</code>,
+  then walk along <code>v</code> from wherever you land. The result is the
+  same no matter which one you walk first — that's the parallelogram you'll
+  see form below. Drag the sliders and watch the sum vector respond.</p>
+
+  <div class="demo">
+    <svg viewBox="0 0 400 400" id="vec-add-svg" aria-label="Interactive vector addition demo"></svg>
+    <div class="demo__controls">
+      <div class="demo__control">
+        <label>u<sub>x</sub> <output id="ux-out">3</output></label>
+        <input type="range" id="ux" min="-5" max="5" step="0.5" value="3">
+      </div>
+      <div class="demo__control">
+        <label>u<sub>y</sub> <output id="uy-out">1</output></label>
+        <input type="range" id="uy" min="-5" max="5" step="0.5" value="1">
+      </div>
+      <div class="demo__control">
+        <label>v<sub>x</sub> <output id="vx-out">1</output></label>
+        <input type="range" id="vx" min="-5" max="5" step="0.5" value="1">
+      </div>
+      <div class="demo__control">
+        <label>v<sub>y</sub> <output id="vy-out">2</output></label>
+        <input type="range" id="vy" min="-5" max="5" step="0.5" value="2">
+      </div>
+    </div>
+    <p class="demo__caption">
+      <span style="color:var(--phase-0)">■</span> u &nbsp;
+      <span style="color:var(--phase-2)">■</span> v &nbsp;
+      <span style="color:var(--phase-1)">■</span> u + v = (<span id="sum-x">4</span>, <span id="sum-y">3</span>) — notice it's always the fourth corner of the dashed parallelogram.
+    </p>
+  </div>
+
+  <div class="callout callout--formula">
+    <h4>Key formulas</h4>
+    <p><code>u + v = (u₁ + v₁, u₂ + v₂)</code> — add component-wise.<br>
+    <code>c · v = (c·v₁, c·v₂)</code> — scaling a vector by a number <code>c</code> stretches
+    (|c| &gt; 1), shrinks (|c| &lt; 1), or flips (c &lt; 0) the arrow, without changing its direction line.</p>
+  </div>
+
+  <h2>Dot product: how aligned are two vectors?</h2>
+  <p>The dot product <code>u · v</code> turns two vectors into a single number
+  that measures alignment: large and positive when they point the same way,
+  zero when they're perpendicular, negative when they point opposite ways.
+  This one number is the computational core of linear regression, cosine
+  similarity, and attention scores alike — it's worth building real intuition for it.</p>
+
+  <div class="demo">
+    <svg viewBox="0 0 400 400" id="dot-svg" aria-label="Interactive dot product and projection demo"></svg>
+    <div class="demo__controls">
+      <div class="demo__control">
+        <label>angle between u and the x-axis <output id="angle-out">40°</output></label>
+        <input type="range" id="angle" min="0" max="360" step="1" value="40">
+      </div>
+      <div class="demo__control">
+        <label>|u| (length of u) <output id="mag-out">3.0</output></label>
+        <input type="range" id="mag" min="0.5" max="4" step="0.1" value="3">
+      </div>
+    </div>
+    <p class="demo__caption">
+      v = (3, 0) is fixed. u · v = <strong id="dot-val">6.9</strong> — the dashed segment is u's
+      <em>projection</em> onto v: how much of u points "along v".
+    </p>
+  </div>
+
+  <details class="deep-dive">
+    <summary><span class="deep-dive__tag">Math deep dive</span> Dot product, norms, and the Cauchy–Schwarz inequality</summary>
+    <div class="deep-dive__body">
+      <p><strong>Algebraic definition:</strong> for <code>u = (u₁, u₂)</code> and <code>v = (v₁, v₂)</code>,</p>
+      <pre><code>u · v = u₁v₁ + u₂v₂</code></pre>
+      <p><strong>Geometric definition:</strong></p>
+      <pre><code>u · v = |u| |v| cos(θ)</code></pre>
+      <p>where <code>θ</code> is the angle between the vectors and <code>|u| = √(u₁² + u₂²)</code>
+      is the <strong>norm</strong> (length) of <code>u</code>. These two definitions are
+      equivalent — the demo above computes both and they agree.</p>
+      <p>Because <code>cos(θ)</code> is always between -1 and 1, this gives the
+      <strong>Cauchy–Schwarz inequality</strong>: <code>|u · v| ≤ |u| |v|</code>, with
+      equality exactly when <code>u</code> and <code>v</code> point along the same line.
+      This is why <em>cosine similarity</em>, <code>cos(θ) = (u · v) / (|u| |v|)</code>,
+      is always safely between -1 and 1 — it's the dot product with the lengths
+      divided back out, leaving pure "alignment."</p>
+      <p>The <strong>projection</strong> of <code>u</code> onto <code>v</code> — the length
+      of the shadow <code>u</code> casts on the line through <code>v</code> — is
+      <code>|u| cos(θ) = (u · v) / |v|</code>. That's the dashed segment in the demo.</p>
+    </div>
+  </details>
+
+  <h2>A matrix is a transformation</h2>
+  <p>A 2×2 matrix takes every point in the plane and moves it somewhere else,
+  in a way that keeps grid lines straight, parallel, and evenly spaced (a
+  <em>linear</em> transformation). The clearest way to see what a matrix
+  <em>does</em> is to watch what it does to the unit square — the square with
+  corners at (0,0), (1,0), (1,1), (0,1).</p>
+
+  <div class="demo">
+    <svg viewBox="0 0 400 400" id="matrix-svg" aria-label="Interactive matrix transformation demo"></svg>
+    <div class="demo__controls">
+      <div class="demo__control">
+        <label>a <output id="a-out">1.4</output></label>
+        <input type="range" id="m-a" min="-2" max="2" step="0.1" value="1.4">
+      </div>
+      <div class="demo__control">
+        <label>b <output id="b-out">0.5</output></label>
+        <input type="range" id="m-b" min="-2" max="2" step="0.1" value="0.5">
+      </div>
+      <div class="demo__control">
+        <label>c <output id="c-out">-0.3</output></label>
+        <input type="range" id="m-c" min="-2" max="2" step="0.1" value="-0.3">
+      </div>
+      <div class="demo__control">
+        <label>d <output id="d-out">1.0</output></label>
+        <input type="range" id="m-d" min="-2" max="2" step="0.1" value="1.0">
+      </div>
+    </div>
+    <p class="demo__caption">
+      Dashed = the original unit square. Filled = the square after applying
+      <code>[[a, b], [c, d]]</code>. Determinant (area scale factor) =
+      <strong id="det-val">1.55</strong><span id="det-flip" class="text-muted"></span>.
+    </p>
+  </div>
+
+  <div class="callout callout--formula">
+    <h4>Key formula</h4>
+    <p>Matrix times vector, row by row:</p>
+    <pre><code>[a  b]   [x]   [a·x + b·y]
+[c  d] · [y] = [c·x + d·y]</code></pre>
+    <p>Each output coordinate is a dot product of a matrix row with the input vector.</p>
+  </div>
+
+  <details class="deep-dive">
+    <summary><span class="deep-dive__tag">Math deep dive</span> Why matrix multiplication isn't commutative, and what the determinant means</summary>
+    <div class="deep-dive__body">
+      <p><strong>Matrices as functions.</strong> Applying matrix <code>A</code> then matrix
+      <code>B</code> to a vector <code>x</code> is <code>B(Ax)</code>, which equals
+      <code>(BA)x</code> — matrix multiplication is defined precisely so that "apply A,
+      then B" corresponds to the single matrix <code>BA</code>. Function composition isn't
+      generally order-independent (put your socks on then shoes ≠ shoes then socks), and
+      neither is this: in general <code>AB ≠ BA</code>. Try it with the sliders above by
+      comparing the transform for <code>(a,b,c,d)</code> against <code>(a,c,b,d)</code>
+      (its transpose) — different matrices, different results, generally.</p>
+      <p><strong>The determinant</strong>, <code>det = ad − bc</code> for a 2×2 matrix, is the
+      factor by which the matrix scales area. The unit square has area 1, so the
+      transformed parallelogram's area is exactly <code>|det|</code>. If <code>det</code>
+      is negative, the transformation also flips orientation (like a mirror) — watch the
+      square "turn inside out" as you slide <code>a</code> or <code>d</code> negative enough
+      above. If <code>det = 0</code>, the matrix squashes the whole plane onto a line
+      (it destroys information — this is exactly what makes a matrix non-invertible).</p>
+    </div>
+  </details>
+
+  <h2>Worked example</h2>
+  <p>Let <code>A = [[2, 0], [1, 3]]</code> and <code>x = (2, 1)</code>. Compute <code>Ax</code>:</p>
+  <pre><code>row 1: 2·2 + 0·1 = 4
+row 2: 1·2 + 3·1 = 5
+
+Ax = (4, 5)</code></pre>
+  <p>Set the sliders above to <code>a=2, b=0, c=1, d=3</code> and you'll see the
+  unit square stretched to 2× wide and sheared — consistent with a determinant
+  of <code>2·3 − 0·1 = 6</code>: six times the original area.</p>
+
+  <div class="callout callout--pitfall">
+    <h4>Common pitfall</h4>
+    <p>Matrix multiplication is <strong>not</strong> commutative (<code>AB ≠ BA</code> in
+    general) and the dot product is <strong>not</strong> the same as multiplying two
+    vectors element-wise (<code>(u₁v₁, u₂v₂)</code>, sometimes called the Hadamard product) —
+    the dot product collapses to a single number; element-wise multiplication doesn't.
+    Both mix-ups are common and both produce numbers that look plausible, so they're easy
+    to miss — check dimensions and re-derive by hand when a result looks off.</p>
+  </div>
+
+  <div class="callout">
+    <h4>Now, in the notebook</h4>
+    <p>Open <code>notebook.ipynb</code> in this folder: you'll reproduce all three
+    demos in NumPy, then implement dot product and matrix-vector multiplication
+    from scratch before comparing against <code>@</code> and <code>np.dot</code>.</p>
+  </div>
+
+  <div class="callout callout--summary">
+    <h4>Key takeaways</h4>
+    <ul>
+      <li>A vector is both a list of numbers and an arrow — add component-wise, or tip-to-tail</li>
+      <li>Dot product <code>u · v = |u||v|cos(θ)</code> measures alignment; it's 0 exactly when perpendicular</li>
+      <li>A matrix is a function on space — matrix-vector multiplication is dot products of rows with the input</li>
+      <li>The determinant is the area scale factor; zero means the matrix collapses the plane</li>
+    </ul>
+  </div>
+
+  <h2>Self-check</h2>
+  <div class="quiz">
+    <div class="quiz__q" data-answer="1" data-explain="Zero dot product means cos(θ)=0, i.e. θ=90°: the vectors are perpendicular.">
+      <p class="prompt">If u · v = 0, what does that tell you about u and v (both nonzero)?</p>
+      <div class="quiz__options">
+        <div class="quiz__option">They point in the same direction</div>
+        <div class="quiz__option">They are perpendicular</div>
+        <div class="quiz__option">One of them is the zero vector</div>
+      </div>
+      <div class="quiz__feedback"></div>
+    </div>
+    <div class="quiz__q" data-answer="0" data-explain="det = ad - bc = (2)(2) - (0)(0) = 4.">
+      <p class="prompt">For the matrix [[2, 0], [0, 2]], what is the determinant?</p>
+      <div class="quiz__options">
+        <div class="quiz__option">4</div>
+        <div class="quiz__option">2</div>
+        <div class="quiz__option">0</div>
+      </div>
+      <div class="quiz__feedback"></div>
+    </div>
+    <div class="quiz__q" data-answer="1" data-explain="Matrix multiplication represents function composition, and applying transformations in a different order generally gives a different result -- so AB ≠ BA in general.">
+      <p class="prompt">In general, for two matrices A and B, is AB = BA?</p>
+      <div class="quiz__options">
+        <div class="quiz__option">Yes, always</div>
+        <div class="quiz__option">No, not in general</div>
+        <div class="quiz__option">Only if both are the identity matrix</div>
+      </div>
+      <div class="quiz__feedback"></div>
+    </div>
+  </div>
+
+  <div style="text-align:center; margin: var(--space-6) 0;">
+    <button class="btn btn--primary" data-mark-done type="button">Mark module complete</button>
+  </div>
+
+  <div class="module-footer-nav">
+    <a class="prev" href="../00-orientation/index.html"><span class="dir">Previous</span>Orientation</a>
+    <a class="next" href="../02-calculus-for-ml/index.html"><span class="dir">Next</span>Calculus for ML</a>
+  </div>
+
+</div>
+<script src="../../shared/js/course-common.js"></script>
+<script src="../../shared/js/progress.js"></script>
+<script src="../../shared/js/charts.js"></script>
+<script>
+CourseProgress.initModuleButton("01");
+
+// ---------- Demo 1: vector addition ----------
+(function () {
+  var svg = document.getElementById("vec-add-svg");
+  var ux = document.getElementById("ux"), uy = document.getElementById("uy");
+  var vx = document.getElementById("vx"), vy = document.getElementById("vy");
+
+  function draw() {
+    while (svg.firstChild) svg.removeChild(svg.firstChild);
+    var u = [parseFloat(ux.value), parseFloat(uy.value)];
+    var v = [parseFloat(vx.value), parseFloat(vy.value)];
+    var sum = [u[0] + v[0], u[1] + v[1]];
+
+    document.getElementById("ux-out").textContent = u[0];
+    document.getElementById("uy-out").textContent = u[1];
+    document.getElementById("vx-out").textContent = v[0];
+    document.getElementById("vy-out").textContent = v[1];
+    document.getElementById("sum-x").textContent = sum[0];
+    document.getElementById("sum-y").textContent = sum[1];
+
+    var scales = CourseCharts.cartesianGrid(svg, { domain: [-6, 6] });
+
+    // parallelogram guide lines
+    var ns = "http://www.w3.org/2000/svg";
+    [[u, sum], [v, sum]].forEach(function (pair) {
+      var l = document.createElementNS(ns, "line");
+      l.setAttribute("x1", scales.x(pair[0][0])); l.setAttribute("y1", scales.y(pair[0][1]));
+      l.setAttribute("x2", scales.x(pair[1][0])); l.setAttribute("y2", scales.y(pair[1][1]));
+      l.setAttribute("stroke", "var(--text-muted)");
+      l.setAttribute("stroke-width", "1");
+      l.setAttribute("stroke-dasharray", "4 3");
+      svg.appendChild(l);
+    });
+
+    CourseCharts.drawVector(svg, scales, u, { color: "var(--phase-0)", markerId: "m-u" });
+    CourseCharts.drawVector(svg, scales, v, { color: "var(--phase-2)", markerId: "m-v" });
+    CourseCharts.drawVector(svg, scales, sum, { color: "var(--phase-1)", width: 3, markerId: "m-sum" });
+  }
+  [ux, uy, vx, vy].forEach(function (el) { el.addEventListener("input", draw); });
+  draw();
+})();
+
+// ---------- Demo 2: dot product / projection ----------
+(function () {
+  var svg = document.getElementById("dot-svg");
+  var angleEl = document.getElementById("angle"), magEl = document.getElementById("mag");
+  var vFixed = [3, 0];
+
+  function draw() {
+    while (svg.firstChild) svg.removeChild(svg.firstChild);
+    var angleDeg = parseFloat(angleEl.value);
+    var mag = parseFloat(magEl.value);
+    var rad = angleDeg * Math.PI / 180;
+    var u = [mag * Math.cos(rad), mag * Math.sin(rad)];
+    var dot = u[0] * vFixed[0] + u[1] * vFixed[1];
+
+    document.getElementById("angle-out").textContent = angleDeg + "°";
+    document.getElementById("mag-out").textContent = mag.toFixed(1);
+    document.getElementById("dot-val").textContent = dot.toFixed(2);
+
+    var scales = CourseCharts.cartesianGrid(svg, { domain: [-4.5, 4.5] });
+
+    // projection of u onto v (v is along x-axis, so projection x = dot/|v|, y = 0)
+    var projX = dot / vFixed[0];
+    var ns = "http://www.w3.org/2000/svg";
+
+    var drop = document.createElementNS(ns, "line");
+    drop.setAttribute("x1", scales.x(u[0])); drop.setAttribute("y1", scales.y(u[1]));
+    drop.setAttribute("x2", scales.x(projX)); drop.setAttribute("y2", scales.y(0));
+    drop.setAttribute("stroke", "var(--text-muted)");
+    drop.setAttribute("stroke-width", "1");
+    drop.setAttribute("stroke-dasharray", "3 3");
+    svg.appendChild(drop);
+
+    var proj = document.createElementNS(ns, "line");
+    proj.setAttribute("x1", scales.x(0)); proj.setAttribute("y1", scales.y(0));
+    proj.setAttribute("x2", scales.x(projX)); proj.setAttribute("y2", scales.y(0));
+    proj.setAttribute("stroke", "var(--phase-1)");
+    proj.setAttribute("stroke-width", "4");
+    proj.setAttribute("stroke-linecap", "round");
+    svg.appendChild(proj);
+
+    CourseCharts.drawVector(svg, scales, vFixed, { color: "var(--phase-2)", markerId: "m-vfix" });
+    CourseCharts.drawVector(svg, scales, u, { color: "var(--phase-0)", markerId: "m-u2" });
+  }
+  [angleEl, magEl].forEach(function (el) { el.addEventListener("input", draw); });
+  draw();
+})();
+
+// ---------- Demo 3: matrix transformation of the unit square ----------
+(function () {
+  var svg = document.getElementById("matrix-svg");
+  var aEl = document.getElementById("m-a"), bEl = document.getElementById("m-b");
+  var cEl = document.getElementById("m-c"), dEl = document.getElementById("m-d");
+
+  function apply(m, p) { return [m[0] * p[0] + m[1] * p[1], m[2] * p[0] + m[3] * p[1]]; }
+
+  function draw() {
+    while (svg.firstChild) svg.removeChild(svg.firstChild);
+    var a = parseFloat(aEl.value), b = parseFloat(bEl.value);
+    var c = parseFloat(cEl.value), d = parseFloat(dEl.value);
+    document.getElementById("a-out").textContent = a.toFixed(1);
+    document.getElementById("b-out").textContent = b.toFixed(1);
+    document.getElementById("c-out").textContent = c.toFixed(1);
+    document.getElementById("d-out").textContent = d.toFixed(1);
+
+    var det = a * d - b * c;
+    document.getElementById("det-val").textContent = det.toFixed(2);
+    document.getElementById("det-flip").textContent = det < 0 ? " (orientation flipped)" : "";
+
+    var scales = CourseCharts.cartesianGrid(svg, { domain: [-3, 3] });
+    var ns = "http://www.w3.org/2000/svg";
+
+    var square = [[0, 0], [1, 0], [1, 1], [0, 1]];
+
+    function poly(points, opts) {
+      var p = document.createElementNS(ns, "polygon");
+      p.setAttribute("points", points.map(function (pt) { return scales.x(pt[0]) + "," + scales.y(pt[1]); }).join(" "));
+      p.setAttribute("fill", opts.fill || "none");
+      p.setAttribute("stroke", opts.stroke);
+      p.setAttribute("stroke-width", opts.width || 2);
+      if (opts.dash) p.setAttribute("stroke-dasharray", opts.dash);
+      svg.appendChild(p);
+    }
+
+    poly(square, { stroke: "var(--text-muted)", dash: "4 3" });
+    var transformed = square.map(function (p) { return apply([a, b, c, d], p); });
+    poly(transformed, { stroke: "var(--phase-0)", fill: "color-mix(in srgb, var(--phase-0) 22%, transparent)", width: 2.5 });
+
+    CourseCharts.drawVector(svg, scales, [a, c], { color: "var(--phase-1)", markerId: "m-col1" });
+    CourseCharts.drawVector(svg, scales, [b, d], { color: "var(--phase-2)", markerId: "m-col2" });
+  }
+  [aEl, bEl, cEl, dEl].forEach(function (el) { el.addEventListener("input", draw); });
+  draw();
+})();
+</script>
+</body>
+</html>

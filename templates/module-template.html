@@ -1,0 +1,150 @@
+<!doctype html>
+<!--
+  MODULE TEMPLATE — reference structure for every fully-built module.
+  Copy this file to modules/NN-slug/index.html and fill in each section.
+  Keep the section order; it's what makes every module feel consistent.
+  See modules/00-orientation/index.html and modules/01-linear-algebra/index.html
+  for two fully worked examples.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NN · Module Title · ML Course</title>
+<link rel="stylesheet" href="../../shared/css/theme.css">
+<link rel="stylesheet" href="../../shared/css/components.css">
+<!-- KaTeX, only if this module needs rendered math beyond what plain text/callouts can carry -->
+<!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css"> -->
+</head>
+<body>
+<div class="course-shell">
+
+  <!-- 1. HEADER / NAV -->
+  <nav class="course-nav">
+    <div class="course-nav__crumbs">
+      <a href="../../index.html">Course</a> / Phase Name / Module NN
+    </div>
+    <button class="theme-toggle" data-theme-toggle type="button">Dark mode</button>
+  </nav>
+
+  <span class="badge badge--phase-N">Phase Name</span>
+  <h1><span class="module-header__num">NN ·</span> Module Title</h1>
+
+  <!-- 2. HOOK / MOTIVATING QUESTION
+       One or two sentences (or a mini scenario) that makes the reader
+       want to know the answer before you give it to them. -->
+  <p class="text-secondary">Hook goes here — a question or scenario that motivates the topic.</p>
+
+  <!-- 3. LEARNING OBJECTIVES -->
+  <div class="objectives">
+    <h3>Learning objectives</h3>
+    <ul>
+      <li>Objective one</li>
+      <li>Objective two</li>
+      <li>Objective three</li>
+    </ul>
+  </div>
+
+  <!-- 4. INTUITION & VISUAL EXPLANATION
+       Core concept explained with prose + at least one diagram/figure.
+       Prefer inline SVG (portable, no external deps) built with
+       shared/js/charts.js helpers, or hand-authored SVG for diagrams. -->
+  <h2>The idea</h2>
+  <p>Explain the concept in plain language before any formula appears.</p>
+  <figure>
+    <svg viewBox="0 0 400 300" role="img" aria-label="Describe the figure for screen readers"></svg>
+    <figcaption class="text-muted">Caption explaining what the figure shows.</figcaption>
+  </figure>
+
+  <!-- 5. INTERACTIVE DEMO
+       A live widget the learner manipulates (sliders/buttons) to see the
+       concept respond in real time. Wire it up in a <script> at the
+       bottom of the page. Keep state in plain JS, redraw the SVG on input. -->
+  <div class="demo">
+    <svg viewBox="0 0 400 300" id="demo-svg"></svg>
+    <div class="demo__controls">
+      <div class="demo__control">
+        <label>Parameter <output id="param-value">0</output></label>
+        <input type="range" id="param-slider" min="0" max="10" value="0">
+      </div>
+    </div>
+    <p class="demo__caption">What to watch as you move the slider.</p>
+  </div>
+
+  <!-- 6. FORMALIZATION / KEY FORMULAS
+       State the math plainly in a callout. Don't derive it here. -->
+  <div class="callout callout--formula">
+    <h4>Key formula</h4>
+    <p><code>y = mx + b</code> — explain each symbol in one line each.</p>
+  </div>
+
+  <!-- 7. DEEP DIVE (optional, collapsed by default)
+       Full derivation goes here. Use <details> so it's collapsible;
+       it must default to CLOSED (no `open` attribute). -->
+  <details class="deep-dive">
+    <summary><span class="deep-dive__tag">Math deep dive</span> Full derivation title</summary>
+    <div class="deep-dive__body">
+      <p>Step-by-step derivation, as rigorous as needed. This section is optional
+      for the reader — write it assuming they've read the intuition section above
+      but want the "why" behind the formula.</p>
+    </div>
+  </details>
+
+  <!-- 8. WORKED EXAMPLE -->
+  <h2>Worked example</h2>
+  <p>Step-by-step numeric walkthrough with concrete numbers.</p>
+
+  <!-- 9. COMMON PITFALLS -->
+  <div class="callout callout--pitfall">
+    <h4>Common pitfall</h4>
+    <p>A mistake learners commonly make with this concept, and how to avoid it.</p>
+  </div>
+
+  <!-- 10. HANDS-ON HANDOFF -->
+  <div class="callout">
+    <h4>Now, in the notebook</h4>
+    <p>Open <code>notebook.ipynb</code> in this module's folder and work through
+    the "Reproduce the demo" and exercise cells before continuing.</p>
+  </div>
+
+  <!-- 11. SUMMARY -->
+  <div class="callout callout--summary">
+    <h4>Key takeaways</h4>
+    <ul>
+      <li>Takeaway one</li>
+      <li>Takeaway two</li>
+    </ul>
+  </div>
+
+  <!-- 12. SELF-CHECK QUIZ
+       Each .quiz__q has data-answer="<0-based index of correct option>"
+       and data-explain="<shown after answering, right or wrong>".
+       Grading is handled by shared/js/course-common.js — no backend. -->
+  <h2>Self-check</h2>
+  <div class="quiz">
+    <div class="quiz__q" data-answer="1" data-explain="Because...">
+      <p class="prompt">Question text?</p>
+      <div class="quiz__options">
+        <div class="quiz__option">Option A</div>
+        <div class="quiz__option">Option B (correct)</div>
+        <div class="quiz__option">Option C</div>
+      </div>
+      <div class="quiz__feedback"></div>
+    </div>
+  </div>
+
+  <!-- 13. FOOTER NAV -->
+  <div class="module-footer-nav">
+    <a class="prev" href="../PP-prev-slug/index.html"><span class="dir">Previous</span>Prev Module Title</a>
+    <a class="next" href="../NN-next-slug/index.html"><span class="dir">Next</span>Next Module Title</a>
+  </div>
+
+</div>
+<script src="../../shared/js/course-common.js"></script>
+<script src="../../shared/js/charts.js"></script>
+<script>
+  // Wire up the interactive demo: read sliders, redraw the SVG on 'input'.
+  // Keep this self-contained per module -- no shared demo state.
+</script>
+</body>
+</html>

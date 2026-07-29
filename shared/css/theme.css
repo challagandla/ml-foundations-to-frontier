@@ -1,0 +1,200 @@
+/* ============================================================
+   Course theme: design tokens (colors, type, spacing).
+   Light/dark are both selected; dark responds to prefers-color-scheme
+   AND to a manual [data-theme] toggle set by shared/js/course-common.js.
+   Palette source: dataviz skill reference palette (validated, CVD-safe).
+   ============================================================ */
+
+:root {
+  color-scheme: light;
+
+  /* Surfaces */
+  --surface-page:    #f9f9f7;
+  --surface-1:       #fcfcfb;   /* card / chart surface */
+  --surface-2:       #f2f1ed;   /* recessed / code blocks */
+  --border-hairline: rgba(11, 11, 11, 0.10);
+  --gridline:        #e1e0d9;
+  --baseline:        #c3c2b7;
+
+  /* Ink */
+  --text-primary:    #0b0b0b;
+  --text-secondary:  #52514e;
+  --text-muted:      #898781;
+  --text-success:    #006300;
+
+  /* Phase / categorical (fixed order, never cycled) */
+  --phase-0: #2a78d6; /* Foundations   - blue   */
+  --phase-1: #eb6834; /* Classical ML  - orange */
+  --phase-2: #1baf7a; /* Deep Learning - aqua   */
+  --phase-3: #eda100; /* Applied/LLM   - yellow */
+
+  /* Sequential (blue ramp) for magnitude encodings */
+  --seq-100: #cde2fb;
+  --seq-300: #6da7ec;
+  --seq-500: #256abf;
+  --seq-700: #0d366b;
+
+  /* Diverging (blue <-> red), neutral midpoint gray */
+  --div-cool: #2a78d6;
+  --div-warm: #e34948;
+  --div-mid:  #f0efec;
+
+  /* Status (fixed, never themed / never reused as series color) */
+  --status-good:     #0ca30c;
+  --status-warning:  #fab219;
+  --status-serious:  #ec835a;
+  --status-critical: #d03b3b;
+
+  /* Type */
+  --font-sans: system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: ui-monospace, "Cascadia Code", "Consolas", monospace;
+
+  /* Spacing scale */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 64px;
+
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+
+  --max-content: 780px;
+  --max-wide: 1080px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:where(:not([data-theme="light"])) {
+    color-scheme: dark;
+    --surface-page:    #0d0d0d;
+    --surface-1:       #1a1a19;
+    --surface-2:       #232322;
+    --border-hairline: rgba(255, 255, 255, 0.10);
+    --gridline:        #2c2c2a;
+    --baseline:        #383835;
+
+    --text-primary:    #ffffff;
+    --text-secondary:  #c3c2b7;
+    --text-muted:      #898781;
+    --text-success:    #0ca30c;
+
+    --phase-0: #3987e5;
+    --phase-1: #d95926;
+    --phase-2: #199e70;
+    --phase-3: #c98500;
+
+    --seq-100: #86b6ef;
+    --seq-300: #3987e5;
+    --seq-500: #1c5cab;
+    --seq-700: #104281;
+
+    --div-cool: #3987e5;
+    --div-warm: #e66767;
+    --div-mid:  #383835;
+  }
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --surface-page:    #0d0d0d;
+  --surface-1:       #1a1a19;
+  --surface-2:       #232322;
+  --border-hairline: rgba(255, 255, 255, 0.10);
+  --gridline:        #2c2c2a;
+  --baseline:        #383835;
+
+  --text-primary:    #ffffff;
+  --text-secondary:  #c3c2b7;
+  --text-muted:      #898781;
+  --text-success:    #0ca30c;
+
+  --phase-0: #3987e5;
+  --phase-1: #d95926;
+  --phase-2: #199e70;
+  --phase-3: #c98500;
+
+  --seq-100: #86b6ef;
+  --seq-300: #3987e5;
+  --seq-500: #1c5cab;
+  --seq-700: #104281;
+
+  --div-cool: #3987e5;
+  --div-warm: #e66767;
+  --div-mid:  #383835;
+}
+
+/* ---------------- Base layout ---------------- */
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--surface-page);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  line-height: 1.55;
+  font-size: 16px;
+}
+
+.course-shell {
+  max-width: var(--max-content);
+  margin: 0 auto;
+  padding: var(--space-6) var(--space-5) var(--space-8);
+}
+
+.course-shell--wide {
+  max-width: var(--max-wide);
+}
+
+h1, h2, h3, h4 {
+  font-weight: 700;
+  line-height: 1.25;
+  color: var(--text-primary);
+}
+
+h1 { font-size: 2rem;    margin: 0 0 var(--space-3); }
+h2 { font-size: 1.5rem;  margin: var(--space-7) 0 var(--space-3); }
+h3 { font-size: 1.15rem; margin: var(--space-5) 0 var(--space-2); }
+
+p { color: var(--text-primary); margin: 0 0 var(--space-4); }
+
+a { color: var(--phase-0); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+code, pre {
+  font-family: var(--font-mono);
+  font-size: 0.9em;
+}
+
+pre {
+  background: var(--surface-2);
+  border-radius: var(--radius-sm);
+  padding: var(--space-3) var(--space-4);
+  overflow-x: auto;
+}
+
+code {
+  background: var(--surface-2);
+  padding: 0.1em 0.35em;
+  border-radius: 4px;
+}
+
+pre code { background: none; padding: 0; }
+
+hr {
+  border: none;
+  border-top: 1px solid var(--border-hairline);
+  margin: var(--space-6) 0;
+}
+
+.text-secondary { color: var(--text-secondary); }
+.text-muted { color: var(--text-muted); font-size: 0.9rem; }

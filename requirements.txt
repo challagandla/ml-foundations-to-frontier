@@ -1,0 +1,13 @@
+# Core, needed from Module 00 onward
+numpy>=1.26
+pandas>=2.2
+matplotlib>=3.8
+scikit-learn>=1.4
+jupyter>=1.0
+
+# Needed starting Phase 2 (Deep Learning, modules 25+)
+torch>=2.2
+
+# Needed starting Phase 3 (Applied/LLM track, modules 36+)
+# Uncomment when you reach that phase:
+# sentence-transformers>=2.5

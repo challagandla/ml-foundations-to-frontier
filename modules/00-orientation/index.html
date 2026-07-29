@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>00 · Orientation · ML Course</title>
+<link rel="stylesheet" href="../../shared/css/theme.css">
+<link rel="stylesheet" href="../../shared/css/components.css">
+</head>
+<body>
+<div class="course-shell">
+
+  <nav class="course-nav">
+    <div class="course-nav__crumbs">
+      <a href="../../index.html">Course</a> / Foundations / Module 00
+    </div>
+    <button class="theme-toggle" data-theme-toggle type="button">Dark mode</button>
+  </nav>
+
+  <span class="badge badge--phase-0">Foundations</span>
+  <h1><span class="module-header__num">00 ·</span> Orientation &amp; How This Course Works</h1>
+  <p class="text-secondary">Two minutes here saves confusion in all 41 modules after it —
+  here's exactly what you'll see on every module page, and what to do with it.</p>
+
+  <div class="objectives">
+    <h3>Learning objectives</h3>
+    <ul>
+      <li>Navigate any future module confidently</li>
+      <li>Know the difference between the HTML page and the notebook, and when to use each</li>
+      <li>Understand how the optional "Math Deep Dive" sections work</li>
+    </ul>
+  </div>
+
+  <h2>Two files per module</h2>
+  <p>Every module lives in its own folder, <code>modules/NN-slug/</code>, and always
+  contains exactly two files:</p>
+
+  <figure>
+    <svg viewBox="0 0 640 200" role="img" aria-label="Diagram: a module folder containing index.html and notebook.ipynb, linked to each other">
+      <defs>
+        <marker id="arrowhead" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+          <path d="M0,0 L0,6 L7,3 z" fill="var(--text-muted)"></path>
+        </marker>
+      </defs>
+      <rect x="20" y="20" width="600" height="160" rx="14" fill="none" stroke="var(--border-hairline)" stroke-width="1.5"></rect>
+      <text x="40" y="46" fill="var(--text-muted)" font-size="13" font-family="var(--font-sans)">modules/00-orientation/</text>
+
+      <rect x="60" y="70" width="220" height="90" rx="10" fill="var(--surface-2)" stroke="var(--phase-0)" stroke-width="1.5"></rect>
+      <text x="170" y="105" text-anchor="middle" fill="var(--text-primary)" font-size="15" font-weight="700" font-family="var(--font-sans)">index.html</text>
+      <text x="170" y="128" text-anchor="middle" fill="var(--text-secondary)" font-size="12" font-family="var(--font-sans)">the lesson</text>
+      <text x="170" y="145" text-anchor="middle" fill="var(--text-muted)" font-size="11" font-family="var(--font-sans)">read + interact</text>
+
+      <rect x="360" y="70" width="220" height="90" rx="10" fill="var(--surface-2)" stroke="var(--phase-2)" stroke-width="1.5"></rect>
+      <text x="470" y="105" text-anchor="middle" fill="var(--text-primary)" font-size="15" font-weight="700" font-family="var(--font-sans)">notebook.ipynb</text>
+      <text x="470" y="128" text-anchor="middle" fill="var(--text-secondary)" font-size="12" font-family="var(--font-sans)">the practice</text>
+      <text x="470" y="145" text-anchor="middle" fill="var(--text-muted)" font-size="11" font-family="var(--font-sans)">run + edit code</text>
+
+      <line x1="282" y1="115" x2="356" y2="115" stroke="var(--text-muted)" stroke-width="1.5" marker-end="url(#arrowhead)"></line>
+      <line x1="358" y1="130" x2="284" y2="130" stroke="var(--text-muted)" stroke-width="1.5" marker-end="url(#arrowhead)"></line>
+    </svg>
+    <figcaption class="text-muted">index.html explains and shows; notebook.ipynb is where you write and run code. Each links back to the other.</figcaption>
+  </figure>
+
+  <p><strong>index.html</strong> is the lesson itself: intuition, diagrams, an
+  interactive demo you manipulate with your mouse, worked examples, and a
+  short quiz. Open it in any browser — nothing to install.</p>
+  <p><strong>notebook.ipynb</strong> is where the same ideas become runnable code —
+  a small version of the page's demo, guided exercises, and a from-scratch
+  implementation you compare against a library like scikit-learn. This is
+  where you actually build understanding by doing; don't skip it.</p>
+
+  <h2>Try the two interactive pieces you'll see everywhere</h2>
+  <p>Every module page uses two recurring widgets. Try them right here so
+  they're familiar later.</p>
+
+  <details class="deep-dive">
+    <summary><span class="deep-dive__tag">Math deep dive</span> This is what a deep dive looks like</summary>
+    <div class="deep-dive__body">
+      <p>Deep dives hold the full derivation or proof behind a concept —
+      calculus, linear algebra, whatever the topic needs. They're collapsed
+      by default because you don't need them to follow the lesson. Expand one
+      when you want the rigor; skip it when you just want the intuition and
+      the formula. Nothing later in a module depends on you having opened one.</p>
+    </div>
+  </details>
+
+  <div class="callout">
+    <h4>Reading the phase badges</h4>
+    <p>The colored pill at the top of each page (like <span class="badge badge--phase-0">Foundations</span>
+    above) tells you which of the four phases a module belongs to: Foundations,
+    Classical ML, Deep Learning, or the Applied/LLM track. The dashboard groups
+    modules by phase using the same colors.</p>
+  </div>
+
+  <h2>Self-check</h2>
+  <p class="text-secondary">This is also a live example of the quiz widget — click an option.</p>
+  <div class="quiz">
+    <div class="quiz__q" data-answer="2" data-explain="The notebook is where code actually runs; the HTML page teaches but doesn't execute anything.">
+      <p class="prompt">Where do you actually run and edit Python code in this course?</p>
+      <div class="quiz__options">
+        <div class="quiz__option">In the module's index.html page</div>
+        <div class="quiz__option">On the course dashboard</div>
+        <div class="quiz__option">In the module's notebook.ipynb</div>
+      </div>
+      <div class="quiz__feedback"></div>
+    </div>
+    <div class="quiz__q" data-answer="1" data-explain="Deep dives are optional rigor -- the intuition and formula sections are enough to follow the rest of the module without opening one.">
+      <p class="prompt">Do you need to open every "Math Deep Dive" to follow a module?</p>
+      <div class="quiz__options">
+        <div class="quiz__option">Yes, they contain required steps</div>
+        <div class="quiz__option">No, they're optional extra rigor</div>
+      </div>
+      <div class="quiz__feedback"></div>
+    </div>
+  </div>
+
+  <div class="callout callout--summary">
+    <h4>Key takeaways</h4>
+    <ul>
+      <li>Each module = one <code>index.html</code> (read/interact) + one <code>notebook.ipynb</code> (run/edit)</li>
+      <li>"Math Deep Dive" sections are optional rigor, always collapsed by default</li>
+      <li>The dashboard (<a href="../../index.html">index.html</a> at the course root) tracks your progress and shows what's built vs. still a stub</li>
+      <li>Modules are numbered in learning order — go in order unless you already know the earlier material</li>
+    </ul>
+  </div>
+
+  <div class="callout">
+    <h4>Now, in the notebook</h4>
+    <p>Open <code>notebook.ipynb</code> in this folder — it walks through setting
+    up your Python environment and confirms everything imports correctly
+    before Module 01 needs it.</p>
+  </div>
+
+  <div style="text-align:center; margin: var(--space-6) 0;">
+    <button class="btn btn--primary" data-mark-done type="button">Mark module complete</button>
+  </div>
+
+  <div class="module-footer-nav">
+    <a class="prev" href="../../index.html"><span class="dir">Previous</span>Course dashboard</a>
+    <a class="next" href="../01-linear-algebra/index.html"><span class="dir">Next</span>Linear Algebra Essentials</a>
+  </div>
+
+</div>
+<script src="../../shared/js/course-common.js"></script>
+<script src="../../shared/js/progress.js"></script>
+<script>CourseProgress.initModuleButton("00");</script>
+</body>
+</html>
