@@ -1,6 +1,7 @@
-# Machine Learning, Beginner to Advanced
+# ML: Foundations to Frontier
 
-A self-paced ML course, built one module at a time. Start at [index.html](index.html)
+A self-paced machine learning course, beginner to advanced, built one module at
+a time. Start at [index.html](index.html)
 (open it in a browser) — that's the dashboard for all 42 modules.
 
 ## How this course works
@@ -52,3 +53,7 @@ Each module page has a "mark complete" button, and the dashboard shows overall
 progress. This is stored in your browser's `localStorage` — it's per-browser,
 with no account or server. If you open the same file from a different browser,
 or from a published copy of the page, progress won't carry over.
+
+## License
+
+[MIT](LICENSE)
