@@ -3,11 +3,171 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>01 · Python I: Values, Variables &amp; Control Flow · ML Course</title>
+<title>01 · Python I: Fundamentals &amp; First Programs · ML Course</title>
 <link rel="stylesheet" href="../../shared/css/theme.css">
 <link rel="stylesheet" href="../../shared/css/components.css">
 <style>
-  /* Trace-player widget (shared look across the Python modules) */
+  html { scroll-behavior: smooth; }
+  dfn { font-style: normal; font-weight: 700; }
+  kbd {
+    font-family: var(--font-mono);
+    font-size: 0.82em;
+    border: 1px solid var(--border-hairline);
+    border-bottom-width: 2px;
+    border-radius: 4px;
+    padding: 1px 5px;
+    background: var(--surface-1);
+  }
+  table { width: 100%; border-collapse: collapse; margin: var(--space-4) 0; }
+  th, td { border-bottom: 1px solid var(--border-hairline); padding: 9px 10px; text-align: left; vertical-align: top; }
+  th { color: var(--text-secondary); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.03em; }
+  td code { white-space: nowrap; }
+  .lesson-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    margin: var(--space-4) 0 var(--space-5);
+  }
+  .lesson-meta span {
+    border: 1px solid var(--border-hairline);
+    border-radius: 999px;
+    padding: 4px 10px;
+    color: var(--text-secondary);
+    font-size: 0.82rem;
+    background: var(--surface-1);
+  }
+  .toc {
+    border: 1px solid var(--border-hairline);
+    border-radius: var(--radius-md);
+    padding: var(--space-4) var(--space-5);
+    margin: var(--space-5) 0 var(--space-7);
+    background: var(--surface-1);
+  }
+  .toc h2 { margin: 0 0 var(--space-3); font-size: 1rem; }
+  .toc ol { columns: 2; column-gap: var(--space-6); margin: 0; padding-left: 1.3rem; }
+  .toc li { break-inside: avoid; margin: 0 0 6px; }
+  @media (max-width: 600px) { .toc ol { columns: 1; } }
+  .part-label {
+    display: inline-block;
+    margin-top: var(--space-7);
+    color: var(--phase-0);
+    font-size: 0.75rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+  .part-label + h2 { margin-top: var(--space-2); }
+  .mental-model {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-3);
+    margin: var(--space-5) 0;
+  }
+  .mental-model__card, .type-card {
+    border: 1px solid var(--border-hairline);
+    border-radius: var(--radius-md);
+    background: var(--surface-1);
+    padding: var(--space-4);
+  }
+  .mental-model__card strong, .type-card strong { display: block; margin-bottom: var(--space-1); }
+  .mental-model__card p, .type-card p { margin: 0; font-size: 0.9rem; color: var(--text-secondary); }
+  @media (max-width: 640px) { .mental-model { grid-template-columns: 1fr; } }
+  .anatomy {
+    border: 1px solid var(--border-hairline);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    margin: var(--space-5) 0;
+  }
+  .anatomy__code {
+    margin: 0;
+    border-radius: 0;
+    padding: var(--space-5);
+    font-size: 1rem;
+  }
+  .anatomy__notes { padding: var(--space-3) var(--space-5); background: var(--surface-1); }
+  .anatomy__notes p { margin: var(--space-2) 0; font-size: 0.9rem; }
+  .token-keyword { color: #8a4bbb; font-weight: 700; }
+  .token-name { color: var(--phase-0); font-weight: 700; }
+  .token-string { color: var(--text-success); }
+  .token-comment { color: var(--text-muted); }
+  .type-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-3);
+    margin: var(--space-4) 0;
+  }
+  .type-card code { display: inline-block; margin-top: var(--space-2); }
+  @media (max-width: 560px) { .type-grid { grid-template-columns: 1fr; } }
+  .console-example {
+    background: #151515;
+    color: #f5f5f5;
+    border-radius: var(--radius-sm);
+    padding: var(--space-3) var(--space-4);
+    font-family: var(--font-mono);
+    font-size: 0.88rem;
+    white-space: pre-wrap;
+    margin: var(--space-3) 0 var(--space-5);
+  }
+  .console-example::before { content: "OUTPUT"; display: block; color: #9b9b96; font-size: 0.68rem; letter-spacing: 0.08em; margin-bottom: 6px; }
+  .checkpoint {
+    border: 1px solid color-mix(in srgb, var(--phase-0) 45%, var(--border-hairline));
+    border-radius: var(--radius-md);
+    background: color-mix(in srgb, var(--phase-0) 6%, var(--surface-1));
+    padding: var(--space-4) var(--space-5);
+    margin: var(--space-5) 0;
+  }
+  .checkpoint h3 { margin: 0 0 var(--space-2); font-size: 0.95rem; }
+  .checkpoint details { margin-top: var(--space-2); }
+  .checkpoint summary { cursor: pointer; font-weight: 600; color: var(--phase-0); }
+  .checkpoint p:last-child { margin-bottom: 0; }
+  .code-pair {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-3);
+    margin: var(--space-4) 0;
+  }
+  .code-pair > div {
+    border: 1px solid var(--border-hairline);
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+    background: var(--surface-1);
+  }
+  .code-pair h4 { margin: 0; padding: var(--space-2) var(--space-3); font-size: 0.8rem; background: var(--surface-2); }
+  .code-pair pre { margin: 0; border-radius: 0; }
+  @media (max-width: 640px) { .code-pair { grid-template-columns: 1fr; } }
+  .operator-table td:nth-child(1), .operator-table td:nth-child(2) { font-family: var(--font-mono); }
+  .operator-lab {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr auto 1fr;
+    align-items: end;
+    gap: var(--space-2);
+  }
+  .operator-lab label { font-size: 0.75rem; color: var(--text-secondary); }
+  .operator-lab input, .operator-lab select {
+    display: block;
+    width: 100%;
+    margin-top: 4px;
+    padding: 8px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border-hairline);
+    background: var(--surface-1);
+    color: var(--text-primary);
+    font: inherit;
+  }
+  .operator-lab__result {
+    min-height: 40px;
+    display: flex;
+    align-items: center;
+    padding: 8px 12px;
+    border-radius: var(--radius-sm);
+    background: var(--surface-2);
+    font-family: var(--font-mono);
+    font-weight: 700;
+  }
+  @media (max-width: 600px) {
+    .operator-lab { grid-template-columns: 1fr; align-items: stretch; }
+    .operator-lab__symbol { display: none; }
+  }
   .trace { display: grid; grid-template-columns: 1.15fr 1fr; gap: var(--space-4); align-items: start; }
   @media (max-width: 640px) { .trace { grid-template-columns: 1fr; } }
   .trace pre.code { margin: 0; line-height: 1.7; }
@@ -15,17 +175,83 @@
   .code .ln.active { background: color-mix(in srgb, var(--phase-0) 18%, transparent); outline: 1px solid var(--phase-0); }
   .state-panel { display: flex; flex-direction: column; gap: var(--space-3); font-size: 0.9rem; }
   .state-panel h5 { margin: 0 0 var(--space-1); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--text-muted); }
-  .vars-table { width: 100%; border-collapse: collapse; font-family: var(--font-mono); font-size: 0.85rem; }
+  .vars-table { margin: 0; width: 100%; border-collapse: collapse; font-family: var(--font-mono); font-size: 0.85rem; }
   .vars-table td { border: 1px solid var(--border-hairline); padding: 3px 10px; }
   .vars-table td:first-child { color: var(--text-secondary); width: 40%; }
   .vars-table .changed td { background: color-mix(in srgb, var(--phase-2) 15%, transparent); }
   .console { background: var(--surface-2); border-radius: var(--radius-sm); padding: var(--space-2) var(--space-3); font-family: var(--font-mono); font-size: 0.85rem; min-height: 4.5em; white-space: pre-wrap; margin: 0; }
-  .trace-buttons { display: flex; gap: var(--space-2); align-items: center; margin-top: var(--space-3); }
+  .trace-buttons { display: flex; flex-wrap: wrap; gap: var(--space-2); align-items: center; margin-top: var(--space-3); }
   .trace-buttons .step-label { font-size: 0.85rem; color: var(--text-muted); margin-left: auto; }
   .branch-demo .ln.taken { background: color-mix(in srgb, var(--phase-2) 20%, transparent); outline: 1px solid var(--phase-2); }
-  .branch-demo .ln.skipped { opacity: 0.45; }
-  .range-out { font-family: var(--font-mono); font-size: 1rem; margin-top: var(--space-2); }
+  .branch-demo .ln.evaluated-false { background: color-mix(in srgb, var(--status-warning) 18%, transparent); outline: 1px solid var(--status-warning); }
+  .branch-demo .ln.skipped { opacity: 0.38; }
+  .range-out { font-family: var(--font-mono); font-size: 1rem; margin-top: var(--space-2); min-height: 34px; }
   .range-out .item { display: inline-block; background: var(--surface-2); border: 1px solid var(--border-hairline); border-radius: 6px; padding: 2px 10px; margin: 2px; }
+  .flow-line { display: flex; align-items: center; gap: var(--space-2); flex-wrap: wrap; margin: var(--space-4) 0; }
+  .flow-line span {
+    border: 1px solid var(--border-hairline);
+    border-radius: var(--radius-sm);
+    padding: 6px 10px;
+    background: var(--surface-1);
+    font-size: 0.88rem;
+  }
+  .flow-line b { color: var(--text-muted); }
+  .error-card {
+    display: grid;
+    grid-template-columns: 120px 1fr;
+    gap: var(--space-4);
+    border-bottom: 1px solid var(--border-hairline);
+    padding: var(--space-3) 0;
+  }
+  .error-card:last-child { border-bottom: 0; }
+  .error-card strong { font-family: var(--font-mono); color: var(--status-critical); }
+  @media (max-width: 520px) { .error-card { grid-template-columns: 1fr; gap: var(--space-1); } }
+  .glossary {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-3);
+  }
+  .glossary div { border-bottom: 1px solid var(--border-hairline); padding: var(--space-2) 0; }
+  .glossary dt { font-weight: 700; }
+  .glossary dd { margin: 2px 0 0; color: var(--text-secondary); font-size: 0.9rem; }
+  @media (max-width: 600px) { .glossary { grid-template-columns: 1fr; } }
+  .practice-ladder { counter-reset: practice; padding: 0; }
+  .practice-ladder li {
+    counter-increment: practice;
+    list-style: none;
+    position: relative;
+    padding: 0 0 var(--space-4) 42px;
+  }
+  .practice-ladder li::before {
+    content: counter(practice);
+    position: absolute;
+    left: 0;
+    top: -2px;
+    width: 28px;
+    height: 28px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: var(--phase-0);
+    color: #fff;
+    font-weight: 700;
+    font-size: 0.82rem;
+  }
+  .practice-ladder p { margin: 4px 0 0; color: var(--text-secondary); }
+  .mini-project {
+    border: 2px solid var(--phase-0);
+    border-radius: var(--radius-lg);
+    padding: var(--space-5);
+    background: color-mix(in srgb, var(--phase-0) 5%, var(--surface-1));
+    margin: var(--space-5) 0;
+  }
+  .mini-project h3 { margin-top: 0; }
+  .quiz code { white-space: normal; }
+  .quiz__option:focus-visible {
+    outline: 3px solid color-mix(in srgb, var(--phase-0) 45%, transparent);
+    outline-offset: 2px;
+  }
+  .back-to-top { text-align: right; font-size: 0.85rem; margin-top: var(--space-5); }
 </style>
 </head>
 <body>
@@ -39,64 +265,353 @@
   </nav>
 
   <span class="badge badge--phase-0">Foundations</span>
-  <h1><span class="module-header__num">01 ·</span> Python I: Values, Variables &amp; Control Flow</h1>
-  <p class="text-secondary">Every model in this course — from a fitted line to a
-  transformer — is ultimately a short Python program. This module assumes you have
-  <em>never programmed before</em>, and by the end you'll be able to read a program
-  and predict, line by line, exactly what it will do. That skill — tracing —
-  is the whole game.</p>
+  <h1><span class="module-header__num">01 ·</span> Python I: Fundamentals &amp; First Programs</h1>
+  <p class="text-secondary">This lesson assumes you have never written code. Every new
+  technical word is defined where it first appears, every symbol is unpacked, and every
+  idea is followed by a small example. By the end, you will be able to write and trace
+  short Python programs—the foundation for every machine-learning model later in the course.</p>
+
+  <div class="lesson-meta" aria-label="Lesson information">
+    <span>Beginner · no prerequisites</span>
+    <span>4–6 hours including practice</span>
+    <span>Lesson + runnable notebook</span>
+    <span>10-part knowledge check</span>
+  </div>
 
   <div class="objectives">
-    <h3>Learning objectives</h3>
+    <h3>By the end, you will be able to</h3>
     <ul>
-      <li>Trace a short Python program by hand, line by line</li>
-      <li>Use int/float/str/bool values and variables correctly</li>
-      <li>Steer a program with if/elif/else, while, and for loops</li>
+      <li>Explain what code, a program, an interpreter, syntax, a statement, and an expression are</li>
+      <li>Create values using Python's basic data types: <code>int</code>, <code>float</code>, <code>str</code>, <code>bool</code>, and <code>None</code></li>
+      <li>Store values in well-named variables and convert values from one type to another</li>
+      <li>Display readable output with <code>print()</code> and format text with f-strings</li>
+      <li>Calculate and compare using arithmetic, assignment, comparison, and logical operators</li>
+      <li>Control what runs with <code>if</code>, <code>elif</code>, <code>else</code>, <code>while</code>, and <code>for</code></li>
+      <li>Read common error messages and trace a short program line by line</li>
     </ul>
   </div>
 
-  <h2>A program is a list of instructions</h2>
-  <p>Python reads your file top to bottom and executes one <strong>statement</strong>
-  at a time. At any moment, the state of the program is just two things: <em>which
-  line runs next</em>, and <em>what each variable currently holds</em>. If you can
-  track those two things, no program can surprise you.</p>
-
-  <p>The instructions operate on <strong>values</strong>, and every value has a
-  <strong>type</strong>. Four types cover most beginner code:</p>
-
-  <div class="callout callout--formula">
-    <h4>The four core types</h4>
-    <p>
-    <code>int</code> — whole numbers: <code>42</code>, <code>-7</code>, <code>0</code><br>
-    <code>float</code> — decimal numbers: <code>3.14</code>, <code>-0.5</code>, <code>2.0</code><br>
-    <code>str</code> — text in quotes: <code>"hello"</code>, <code>'ML'</code><br>
-    <code>bool</code> — truth values: <code>True</code>, <code>False</code>
-    </p>
+  <div class="callout">
+    <h4>How to use this lesson</h4>
+    <p>Do not try to memorize everything in one pass. Read a section, predict each example's
+    output, then run the matching cells in <a href="notebook.ipynb">the companion notebook</a>.
+    Typing the code yourself matters: programming is a practical skill, like playing an
+    instrument. If a section feels dense, stop at its checkpoint and return later.</p>
   </div>
 
-  <p>A <strong>variable</strong> is a name attached to a value with <code>=</code>:
-  <code>price = 120</code> means "make the name <code>price</code> refer to the value
-  120." Read <code>=</code> as <em>"gets"</em>, never as mathematical equality —
-  <code>count = count + 1</code> is nonsense as an equation but perfectly normal
-  code: compute the right side <em>first</em>, then attach the name to the result.</p>
+  <nav class="toc" aria-label="Lesson contents">
+    <h2>Lesson map</h2>
+    <ol>
+      <li><a href="#what-is-programming">What programming is</a></li>
+      <li><a href="#first-code">Your first line of Python</a></li>
+      <li><a href="#values-types">Values and data types</a></li>
+      <li><a href="#variables">Variables and assignment</a></li>
+      <li><a href="#print-input">Output, strings, and input</a></li>
+      <li><a href="#operators">Operators and expressions</a></li>
+      <li><a href="#booleans">Comparisons and Boolean logic</a></li>
+      <li><a href="#conditionals">Decisions with conditionals</a></li>
+      <li><a href="#loops">Repetition with loops</a></li>
+      <li><a href="#errors">Errors and debugging</a></li>
+      <li><a href="#project">Guided mini-project</a></li>
+      <li><a href="#reference">Glossary and cheat sheet</a></li>
+      <li><a href="#self-check">Self-check</a></li>
+    </ol>
+  </nav>
 
-  <h2>Demo 1 — step through a real program</h2>
-  <p>This is the single most useful widget in the module. Click <strong>Step</strong>
-  and watch three things at once: the highlighted line (what runs next), the
-  variables table (the program's memory), and the output console. The green flash
-  marks the variable that just changed.</p>
+  <span class="part-label">Part 1 · Build the mental model</span>
+  <h2 id="what-is-programming">What is programming?</h2>
+
+  <p><dfn>Programming</dfn> is writing precise instructions that a computer can follow.
+  Those instructions are called <dfn>code</dfn> or <dfn>source code</dfn>. A complete
+  collection of instructions that performs a task is a <dfn>program</dfn>.</p>
+
+  <p>Computers are fast, but extremely literal. They do not guess what you meant. A programming
+  <dfn>language</dfn> gives humans a consistent vocabulary and grammar for expressing
+  instructions. Python is one such language. It is popular in machine learning because its
+  code is readable and it has excellent data and ML libraries.</p>
+
+  <div class="mental-model" aria-label="How Python code runs">
+    <div class="mental-model__card">
+      <strong>1 · You write source code</strong>
+      <p>Human-readable text such as <code>print("Hello")</code>.</p>
+    </div>
+    <div class="mental-model__card">
+      <strong>2 · Python interprets it</strong>
+      <p>The <dfn>interpreter</dfn> reads the code and determines what each instruction means.</p>
+    </div>
+    <div class="mental-model__card">
+      <strong>3 · The computer acts</strong>
+      <p>It calculates, stores data, displays output, or repeats instructions.</p>
+    </div>
+  </div>
+
+  <p>The <dfn>Python interpreter</dfn> is the program that executes Python code. In a
+  Jupyter notebook, you write code inside a rectangular <dfn>code cell</dfn>. Running the
+  cell sends its code to the interpreter. The result appears below the cell.</p>
+
+  <div class="callout callout--formula">
+    <h4>Three words beginners often mix up</h4>
+    <p><strong>Code</strong> is the written instruction. <strong>Python</strong> is the
+    language and its rules. The <strong>interpreter</strong> is the software that reads
+    Python code and carries out the instruction.</p>
+  </div>
+
+  <h3>Python's grammar: syntax</h3>
+  <p>Every language has rules about how words and symbols may be arranged. In programming,
+  those rules are called <dfn>syntax</dfn>. For example, Python requires matching quotation
+  marks and parentheses. Correct syntax: <code>print("Hello")</code>. Incorrect syntax:
+  <code>print("Hello)</code>. Code that breaks the grammar produces a
+  <code>SyntaxError</code>.</p>
+
+  <p>Python is <dfn>case-sensitive</dfn>: uppercase and lowercase letters are treated as
+  different. <code>print</code>, <code>Print</code>, and <code>PRINT</code> are three
+  different names. Only the lowercase built-in <code>print</code> exists by default.</p>
+
+  <h2 id="first-code">Your first line of Python</h2>
+
+  <pre><code>print("Hello, Python!")</code></pre>
+  <div class="console-example">Hello, Python!</div>
+
+  <p>This one line introduces several important terms:</p>
+  <div class="anatomy">
+    <pre class="anatomy__code"><code><span class="token-name">print</span>(<span class="token-string">"Hello, Python!"</span>)</code></pre>
+    <div class="anatomy__notes">
+      <p><span class="token-name"><code>print</code></span> is the name of a
+      <dfn>function</dfn>—a reusable action. This function displays information.</p>
+      <p><code>( )</code> mean “call” or “run” the function. A <dfn>function call</dfn>
+      asks Python to perform the function's action now.</p>
+      <p><span class="token-string"><code>"Hello, Python!"</code></span> is the
+      <dfn>argument</dfn>—the information given to the function.</p>
+      <p>The quoted text is a <dfn>string</dfn>, Python's type for text.</p>
+    </div>
+  </div>
+
+  <p>A <dfn>statement</dfn> is an instruction that Python can execute. The function call
+  above is a statement. Python normally executes statements from top to bottom:</p>
+
+  <pre><code>print("First")
+print("Second")
+print("Third")</code></pre>
+  <div class="console-example">First
+Second
+Third</div>
+
+  <h3>Comments: notes for humans</h3>
+  <p>A <dfn>comment</dfn> explains code to human readers. An unquoted
+  <code>#</code> begins a comment, and Python ignores the rest of that line. A
+  <code>#</code> inside quoted text is simply a character in the string.</p>
+
+  <pre><code># This whole line is a comment.
+print("Welcome!")  # This comment follows an instruction.</code></pre>
+
+  <p>Good comments explain <em>why</em> something is done or clarify a surprising choice.
+  They should not narrate an obvious line. Code is read far more often than it is written,
+  so use clear names first and comments where they add context.</p>
+
+  <div class="checkpoint">
+    <h3>Checkpoint 1 · Read before you run</h3>
+    <p>What will this code display, and in what order?</p>
+    <pre><code>print("A")
+# print("B")
+print("C")</code></pre>
+    <details>
+      <summary>Reveal the answer</summary>
+      <div class="console-example">A
+C</div>
+      <p>The middle line is a comment, so Python ignores it.</p>
+    </details>
+  </div>
+
+  <span class="part-label">Part 2 · Represent and store information</span>
+  <h2 id="values-types">Values and data types</h2>
+
+  <p>A <dfn>value</dfn> is one piece of information that a program can work with: the
+  number <code>42</code>, the text <code>"Dubai"</code>, or the truth value
+  <code>True</code>. A value written directly in code is called a <dfn>literal</dfn>.</p>
+
+  <p>Every value has a <dfn>data type</dfn>, usually shortened to <dfn>type</dfn>. The
+  type tells Python what the value represents and which operations make sense. Adding two
+  numbers makes sense; subtracting one person's name from another does not.</p>
+
+  <div class="type-grid">
+    <div class="type-card">
+      <strong><code>int</code> · integer</strong>
+      <p>A whole number with no decimal point. It may be positive, negative, or zero.</p>
+      <code>42</code> <code>-7</code> <code>0</code>
+    </div>
+    <div class="type-card">
+      <strong><code>float</code> · floating-point number</strong>
+      <p>A number with a decimal point, or one written in scientific notation.</p>
+      <code>3.14</code> <code>-0.5</code> <code>2.0</code> <code>1e-3</code>
+    </div>
+    <div class="type-card">
+      <strong><code>str</code> · string</strong>
+      <p>Text enclosed in matching single or double quotation marks.</p>
+      <code>"hello"</code> <code>'ML'</code> <code>"42"</code>
+    </div>
+    <div class="type-card">
+      <strong><code>bool</code> · Boolean</strong>
+      <p>A truth value. There are exactly two: capitalized <code>True</code> and <code>False</code>.</p>
+      <code>True</code> <code>False</code>
+    </div>
+    <div class="type-card">
+      <strong><code>NoneType</code> · absence marker</strong>
+      <p><code>None</code> is itself a special value used to mean “missing” or “not set.”</p>
+      <code>None</code>
+    </div>
+  </div>
+
+  <p>Scientific notation is a compact way to write very large or small numbers:
+  <code>1e-3</code> means 1 × 10<sup>−3</sup>, which is <code>0.001</code>.
+  The <code>e</code> stands for “times ten to the power of.”</p>
+
+  <div class="callout callout--pitfall">
+    <h4>Text that looks like a number is still text</h4>
+    <p><code>42</code> is an integer, but <code>"42"</code> is a two-character string.
+    Quotation marks change the type. Python can calculate <code>42 + 8</code>, but
+    <code>"42" + "8"</code> joins text and produces <code>"428"</code>.</p>
+  </div>
+
+  <h3>Ask Python for a type with <code>type()</code></h3>
+  <p><code>type()</code> is a built-in function. <dfn>Built-in</dfn> means Python provides
+  it automatically; you do not need to install or define it.</p>
+
+  <pre><code>print(type(42))
+print(type(3.14))
+print(type("42"))
+print(type(True))
+print(type(None))</code></pre>
+  <div class="console-example">&lt;class 'int'&gt;
+&lt;class 'float'&gt;
+&lt;class 'str'&gt;
+&lt;class 'bool'&gt;
+&lt;class 'NoneType'&gt;</div>
+
+  <p>You can read <code>&lt;class 'int'&gt;</code> as “this value belongs to the integer
+  type.” The word <dfn>class</dfn> will be explained properly in Module 03; for now,
+  “type” is enough.</p>
+
+  <h3>Converting between types</h3>
+  <p><dfn>Type conversion</dfn> creates a value of one type from a value of another.
+  Python's conversion functions use the type names:</p>
+
+  <table>
+    <thead><tr><th>Code</th><th>Result</th><th>Explanation</th></tr></thead>
+    <tbody>
+      <tr><td><code>int("42")</code></td><td><code>42</code></td><td>Convert numeric text to an integer.</td></tr>
+      <tr><td><code>float("3.5")</code></td><td><code>3.5</code></td><td>Convert numeric text to a float.</td></tr>
+      <tr><td><code>float(7)</code></td><td><code>7.0</code></td><td>Convert an integer to a float.</td></tr>
+      <tr><td><code>int(3.9)</code></td><td><code>3</code></td><td>Remove the decimal part; this does not round.</td></tr>
+      <tr><td><code>str(42)</code></td><td><code>"42"</code></td><td>Convert a value to displayable text.</td></tr>
+      <tr><td><code>bool(0)</code></td><td><code>False</code></td><td>Zero is considered false in a Boolean context.</td></tr>
+    </tbody>
+  </table>
+
+  <p>A conversion can fail if the original value has the wrong form.
+  <code>int("forty-two")</code> raises a <code>ValueError</code> because those letters
+  cannot be interpreted as an integer.</p>
+
+  <details class="deep-dive">
+    <summary><span class="deep-dive__tag">Optional deep dive</span> Why <code>0.1 + 0.2</code> is surprising</summary>
+    <div class="deep-dive__body">
+      <p>Integers are exact in Python, but most decimal fractions cannot be stored exactly
+      as binary floating-point numbers. Python stores the closest available approximation.
+      That is why <code>0.1 + 0.2</code> displays as
+      <code>0.30000000000000004</code>.</p>
+      <p>This is normal across mainstream languages, not a Python bug. For approximate
+      float comparison, import Python's math toolkit and use
+      <code>math.isclose(a, b)</code> rather than <code>a == b</code>:</p>
+      <pre><code>import math
+print(math.isclose(0.1 + 0.2, 0.3))  # True</code></pre>
+      <p>This matters later when ML models perform millions of decimal calculations.
+      Imports are taught properly in Module 03; the example simply shows the safe tool.</p>
+    </div>
+  </details>
+
+  <h2 id="variables">Variables and assignment</h2>
+
+  <p>A <dfn>variable</dfn> is a name that refers to a value. An
+  <dfn>assignment statement</dfn> creates or updates that relationship:</p>
+
+  <pre><code>age = 25
+city = "Dubai"
+is_student = True</code></pre>
+
+  <p>The single equals sign <code>=</code> is the <dfn>assignment operator</dfn>. Read
+  <code>age = 25</code> as “<code>age</code> gets 25” or “assign 25 to
+  <code>age</code>.” It does not mean mathematical equality.</p>
+
+  <div class="flow-line" aria-label="How assignment works">
+    <span>Evaluate the right side</span><b>→</b><span>produce a value</span><b>→</b><span>attach the left-side name</span>
+  </div>
+
+  <p>This right-side-first rule makes the following code sensible:</p>
+
+  <pre><code>score = 10
+score = score + 5
+print(score)</code></pre>
+  <div class="console-example">15</div>
+
+  <p>On the second line, Python first looks up the current value of <code>score</code>,
+  calculates <code>10 + 5</code>, then makes <code>score</code> refer to the new value
+  <code>15</code>. The old value is not edited; the name is reassigned.</p>
+
+  <h3>Names, identifiers, and keywords</h3>
+  <p>A name used in code is formally called an <dfn>identifier</dfn>. Python identifiers:</p>
+  <ul>
+    <li>may contain letters, digits, and underscores: <code>model_2</code></li>
+    <li>cannot begin with a digit: <code>2_model</code> is invalid</li>
+    <li>cannot contain spaces or hyphens: use <code>learning_rate</code>, not <code>learning rate</code></li>
+    <li>are case-sensitive: <code>score</code> and <code>Score</code> are different names</li>
+    <li>cannot be Python <dfn>keywords</dfn> such as <code>if</code>, <code>for</code>, or <code>True</code></li>
+  </ul>
+
+  <p>Python style uses <dfn>snake_case</dfn>: lowercase words separated by underscores.
+  Prefer descriptive names that explain meaning and unit.</p>
+
+  <div class="code-pair">
+    <div>
+      <h4>Hard to understand</h4>
+      <pre><code>x = 120
+y = 0.25
+z = x * (1 - y)</code></pre>
+    </div>
+    <div>
+      <h4>Clear and specific</h4>
+      <pre><code>price_aed = 120
+discount_rate = 0.25
+sale_price_aed = price_aed * (1 - discount_rate)</code></pre>
+    </div>
+  </div>
+
+  <h3>Python is dynamically typed</h3>
+  <p>You do not declare a variable's type before using it. The name can later refer to a
+  different type:</p>
+
+  <pre><code>result = 95       # result currently refers to an int
+result = "pass"   # now it refers to a str</code></pre>
+
+  <p>This flexibility is called <dfn>dynamic typing</dfn>. It is convenient, but changing
+  a name's meaning or type without a good reason makes code harder to understand. Prefer
+  one consistent meaning per variable.</p>
+
+  <h3>Trace a program: follow state, not intuition</h3>
+  <p>The <dfn>state</dfn> of a simple program is the current set of variable names and
+  their values, plus the next statement to execute. <dfn>Tracing</dfn> means following
+  those changes line by line. Before every click below, predict which line runs and what
+  changes.</p>
 
   <div class="demo" id="stepper">
     <div class="trace">
       <pre class="code" aria-label="Python program being traced"></pre>
       <div class="state-panel">
         <div>
-          <h5>Variables</h5>
+          <h5>Variables after this line</h5>
           <table class="vars-table"><tbody></tbody></table>
         </div>
         <div>
-          <h5>Output</h5>
-          <pre class="console"></pre>
+          <h5>Output so far</h5>
+          <pre class="console" aria-live="polite"></pre>
         </div>
       </div>
     </div>
@@ -104,156 +619,985 @@
       <button class="btn" data-act="back" type="button">◀ Back</button>
       <button class="btn btn--primary" data-act="step" type="button">Step ▶</button>
       <button class="btn" data-act="reset" type="button">Reset</button>
-      <span class="step-label"></span>
+      <span class="step-label" aria-live="polite"></span>
     </div>
-    <p class="demo__caption">Before each click, predict: which line runs next, and what
-    will change? Being wrong here is free — being wrong about your own mental model
-    later is expensive.</p>
+    <p class="demo__caption">A changed variable is highlighted. Notice that assignment
+    itself displays nothing; only <code>print()</code> writes to the output.</p>
   </div>
 
-  <details class="deep-dive">
-    <summary><span class="deep-dive__tag">Math deep dive</span> What numbers really are inside Python</summary>
-    <div class="deep-dive__body">
-      <p><strong>Python's <code>int</code> is exact and unbounded.</strong> Unlike most
-      languages, <code>2 ** 1000</code> just works — Python grows the integer as needed,
-      so integer arithmetic never overflows or rounds.</p>
-      <p><strong><code>float</code> is neither.</strong> Floats are IEEE-754 double-precision:
-      64 bits holding a sign, an exponent, and 52 bits of fraction — a <em>binary</em>
-      scientific notation. Numbers like 0.1 have no finite binary representation (for the
-      same reason 1/3 has no finite decimal one), so Python stores the nearest representable
-      value. That's why:</p>
-      <pre><code>&gt;&gt;&gt; 0.1 + 0.2
-0.30000000000000004
-&gt;&gt;&gt; 0.1 + 0.2 == 0.3
-False</code></pre>
-      <p>This isn't a Python bug — every language using IEEE-754 (all mainstream ones) does
-      this. The practical rules: never compare floats with <code>==</code> (use
-      <code>abs(a - b) &lt; 1e-9</code> or <code>math.isclose</code>), and expect ~15-16
-      significant decimal digits of precision. This will matter again when gradient descent
-      accumulates millions of tiny float additions in later modules.</p>
+  <div class="checkpoint">
+    <h3>Checkpoint 2 · Track the names</h3>
+    <p>Predict the final values of <code>a</code> and <code>b</code>.</p>
+    <pre><code>a = 5
+b = a
+a = 9</code></pre>
+    <details>
+      <summary>Reveal the answer</summary>
+      <p><code>a</code> is <code>9</code>; <code>b</code> is still <code>5</code>.
+      The line <code>b = a</code> attached <code>b</code> to the value that
+      <code>a</code> held at that moment. Reassigning <code>a</code> later does not
+      re-run earlier statements.</p>
+    </details>
+  </div>
+
+  <span class="part-label">Part 3 · Communicate and calculate</span>
+  <h2 id="print-input">Output, strings, and input</h2>
+
+  <h3><code>print()</code> in detail</h3>
+  <p><dfn>Output</dfn> is information a program sends outward—for example, text displayed
+  below a notebook cell. <code>print()</code> can receive zero, one, or several arguments.
+  Multiple arguments are separated by commas:</p>
+
+  <pre><code>name = "Maya"
+score = 92
+
+print("Learner:", name)
+print("Score:", score, "points")
+print()</code></pre>
+  <div class="console-example">Learner: Maya
+Score: 92 points
+</div>
+
+  <p>By default, <code>print()</code> places a space between arguments and a newline after
+  them. A <dfn>newline</dfn> moves the next output to a new line. Two optional
+  <dfn>keyword arguments</dfn> change those defaults:</p>
+
+  <pre><code>print("red", "green", "blue", sep=" | ")
+print("Loading", end="...")
+print("done")</code></pre>
+  <div class="console-example">red | green | blue
+Loading...done</div>
+
+  <p><code>sep</code> means separator; <code>end</code> means what to place after the final
+  argument. The <code>name=value</code> syntax passes an option by name. You will learn
+  how to define your own functions with parameters in Module 02.</p>
+
+  <h3>String basics</h3>
+  <p>Strings may use either matching single or double quotes. Choose the outer quotes so
+  text inside remains readable:</p>
+
+  <pre><code>message = "Python is readable."
+apostrophe = "It's a string."
+quotation = 'She said "hello".'</code></pre>
+
+  <p>An <dfn>escape sequence</dfn> begins with a backslash and represents a special
+  character. Common examples are <code>\n</code> for a newline, <code>\t</code> for a tab,
+  <code>\"</code> for a double quote, and <code>\\</code> for a backslash.</p>
+
+  <pre><code>print("First line\nSecond line")
+print("Name\tScore")
+print("Maya\t92")</code></pre>
+  <div class="console-example">First line
+Second line
+Name    Score
+Maya    92</div>
+
+  <h3>f-strings: insert values into text</h3>
+  <p>An <dfn>f-string</dfn> is a string prefixed with <code>f</code>. Expressions inside
+  curly braces <code>{ }</code> are evaluated and inserted into the text.</p>
+
+  <pre><code>name = "Maya"
+score = 92
+maximum = 100
+
+print(f"{name} scored {score} out of {maximum}.")
+print(f"Percentage: {score / maximum * 100:.1f}%")</code></pre>
+  <div class="console-example">Maya scored 92 out of 100.
+Percentage: 92.0%</div>
+
+  <p>In <code>:.1f</code>, <code>f</code> means fixed-point decimal format and
+  <code>.1</code> requests one digit after the decimal point. Formatting changes how the
+  value is displayed, not the value stored in the variable.</p>
+
+  <h3><code>input()</code>: receive text from a user</h3>
+  <p><dfn>Input</dfn> is information a program receives. The built-in
+  <code>input()</code> function displays a prompt, pauses, and returns whatever the user
+  types. Crucially, <strong><code>input()</code> always returns a string</strong>.</p>
+
+  <pre><code>name = input("What is your name? ")
+age_text = input("How old are you? ")
+age = int(age_text)
+
+print(f"Hello, {name}. Next year you will be {age + 1}.")</code></pre>
+
+  <p>If the user types <code>25</code>, <code>age_text</code> holds the string
+  <code>"25"</code>. <code>int(age_text)</code> converts it before arithmetic. Later,
+  Module 03 will teach how to handle invalid input safely.</p>
+
+  <h3>Useful built-in functions</h3>
+  <p>A function may produce a <dfn>return value</dfn>—a result that the surrounding
+  expression can use or a variable can store. For example, <code>len("Python")</code>
+  returns the integer <code>6</code>. These built-ins are useful immediately:</p>
+
+  <table>
+    <thead><tr><th>Function</th><th>Example</th><th>Return value</th></tr></thead>
+    <tbody>
+      <tr><td><code>len()</code></td><td><code>len("Python")</code></td><td><code>6</code> characters</td></tr>
+      <tr><td><code>abs()</code></td><td><code>abs(-7)</code></td><td><code>7</code>, the absolute distance from zero</td></tr>
+      <tr><td><code>round()</code></td><td><code>round(3.14159, 2)</code></td><td><code>3.14</code></td></tr>
+      <tr><td><code>min()</code></td><td><code>min(8, 3, 12)</code></td><td><code>3</code></td></tr>
+      <tr><td><code>max()</code></td><td><code>max(8, 3, 12)</code></td><td><code>12</code></td></tr>
+      <tr><td><code>type()</code></td><td><code>type(3.14)</code></td><td>The value's type, <code>float</code></td></tr>
+    </tbody>
+  </table>
+
+  <p><code>print()</code> is different: its purpose is the <dfn>side effect</dfn> of
+  displaying output—an observable action beyond merely calculating a return value. Its
+  return value is <code>None</code>. That is why
+  <code>saved = print("hello")</code> displays <code>hello</code> but makes
+  <code>saved</code> refer to <code>None</code>.</p>
+
+  <h3>Basic string methods</h3>
+  <p>A <dfn>method</dfn> is a function associated with a particular type of value. Call
+  one with dot notation: <code>value.method()</code>. Common string methods return a new
+  string:</p>
+
+  <pre><code>raw_name = "  Maya Ahmed  "
+
+clean_name = raw_name.strip()
+print(clean_name.upper())                  # MAYA AHMED
+print(clean_name.lower())                  # maya ahmed
+print(clean_name.replace("Maya", "Sara"))  # Sara Ahmed</code></pre>
+
+  <p><code>.strip()</code> removes whitespace from both ends,
+  <code>.upper()</code>/<code>.lower()</code> change letter case, and
+  <code>.replace(old, new)</code> replaces matching text. Strings are
+  <dfn>immutable</dfn>: these methods create new strings; they do not edit the original.
+  Store the returned value if you need it later.</p>
+
+  <div class="callout callout--pitfall">
+    <h4><code>print()</code> is not the same as a notebook's last value</h4>
+    <p>Jupyter automatically displays the value of the final expression in a cell, but a
+    normal Python script does not. Use <code>print()</code> when output is part of your
+    program. Also remember: displayed text is not automatically stored—assign a value to a
+    variable if you need it later.</p>
+  </div>
+
+  <h2 id="operators">Operators and expressions</h2>
+
+  <p>An <dfn>operator</dfn> is a symbol or word that performs an operation. The values it
+  acts on are <dfn>operands</dfn>. In <code>8 + 3</code>, <code>+</code> is the operator;
+  <code>8</code> and <code>3</code> are operands.</p>
+
+  <p>An <dfn>expression</dfn> is code that Python evaluates to produce a value. Literals,
+  variable names, calculations, comparisons, and function calls can all be expressions:
+  <code>42</code>, <code>price</code>, <code>price * 0.8</code>, and
+  <code>type(price)</code>.</p>
+
+  <h3>Arithmetic operators</h3>
+  <table class="operator-table">
+    <thead><tr><th>Operator</th><th>Example</th><th>Result</th><th>Meaning</th></tr></thead>
+    <tbody>
+      <tr><td><code>+</code></td><td><code>7 + 2</code></td><td><code>9</code></td><td>Addition</td></tr>
+      <tr><td><code>-</code></td><td><code>7 - 2</code></td><td><code>5</code></td><td>Subtraction</td></tr>
+      <tr><td><code>*</code></td><td><code>7 * 2</code></td><td><code>14</code></td><td>Multiplication</td></tr>
+      <tr><td><code>/</code></td><td><code>7 / 2</code></td><td><code>3.5</code></td><td>Division; always produces a float</td></tr>
+      <tr><td><code>//</code></td><td><code>7 // 2</code></td><td><code>3</code></td><td>Floor division; rounds down</td></tr>
+      <tr><td><code>%</code></td><td><code>7 % 2</code></td><td><code>1</code></td><td>Remainder after division</td></tr>
+      <tr><td><code>**</code></td><td><code>7 ** 2</code></td><td><code>49</code></td><td>Exponentiation (“7 squared”)</td></tr>
+      <tr><td><code>+</code> unary</td><td><code>+7</code></td><td><code>7</code></td><td>Positive sign</td></tr>
+      <tr><td><code>-</code> unary</td><td><code>-7</code></td><td><code>-7</code></td><td>Negation</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout">
+    <h4>Floor division means down, not toward zero</h4>
+    <p><code>7 // 2</code> is <code>3</code>, but <code>-7 // 2</code> is
+    <code>-4</code> because -4 is the next whole number below -3.5. With positive numbers,
+    you can initially think of <code>//</code> as “whole groups” and <code>%</code> as
+    “what remains.” For example, 17 minutes is <code>17 // 5 == 3</code> complete
+    five-minute blocks with <code>17 % 5 == 2</code> minutes left.</p>
+  </div>
+
+  <div class="demo" id="operator-demo">
+    <h3 style="margin-top:0">Operator laboratory</h3>
+    <p>Change the small integer operands and operator. Notice that the result's value and
+    type can both depend on the operator.</p>
+    <div class="operator-lab">
+      <label>Left integer
+        <input id="op-left" type="number" value="7" min="-20" max="20" step="1">
+      </label>
+      <span class="operator-lab__symbol" aria-hidden="true">operation</span>
+      <label>Operator
+        <select id="op-kind">
+          <option value="+">+</option>
+          <option value="-">−</option>
+          <option value="*">×</option>
+          <option value="/">/</option>
+          <option value="//">//</option>
+          <option value="%">%</option>
+          <option value="**">**</option>
+        </select>
+      </label>
+      <span class="operator-lab__symbol" aria-hidden="true">with</span>
+      <label>Right integer
+        <input id="op-right" type="number" value="2" min="-20" max="20" step="1">
+      </label>
     </div>
-  </details>
+    <p class="operator-lab__result" id="op-result" aria-live="polite"></p>
+    <p class="demo__caption" id="op-explain"></p>
+  </div>
 
-  <h2>Making decisions: if / elif / else</h2>
-  <p>Programs get interesting when they <em>branch</em>. Python checks each condition
-  top to bottom and runs the <strong>first</strong> block whose condition is
-  <code>True</code> — then skips the rest, even if later conditions would also be true.
-  Indentation isn't decoration in Python: the indented lines <em>are</em> the block.</p>
+  <h3>Precedence: which operation happens first?</h3>
+  <p><dfn>Operator precedence</dfn> is the order Python uses when an expression has several
+  operators. The useful beginner order is:</p>
+  <ol>
+    <li>Parentheses <code>( )</code></li>
+    <li>Exponentiation <code>**</code></li>
+    <li>Unary signs <code>+x</code>, <code>-x</code></li>
+    <li>Multiplication and division <code>*</code>, <code>/</code>, <code>//</code>, <code>%</code></li>
+    <li>Addition and subtraction <code>+</code>, <code>-</code></li>
+    <li>Comparisons, then <code>not</code>, then <code>and</code>, then <code>or</code></li>
+  </ol>
 
-  <h2>Demo 2 — which branch runs?</h2>
-  <p>Drag the temperature and watch which branch lights up. Note that 35° is also
-  ≥ 15 and ≥ 0 — but only the <em>first</em> true branch runs.</p>
+  <pre><code>result_1 = 2 + 3 * 4       # 14: multiplication first
+result_2 = (2 + 3) * 4     # 20: parentheses first</code></pre>
+
+  <p>Do not make readers memorize a complicated expression. Use parentheses to make intent
+  obvious even when they are not strictly required. One subtle exception is exponentiation
+  with a sign: <code>-2 ** 2</code> means <code>-(2 ** 2)</code>, but
+  <code>2 ** -2</code> permits a negative exponent. Write
+  <code>-(2 ** 2)</code>, <code>(-2) ** 2</code>, or <code>2 ** (-2)</code>
+  explicitly instead of relying on memory.</p>
+
+  <h3>Strings also support <code>+</code> and <code>*</code></h3>
+  <p>For strings, <code>+</code> means <dfn>concatenation</dfn> (joining), and
+  <code>*</code> repeats text:</p>
+
+  <pre><code>full_name = "Ada" + " " + "Lovelace"
+divider = "-" * 12
+print(full_name)
+print(divider)</code></pre>
+  <div class="console-example">Ada Lovelace
+------------</div>
+
+  <p>Python does not silently mix strings and numbers:
+  <code>"Age: " + 25</code> raises a <code>TypeError</code>. Use
+  <code>"Age: " + str(25)</code>, comma-separated <code>print()</code> arguments, or
+  preferably <code>f"Age: {25}"</code>.</p>
+
+  <h3>Augmented assignment</h3>
+  <p><dfn>Augmented assignment</dfn> combines an operation with reassignment. It is common
+  when updating counters and totals:</p>
+
+  <table>
+    <thead><tr><th>Long form</th><th>Short form</th><th>Meaning</th></tr></thead>
+    <tbody>
+      <tr><td><code>count = count + 1</code></td><td><code>count += 1</code></td><td>Increase by 1</td></tr>
+      <tr><td><code>total = total + price</code></td><td><code>total += price</code></td><td>Add price to total</td></tr>
+      <tr><td><code>balance = balance - fee</code></td><td><code>balance -= fee</code></td><td>Subtract fee</td></tr>
+      <tr><td><code>value = value * 2</code></td><td><code>value *= 2</code></td><td>Multiply by 2</td></tr>
+    </tbody>
+  </table>
+
+  <div class="checkpoint">
+    <h3>Checkpoint 3 · Evaluate expressions</h3>
+    <p>Without running Python, calculate <code>10 + 2 ** 3 * 2</code> and
+    <code>(10 + 2) ** 2 % 5</code>.</p>
+    <details>
+      <summary>Reveal the answer</summary>
+      <p><code>10 + 2 ** 3 * 2</code> → <code>10 + 8 * 2</code> →
+      <code>10 + 16</code> → <code>26</code>.</p>
+      <p><code>(10 + 2) ** 2 % 5</code> → <code>12 ** 2 % 5</code> →
+      <code>144 % 5</code> → <code>4</code>.</p>
+    </details>
+  </div>
+
+  <span class="part-label">Part 4 · Make choices</span>
+  <h2 id="booleans">Comparisons and Boolean logic</h2>
+
+  <p>A <dfn>Boolean</dfn> value is either <code>True</code> or <code>False</code>.
+  Booleans let programs ask yes/no questions: “Is the score at least 50?” or “Is the user
+  logged in?”</p>
+
+  <h3>Comparison operators</h3>
+  <table class="operator-table">
+    <thead><tr><th>Operator</th><th>Read as</th><th>Example</th><th>Result</th></tr></thead>
+    <tbody>
+      <tr><td><code>==</code></td><td>equal to</td><td><code>5 == 5</code></td><td><code>True</code></td></tr>
+      <tr><td><code>!=</code></td><td>not equal to</td><td><code>5 != 3</code></td><td><code>True</code></td></tr>
+      <tr><td><code>&gt;</code></td><td>greater than</td><td><code>5 &gt; 3</code></td><td><code>True</code></td></tr>
+      <tr><td><code>&lt;</code></td><td>less than</td><td><code>5 &lt; 3</code></td><td><code>False</code></td></tr>
+      <tr><td><code>&gt;=</code></td><td>greater than or equal to</td><td><code>5 &gt;= 5</code></td><td><code>True</code></td></tr>
+      <tr><td><code>&lt;=</code></td><td>less than or equal to</td><td><code>4 &lt;= 5</code></td><td><code>True</code></td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout callout--pitfall">
+    <h4>The most important symbol distinction</h4>
+    <p>One equals sign <code>=</code> <strong>assigns</strong> a value. Two equals signs
+    <code>==</code> <strong>compare</strong> values. Read
+    <code>score = 50</code> as “score gets 50,” and <code>score == 50</code> as the
+    question “is score equal to 50?”</p>
+  </div>
+
+  <h3>Logical operators: combine conditions</h3>
+  <p>The keywords <code>and</code>, <code>or</code>, and <code>not</code> are
+  <dfn>logical operators</dfn>:</p>
+  <ul>
+    <li><code>A and B</code> is <code>True</code> only when both conditions are true.</li>
+    <li><code>A or B</code> is <code>True</code> when at least one condition is true.</li>
+    <li><code>not A</code> reverses the truth value.</li>
+  </ul>
+
+  <pre><code>age = 20
+has_id = True
+
+print(age &gt;= 18 and has_id)      # True
+print(age &lt; 18 or not has_id)    # False</code></pre>
+
+  <table aria-label="Boolean truth table">
+    <thead><tr><th>A</th><th>B</th><th>A and B</th><th>A or B</th><th>not A</th></tr></thead>
+    <tbody>
+      <tr><td><code>True</code></td><td><code>True</code></td><td><code>True</code></td><td><code>True</code></td><td><code>False</code></td></tr>
+      <tr><td><code>True</code></td><td><code>False</code></td><td><code>False</code></td><td><code>True</code></td><td><code>False</code></td></tr>
+      <tr><td><code>False</code></td><td><code>True</code></td><td><code>False</code></td><td><code>True</code></td><td><code>True</code></td></tr>
+      <tr><td><code>False</code></td><td><code>False</code></td><td><code>False</code></td><td><code>False</code></td><td><code>True</code></td></tr>
+    </tbody>
+  </table>
+
+  <h3>Truthiness</h3>
+  <p>Python can treat non-Boolean values as true or false in a condition. This is called
+  <dfn>truthiness</dfn>. The values <code>False</code>, <code>None</code>, numeric zero,
+  and empty strings are <dfn>falsy</dfn>. Most other values are <dfn>truthy</dfn>.</p>
+
+  <pre><code>print(bool(0))       # False
+print(bool(""))      # False
+print(bool(None))    # False
+print(bool(12))      # True
+print(bool("no"))    # True: it is non-empty text</code></pre>
+
+  <p>Important: <code>bool("False")</code> is <code>True</code> because the string contains
+  characters. Python does not interpret the word inside the string.</p>
+
+  <h3>Membership and chained comparisons</h3>
+  <p>The <dfn>membership operators</dfn> <code>in</code> and <code>not in</code> ask
+  whether a value occurs inside another value. For now, use them with text; Module 02 uses
+  the same operators with lists, dictionaries, and sets.</p>
+
+  <pre><code>message = "machine learning"
+
+print("learn" in message)         # True
+print("Python" not in message)    # True</code></pre>
+
+  <p>Python also allows a readable chained comparison. The two conditions below mean the
+  same thing:</p>
+
+  <pre><code>age = 25
+print(age &gt;= 18 and age &lt; 65)
+print(18 &lt;= age &lt; 65)</code></pre>
+
+  <p>To ask whether a value is specifically the missing-value marker <code>None</code>,
+  Python style uses <code>value is None</code> or <code>value is not None</code>.
+  The <code>is</code> operator asks about object identity; Module 02 explains that
+  distinction in depth.</p>
+
+  <h2 id="conditionals">Decisions with <code>if</code>, <code>elif</code>, and <code>else</code></h2>
+
+  <p>A <dfn>conditional statement</dfn> runs different code depending on a condition.
+  This creates <dfn>branches</dfn>—alternative paths through a program.</p>
+
+  <pre><code>temperature = 35
+
+if temperature &gt;= 30:
+    print("It is hot.")</code></pre>
+
+  <p>The structure has four pieces:</p>
+  <ol>
+    <li>The keyword <code>if</code> begins the conditional.</li>
+    <li>The <dfn>condition</dfn> is an expression evaluated as true or false.</li>
+    <li>The colon <code>:</code> says an indented block follows.</li>
+    <li>The indented <dfn>code block</dfn> belongs to the <code>if</code> and runs only if the condition is true.</li>
+  </ol>
+
+  <h3>Indentation is part of Python's syntax</h3>
+  <p><dfn>Indentation</dfn> means spaces at the beginning of a line. Python convention is
+  four spaces per level. All lines in the same block must be aligned:</p>
+
+  <div class="code-pair">
+    <div>
+      <h4>Correct</h4>
+      <pre><code>if score &gt;= 50:
+    print("Pass")
+    print("Well done")
+print("Finished")</code></pre>
+    </div>
+    <div>
+      <h4>Incorrect</h4>
+      <pre><code>if score &gt;= 50:
+print("Pass")  # not indented</code></pre>
+    </div>
+  </div>
+
+  <p>In the correct version, both indented lines belong to the branch. The final unindented
+  line is outside the branch and always runs.</p>
+
+  <h3>Two paths with <code>else</code></h3>
+  <pre><code>score = 47
+
+if score &gt;= 50:
+    result = "pass"
+else:
+    result = "try again"
+
+print(result)</code></pre>
+
+  <p><code>else</code> has no condition. It runs only when the preceding
+  <code>if</code> condition is false. Exactly one of these two blocks runs.</p>
+
+  <h3>Several paths with <code>elif</code></h3>
+  <p><code>elif</code> is short for “else if.” Python checks conditions from top to bottom,
+  runs the <strong>first true branch</strong>, and skips the rest of the chain.</p>
 
   <div class="demo branch-demo" id="branch">
-    <pre class="code" aria-label="if/elif/else code with the taken branch highlighted"></pre>
+    <pre class="code" aria-label="Conditional code with the taken branch highlighted"></pre>
     <div class="demo__controls">
       <div class="demo__control">
-        <label>temp <output id="temp-out">22</output>°C</label>
+        <label for="temp">temperature <output id="temp-out">22</output>°C</label>
         <input type="range" id="temp" min="-15" max="45" step="1" value="22">
       </div>
     </div>
-    <p class="demo__caption">Result: <code>label = "<span id="branch-label">mild</span>"</code></p>
+    <p class="demo__caption">Green marks the executed branch, amber marks conditions that
+    were checked and found false, and faded lines did not execute. Result:
+    <code>label = "<span id="branch-label">mild</span>"</code>.
+    A temperature of 35 also satisfies <code>&gt;= 15</code> and <code>&gt;= 0</code>,
+    but those later conditions are skipped after the first match.</p>
   </div>
 
-  <h2>Repetition: while and for</h2>
-  <p>A <code>while</code> loop repeats its block as long as a condition stays true.
-  A <code>for</code> loop repeats once <em>per item</em> in a sequence — and the
-  beginner workhorse sequence is <code>range()</code>:</p>
+  <h3>Separate <code>if</code> statements are different</h3>
+  <p>Use an <code>if</code>/<code>elif</code>/<code>else</code> chain for mutually exclusive
+  choices. Use separate <code>if</code> statements when several actions may all apply:</p>
 
-  <pre><code>total = 0
-for n in range(1, 6):   # n takes the values 1, 2, 3, 4, 5
-    total = total + n
-print(total)             # 15</code></pre>
+  <pre><code>number = 12
 
-  <p>Two things trip everyone up at first: <code>range(1, 6)</code> <strong>excludes
-  the stop value</strong> (it ends at 5, not 6), and <code>range(5)</code> starts at 0.
-  Explore both below.</p>
+if number &gt; 0:
+    print("positive")
 
-  <h2>Demo 3 — range() explorer</h2>
+if number % 2 == 0:
+    print("even")</code></pre>
+  <div class="console-example">positive
+even</div>
+
+  <p>Both lines print because these are two independent questions.</p>
+
+  <div class="checkpoint">
+    <h3>Checkpoint 4 · Choose the branch</h3>
+    <p>What is printed when <code>score = 75</code>?</p>
+    <pre><code>if score &gt;= 90:
+    print("A")
+elif score &gt;= 70:
+    print("B")
+elif score &gt;= 50:
+    print("C")
+else:
+    print("Not yet")</code></pre>
+    <details>
+      <summary>Reveal the answer</summary>
+      <p><code>B</code>. The first condition is false, the second is true, and Python skips
+      all later branches after that match.</p>
+    </details>
+  </div>
+
+  <span class="part-label">Part 5 · Repeat work</span>
+  <h2 id="loops">Repetition with loops</h2>
+
+  <p>A <dfn>loop</dfn> repeats a code block. One pass through the block is an
+  <dfn>iteration</dfn>. Python has two main loop forms:</p>
+  <ul>
+    <li><code>while</code>: repeat while a condition remains true.</li>
+    <li><code>for</code>: repeat once for each value in an <dfn>iterable</dfn>—something
+    that can provide values one at a time. Here we begin with <code>range()</code>.</li>
+  </ul>
+
+  <div class="callout callout--formula">
+    <h4>Which loop should I choose?</h4>
+    <p>Use <code>for</code> when you have known values to visit or a known number of
+    repetitions. Use <code>while</code> when repetition ends because a changing condition
+    becomes false—especially when you do not know the number of iterations in advance.
+    If either form works, choose the one that makes the stopping rule easiest to see.</p>
+  </div>
+
+  <h3><code>while</code>: condition-controlled repetition</h3>
+  <pre><code>count = 3
+
+while count &gt; 0:
+    print(count)
+    count -= 1
+
+print("Go!")</code></pre>
+  <div class="console-example">3
+2
+1
+Go!</div>
+
+  <p>Trace it carefully:</p>
+  <ol>
+    <li>Set <code>count</code> to 3.</li>
+    <li>Check <code>count &gt; 0</code>. It is true, so run the block.</li>
+    <li>Print 3 and decrease <code>count</code> to 2.</li>
+    <li>Return to the condition and repeat for 2, then 1.</li>
+    <li>After <code>count</code> becomes 0, the condition is false. Exit the loop.</li>
+    <li>Run the next unindented statement and print <code>Go!</code>.</li>
+  </ol>
+
+  <p>A three-step countdown is a known sequence, so a <code>for</code> loop is arguably
+  clearer. Both versions are valid:</p>
+
+  <div class="code-pair">
+    <div>
+      <h4>Known count: prefer <code>for</code></h4>
+      <pre><code>for count in range(3, 0, -1):
+    print(count)
+print("Go!")</code></pre>
+    </div>
+    <div>
+      <h4>Changing condition: <code>while</code></h4>
+      <pre><code>count = 3
+while count &gt; 0:
+    print(count)
+    count -= 1
+print("Go!")</code></pre>
+    </div>
+  </div>
+
+  <div class="callout callout--pitfall">
+    <h4>Every <code>while</code> loop needs a path to stop</h4>
+    <p>If the condition never becomes false, the program has an <dfn>infinite loop</dfn>.
+    In a notebook, use the interrupt/stop button if this happens. Before running a
+    <code>while</code> loop, identify which value changes and why that change will
+    eventually make the condition false.</p>
+  </div>
+
+  <h3><code>for</code> and <code>range()</code>: count-controlled repetition</h3>
+  <pre><code>for number in range(1, 4):
+    print(number)</code></pre>
+  <div class="console-example">1
+2
+3</div>
+
+  <p><code>number</code> is the <dfn>loop variable</dfn>. On each iteration it receives
+  the next value. <code>range()</code> describes a sequence of integers:</p>
+
+  <table>
+    <thead><tr><th>Form</th><th>Meaning</th><th>Values</th></tr></thead>
+    <tbody>
+      <tr><td><code>range(stop)</code></td><td>Start at 0; step by 1</td><td><code>range(5)</code> → 0, 1, 2, 3, 4</td></tr>
+      <tr><td><code>range(start, stop)</code></td><td>Choose the start; step by 1</td><td><code>range(2, 6)</code> → 2, 3, 4, 5</td></tr>
+      <tr><td><code>range(start, stop, step)</code></td><td>Choose all three</td><td><code>range(2, 9, 2)</code> → 2, 4, 6, 8</td></tr>
+      <tr><td><code>range(5, 0, -1)</code></td><td>Negative step counts down</td><td>5, 4, 3, 2, 1</td></tr>
+    </tbody>
+  </table>
+
+  <p>The start is included; the stop is excluded. This <dfn>half-open interval</dfn> rule
+  appears throughout Python. Think “start here, stop before there.”</p>
+
+  <p>A <code>for</code> loop can also visit the characters of a string directly:</p>
+
+  <pre><code>for letter in "ML":
+    print(letter)</code></pre>
+  <div class="console-example">M
+L</div>
+
+  <p>The string is the iterable, and <code>letter</code> receives one character per
+  iteration. Module 02 generalizes this pattern to lists, dictionaries, and other
+  containers.</p>
+
   <div class="demo" id="range-demo">
-    <p style="margin:0"><code>for n in range(<span id="r-args">1, 6</span>):</code></p>
-    <div class="range-out" id="range-values"></div>
+    <h3 style="margin-top:0">Explore <code>range(start, stop, step)</code></h3>
+    <p style="margin:0"><code>for n in range(<span id="r-args">1, 6, 1</span>):</code></p>
+    <div class="range-out" id="range-values" aria-live="polite"></div>
     <div class="demo__controls">
       <div class="demo__control">
-        <label>start <output id="rs-out">1</output></label>
-        <input type="range" id="r-start" min="0" max="10" step="1" value="1">
+        <label for="r-start">start <output id="rs-out">1</output></label>
+        <input type="range" id="r-start" min="-5" max="10" step="1" value="1">
       </div>
       <div class="demo__control">
-        <label>stop <output id="re-out">6</output></label>
-        <input type="range" id="r-stop" min="0" max="12" step="1" value="6">
+        <label for="r-stop">stop <output id="re-out">6</output></label>
+        <input type="range" id="r-stop" min="-5" max="12" step="1" value="6">
       </div>
       <div class="demo__control">
-        <label>step <output id="rp-out">1</output></label>
-        <input type="range" id="r-step" min="1" max="4" step="1" value="1">
+        <label for="r-step">step <output id="rp-out">1</output></label>
+        <input type="range" id="r-step" min="-4" max="4" step="1" value="1">
       </div>
     </div>
     <p class="demo__caption" id="range-caption"></p>
   </div>
 
-  <h2>Worked example</h2>
-  <p>Classify a number as positive/negative and even/odd — the classic first
-  trace-by-hand exercise. Follow it on paper before checking below:</p>
-  <pre><code>x = -8
+  <h3>Accumulators and counters</h3>
+  <p>An <dfn>accumulator</dfn> is a variable that collects a result across iterations.
+  A <dfn>counter</dfn> is a variable used to count events. Initialize before the loop,
+  update inside it, and use the final value afterward:</p>
 
-if x &gt;= 0:
-    sign = "positive"
-else:
-    sign = "negative"
+  <pre><code>total = 0
 
-if x % 2 == 0:          # % is remainder: -8 % 2 is 0
-    parity = "even"
-else:
-    parity = "odd"
+for number in range(1, 6):
+    total += number
 
-print(x, "is", sign, "and", parity)</code></pre>
-  <p>Trace: <code>x</code> gets -8. The first condition <code>-8 &gt;= 0</code> is
-  <code>False</code>, so the <code>else</code> block runs and <code>sign</code> gets
-  <code>"negative"</code>. Then <code>-8 % 2</code> is <code>0</code>, so <code>parity</code>
-  gets <code>"even"</code>. Output: <code>-8 is negative and even</code>.</p>
+print(total)  # 15</code></pre>
 
-  <div class="callout callout--pitfall">
-    <h4>Common pitfalls</h4>
-    <p><strong><code>=</code> vs <code>==</code></strong> — one <code>=</code> assigns, two
-    <code>==</code> compare. Writing <code>if x = 5:</code> is a syntax error; Python will
-    refuse to run it.<br>
-    <strong>Two kinds of division</strong> — <code>7 / 2</code> is <code>3.5</code> (always a
-    float); <code>7 // 2</code> is <code>3</code> (floor division).<br>
-    <strong>Indentation is syntax</strong> — mixing indent widths, or forgetting to indent
-    after a <code>:</code>, is an <code>IndentationError</code>. Pick 4 spaces and never
-    think about it again.</p>
+  <p>The initial value matters. A sum normally starts at <code>0</code>; a product normally
+  starts at <code>1</code>.</p>
+
+  <h3><code>break</code> and <code>continue</code></h3>
+  <p><code>break</code> exits the nearest loop immediately. <code>continue</code> skips the
+  rest of the current iteration and starts the next one.</p>
+
+  <pre><code>for number in range(1, 8):
+    if number == 3:
+        continue        # skip 3
+    if number == 6:
+        break           # stop before printing 6
+    print(number)</code></pre>
+  <div class="console-example">1
+2
+4
+5</div>
+
+  <p>These tools are useful, but a loop with many <code>break</code> and
+  <code>continue</code> statements can be difficult to trace. Prefer the clearest control
+  flow.</p>
+
+  <h3>Nested control flow</h3>
+  <p>A block may contain another conditional or loop. This is called <dfn>nesting</dfn>.
+  Each level adds four more spaces:</p>
+
+  <pre><code>for number in range(1, 6):
+    if number % 2 == 0:
+        print(f"{number} is even")
+    else:
+        print(f"{number} is odd")</code></pre>
+
+  <div class="checkpoint">
+    <h3>Checkpoint 5 · Trace the loop</h3>
+    <p>What is the final value of <code>total</code>?</p>
+    <pre><code>total = 0
+for n in range(1, 5):
+    if n % 2 == 0:
+        total += n</code></pre>
+    <details>
+      <summary>Reveal the answer</summary>
+      <p><code>total</code> is <code>6</code>. The loop visits 1, 2, 3, and 4. Only 2 and
+      4 are even, so the updates are <code>0 + 2 + 4</code>.</p>
+    </details>
   </div>
+
+  <span class="part-label">Part 6 · Learn from mistakes</span>
+  <h2 id="errors">Errors and debugging</h2>
+
+  <p>An <dfn>error</dfn> means Python could not complete an instruction as written.
+  Errors are normal feedback, not evidence that you are bad at programming.
+  <dfn>Debugging</dfn> is the process of finding and correcting the cause.</p>
+
+  <p>When Python stops with an error, it prints a <dfn>traceback</dfn>. Read it from the
+  bottom upward: the last line gives the error type and message; the lines above show where
+  it happened.</p>
+
+  <pre><code>print(points)</code></pre>
+  <div class="console-example">Traceback (most recent call last):
+  File "lesson.py", line 3, in &lt;module&gt;
+    print(points)
+          ^^^^^^
+NameError: name 'points' is not defined</div>
+
+  <p>Translate the message into plain language: “Python reached the name
+  <code>points</code>, but no value has been assigned to that name.” Then check spelling,
+  capitalization, and whether the assignment cell ran.</p>
+
+  <ol>
+    <li><code>File "lesson.py", line 3</code> identifies the location.</li>
+    <li><code>print(points)</code> shows the statement that failed; carets point at the
+    relevant part when Python can identify it.</li>
+    <li>The final line gives the error type (<code>NameError</code>) and its message.
+    Start here, then work upward to the location.</li>
+  </ol>
+
+  <div aria-label="Common Python errors">
+    <div class="error-card">
+      <strong>SyntaxError</strong>
+      <div>Python cannot parse the code's grammar. Check quotes, parentheses, colons, and accidental punctuation.</div>
+    </div>
+    <div class="error-card">
+      <strong>IndentationError</strong>
+      <div>Indentation is missing or inconsistent. Align every line in the same block, normally with four spaces.</div>
+    </div>
+    <div class="error-card">
+      <strong>NameError</strong>
+      <div>A name has not been defined. Check spelling, capitalization, and cell execution order.</div>
+    </div>
+    <div class="error-card">
+      <strong>TypeError</strong>
+      <div>An operation received an unsuitable type—for example, adding a string and integer.</div>
+    </div>
+    <div class="error-card">
+      <strong>ValueError</strong>
+      <div>The type is acceptable but the value has the wrong form—for example, <code>int("hello")</code>.</div>
+    </div>
+    <div class="error-card">
+      <strong>ZeroDivisionError</strong>
+      <div>A calculation tried to divide by zero. Check the denominator before division.</div>
+    </div>
+  </div>
+
+  <h3>Syntax errors, runtime errors, and logic errors</h3>
+  <ul>
+    <li>A <dfn>syntax error</dfn> prevents Python from understanding the code.</li>
+    <li>A <dfn>runtime error</dfn> occurs while valid-looking code executes, such as division by zero.</li>
+    <li>A <dfn>logic error</dfn> does not necessarily produce a message; the program runs but gives the wrong answer.</li>
+  </ul>
+
+  <pre><code># Logic error: this calculates a 20% increase, not a 20% discount.
+price = 100
+discounted_price = price * 1.20</code></pre>
+
+  <h3>A reliable debugging routine</h3>
+  <ol class="practice-ladder">
+    <li><strong>Read the entire final error line.</strong><p>Identify the error type and translate the message into plain language.</p></li>
+    <li><strong>Find the referenced line.</strong><p>The bug may be on that line or in a value created shortly before it.</p></li>
+    <li><strong>Inspect names, values, and types.</strong><p>Use temporary calls such as <code>print(value, type(value))</code>.</p></li>
+    <li><strong>Reduce the problem.</strong><p>Run a smaller piece of the expression or fewer loop iterations.</p></li>
+    <li><strong>Change one thing and re-run.</strong><p>Confirm that the change explains the result; do not make several guesses at once.</p></li>
+  </ol>
 
   <div class="callout">
-    <h4>Now, in the notebook</h4>
-    <p>Open <code>notebook.ipynb</code> in this folder. It has a "predict the output"
-    game (commit to an answer <em>before</em> running each cell) plus classic exercises:
-    FizzBuzz, sum of squares, and a countdown loop.</p>
+    <h4>Notebook-specific debugging</h4>
+    <p>Cells can be run out of order, so the visible notebook may not match the interpreter's
+    current state. When results become mysterious, restart the kernel and run all cells from
+    top to bottom. A <dfn>kernel</dfn> is the running process that stores notebook variables
+    and executes cells.</p>
   </div>
 
+  <span class="part-label">Part 7 · Put it together</span>
+  <h2 id="project">Guided mini-project: a study-session report</h2>
+
+  <p>This small program uses values, variables, arithmetic, f-strings, conditionals, and a
+  loop. First read the requirements, then trace the completed version on paper. Rebuild and
+  extend it in the notebook.</p>
+
+  <div class="mini-project">
+    <h3>Requirements</h3>
+    <ol>
+      <li>Store a learner's name and the number of planned study days.</li>
+      <li>Use a loop to simulate minutes studied on each day.</li>
+      <li>Accumulate the total minutes.</li>
+      <li>Calculate an average and classify the habit as “strong,” “building,” or “start small.”</li>
+      <li>Print a readable report with f-strings.</li>
+    </ol>
+  </div>
+
+  <pre><code>learner_name = "Maya"
+planned_days = 5
+minutes_per_day = 35
+total_minutes = 0
+
+for day in range(1, planned_days + 1):
+    total_minutes += minutes_per_day
+    print(f"Day {day}: {minutes_per_day} minutes")
+
+average_minutes = total_minutes / planned_days
+
+if average_minutes &gt;= 45:
+    habit = "strong"
+elif average_minutes &gt;= 20:
+    habit = "building"
+else:
+    habit = "start small"
+
+print()
+print(f"{learner_name}'s study report")
+print(f"Total: {total_minutes} minutes")
+print(f"Daily average: {average_minutes:.1f} minutes")
+print(f"Habit: {habit}")</code></pre>
+
+  <div class="console-example">Day 1: 35 minutes
+Day 2: 35 minutes
+Day 3: 35 minutes
+Day 4: 35 minutes
+Day 5: 35 minutes
+
+Maya's study report
+Total: 175 minutes
+Daily average: 35.0 minutes
+Habit: building</div>
+
+  <h3>Trace the important state changes</h3>
+  <table>
+    <thead><tr><th>Moment</th><th><code>day</code></th><th><code>total_minutes</code></th></tr></thead>
+    <tbody>
+      <tr><td>Before the loop</td><td>not created yet</td><td>0</td></tr>
+      <tr><td>After iteration 1</td><td>1</td><td>35</td></tr>
+      <tr><td>After iteration 2</td><td>2</td><td>70</td></tr>
+      <tr><td>After iteration 3</td><td>3</td><td>105</td></tr>
+      <tr><td>After iteration 4</td><td>4</td><td>140</td></tr>
+      <tr><td>After iteration 5</td><td>5</td><td>175</td></tr>
+    </tbody>
+  </table>
+
+  <p>Why <code>range(1, planned_days + 1)</code>? The stop value is excluded. Adding 1
+  makes a planned value of 5 produce day numbers 1 through 5.</p>
+
+  <h3>Practice ladder</h3>
+  <ol class="practice-ladder">
+    <li><strong>Change the data.</strong><p>Try 7 days and 15 minutes. Predict the classification before running.</p></li>
+    <li><strong>Add a weekly-hours line.</strong><p>Calculate <code>total_minutes / 60</code> and format it to two decimal places.</p></li>
+    <li><strong>Add a goal.</strong><p>Create <code>goal_minutes</code> and print whether the total met the goal.</p></li>
+    <li><strong>Accept user input.</strong><p>Use <code>input()</code>, remembering to convert numeric text with <code>int()</code>.</p></li>
+    <li><strong>Stretch.</strong><p>Ask for different minutes on each day and accumulate them in the loop. This is completed in the notebook.</p></li>
+  </ol>
+
+  <div class="callout">
+    <h4>Continue in the notebook</h4>
+    <p><a href="notebook.ipynb">Open the companion notebook</a> for short experiments after
+    every concept, predict-the-output questions, auto-checked exercises, the full interactive
+    mini-project, and optional challenges. The notebook is designed to run from top to bottom
+    without third-party packages.</p>
+  </div>
+
+  <span class="part-label">Part 8 · Keep a reference</span>
+  <h2 id="reference">Glossary and cheat sheet</h2>
+
+  <h3>Beginner glossary</h3>
+  <dl class="glossary">
+    <div><dt>Argument</dt><dd>A value supplied to a function call.</dd></div>
+    <div><dt>Assignment</dt><dd>Attaching a variable name to a value with <code>=</code>.</dd></div>
+    <div><dt>Block</dt><dd>A group of equally indented statements controlled together.</dd></div>
+    <div><dt>Boolean</dt><dd>The type containing <code>True</code> and <code>False</code>.</dd></div>
+    <div><dt>Branch</dt><dd>One possible path selected by a conditional.</dd></div>
+    <div><dt>Built-in</dt><dd>A tool Python provides automatically, such as <code>print()</code>.</dd></div>
+    <div><dt>Call</dt><dd>Running a function by writing its name followed by parentheses.</dd></div>
+    <div><dt>Code</dt><dd>Instructions written in a programming language.</dd></div>
+    <div><dt>Comment</dt><dd>Human-readable text beginning with an unquoted <code>#</code> that Python ignores.</dd></div>
+    <div><dt>Condition</dt><dd>An expression interpreted as true or false.</dd></div>
+    <div><dt>Conditional</dt><dd>An <code>if</code>-based statement that chooses a branch.</dd></div>
+    <div><dt>Data type</dt><dd>A category that determines a value's meaning and valid operations.</dd></div>
+    <div><dt>Debugging</dt><dd>Finding and correcting the cause of incorrect behavior.</dd></div>
+    <div><dt>Expression</dt><dd>Code that evaluates to a value.</dd></div>
+    <div><dt>Function</dt><dd>A named, reusable action; custom functions arrive in Module 02.</dd></div>
+    <div><dt>Identifier</dt><dd>A valid name used for something in Python.</dd></div>
+    <div><dt>Indentation</dt><dd>Leading spaces that define code blocks in Python.</dd></div>
+    <div><dt>Input</dt><dd>Information received by a program.</dd></div>
+    <div><dt>Interpreter</dt><dd>Software that reads and executes Python code.</dd></div>
+    <div><dt>Iteration</dt><dd>One pass through a loop's block.</dd></div>
+    <div><dt>Immutable</dt><dd>Unable to be changed in place; operations produce a new value instead.</dd></div>
+    <div><dt>Keyword</dt><dd>A reserved word with special meaning, such as <code>if</code>.</dd></div>
+    <div><dt>Literal</dt><dd>A value written directly in code, such as <code>12</code> or <code>"hi"</code>.</dd></div>
+    <div><dt>Loop</dt><dd>A statement that repeats a block.</dd></div>
+    <div><dt>Method</dt><dd>A function associated with a value and called with dot notation.</dd></div>
+    <div><dt>Operator</dt><dd>A symbol or word that performs an operation.</dd></div>
+    <div><dt>Operand</dt><dd>A value an operator acts on.</dd></div>
+    <div><dt>Output</dt><dd>Information produced or displayed by a program.</dd></div>
+    <div><dt>Program</dt><dd>A collection of instructions designed to perform a task.</dd></div>
+    <div><dt>Runtime</dt><dd>The period while a program is executing.</dd></div>
+    <div><dt>Return value</dt><dd>The result a function call gives back to its surrounding expression.</dd></div>
+    <div><dt>State</dt><dd>The current values in memory and the next instruction to run.</dd></div>
+    <div><dt>Statement</dt><dd>An instruction Python can execute.</dd></div>
+    <div><dt>String</dt><dd>Python's type for text.</dd></div>
+    <div><dt>Syntax</dt><dd>The grammar rules for writing valid code.</dd></div>
+    <div><dt>Trace</dt><dd>Follow a program line by line while recording state changes.</dd></div>
+    <div><dt>Type conversion</dt><dd>Creating a value of one type from another type.</dd></div>
+    <div><dt>Value</dt><dd>One piece of information a program can use.</dd></div>
+    <div><dt>Variable</dt><dd>A name that refers to a value.</dd></div>
+  </dl>
+
+  <h3>One-page syntax cheat sheet</h3>
+  <pre><code># Comment
+name = "Maya"                         # variable assignment
+age = int("25")                       # type conversion
+name_length = len(name)               # function return value
+clean_name = name.strip()             # string method
+print(f"{name} is {age}.")            # formatted output
+
+total = 7 + 2 * 3                     # arithmetic expression
+is_ready = 18 &lt;= age &lt; 65 and name != ""  # Boolean expression
+has_letter = "M" in name               # membership test
+
+if total &gt; 10:
+    print("large")
+elif total == 10:
+    print("exactly ten")
+else:
+    print("small")
+
+count = 3
+while count &gt; 0:
+    print(count)
+    count -= 1
+
+for n in range(1, 6):                 # 1, 2, 3, 4, 5
+    print(n)</code></pre>
+
   <div class="callout callout--summary">
-    <h4>Key takeaways</h4>
+    <h4>What matters most</h4>
     <ul>
-      <li>A program's state is just: which line runs next + what each variable holds</li>
-      <li><code>=</code> means "gets" — right side evaluates first, then the name attaches</li>
-      <li>Only the <em>first</em> true branch of an if/elif/else chain runs</li>
-      <li><code>range(start, stop)</code> excludes <code>stop</code>; <code>range(n)</code> starts at 0</li>
-      <li>Indented lines after a <code>:</code> are the block — indentation is syntax</li>
+      <li>Read code as precise instructions; do not guess from its overall appearance.</li>
+      <li>Every value has a type, and the type controls which operations are valid.</li>
+      <li>Assignment evaluates the right side first, then attaches the left-side name.</li>
+      <li><code>print()</code> displays values; <code>input()</code> always returns text.</li>
+      <li><code>=</code> assigns, while <code>==</code> compares.</li>
+      <li>Indentation defines blocks. In a conditional chain, only the first true branch runs.</li>
+      <li><code>while</code> repeats by condition; <code>for</code> repeats over values.</li>
+      <li>Errors are specific feedback. Read the final traceback line, inspect state, and test one change.</li>
     </ul>
   </div>
 
-  <h2>Self-check</h2>
+  <h2 id="self-check">Self-check</h2>
+  <p>Choose an answer before clicking. The explanation matters more than the score.</p>
   <div class="quiz">
-    <div class="quiz__q" data-answer="2" data-explain="Right side first: a + 1 is 6, then the name a re-attaches to 6. The old 5 is simply no longer referenced.">
-      <p class="prompt">After <code>a = 5</code> then <code>a = a + 1</code>, what does <code>a</code> hold?</p>
+    <div class="quiz__q" data-answer="1" data-explain="A string is text inside quotes. Quotation marks make &quot;3.14&quot; text, even though its characters look numeric.">
+      <p class="prompt">1. What is the type of <code>"3.14"</code>?</p>
       <div class="quiz__options">
-        <div class="quiz__option">5 — you can't use a while assigning to it</div>
-        <div class="quiz__option">It's an error, like a circular equation</div>
+        <div class="quiz__option"><code>float</code></div>
+        <div class="quiz__option"><code>str</code></div>
+        <div class="quiz__option"><code>int</code></div>
+      </div>
+      <div class="quiz__feedback"></div>
+    </div>
+    <div class="quiz__q" data-answer="2" data-explain="Python evaluates the right side first: the current 5 plus 1 is 6. It then reassigns a to that result.">
+      <p class="prompt">2. After <code>a = 5</code> and <code>a = a + 1</code>, what does <code>a</code> hold?</p>
+      <div class="quiz__options">
+        <div class="quiz__option">5</div>
+        <div class="quiz__option">An error because it is a circular equation</div>
         <div class="quiz__option">6</div>
       </div>
       <div class="quiz__feedback"></div>
     </div>
-    <div class="quiz__q" data-answer="1" data-explain="range(2, 8, 2) starts at 2, steps by 2, and stops BEFORE 8: 2, 4, 6.">
-      <p class="prompt">What values does <code>range(2, 8, 2)</code> produce?</p>
+    <div class="quiz__q" data-answer="0" data-explain="Exponentiation happens before addition: 3 ** 2 is 9, then 2 + 9 is 11.">
+      <p class="prompt">3. What is <code>2 + 3 ** 2</code>?</p>
+      <div class="quiz__options">
+        <div class="quiz__option">11</div>
+        <div class="quiz__option">25</div>
+        <div class="quiz__option">13</div>
+      </div>
+      <div class="quiz__feedback"></div>
+    </div>
+    <div class="quiz__q" data-answer="1" data-explain="input() always returns a string. Convert it with int() or float() before numeric arithmetic.">
+      <p class="prompt">4. A user types <code>25</code> into <code>age = input("Age: ")</code>. What type is <code>age</code>?</p>
+      <div class="quiz__options">
+        <div class="quiz__option"><code>int</code></div>
+        <div class="quiz__option"><code>str</code></div>
+        <div class="quiz__option">Python chooses automatically</div>
+      </div>
+      <div class="quiz__feedback"></div>
+    </div>
+    <div class="quiz__q" data-answer="2" data-explain="Zero is falsy, so bool(0) produces False.">
+      <p class="prompt">5. What is the result of <code>bool(0)</code>?</p>
+      <div class="quiz__options">
+        <div class="quiz__option"><code>0</code></div>
+        <div class="quiz__option"><code>True</code></div>
+        <div class="quiz__option"><code>False</code></div>
+      </div>
+      <div class="quiz__feedback"></div>
+    </div>
+    <div class="quiz__q" data-answer="0" data-explain="x >= 10 is the first true condition. After its block runs, the rest of the elif chain is skipped.">
+      <p class="prompt">6. With <code>x = 15</code>, an <code>if x &gt;= 10</code> branch prints A and a later <code>elif x &gt;= 5</code> prints B. What prints?</p>
+      <div class="quiz__options">
+        <div class="quiz__option">A only</div>
+        <div class="quiz__option">A then B</div>
+        <div class="quiz__option">B only</div>
+      </div>
+      <div class="quiz__feedback"></div>
+    </div>
+    <div class="quiz__q" data-answer="1" data-explain="range includes the start, adds 2 each time, and excludes the stop: 2, 4, 6.">
+      <p class="prompt">7. What values does <code>range(2, 8, 2)</code> provide?</p>
       <div class="quiz__options">
         <div class="quiz__option">2, 4, 6, 8</div>
         <div class="quiz__option">2, 4, 6</div>
@@ -261,20 +1605,49 @@ print(x, "is", sign, "and", parity)</code></pre>
       </div>
       <div class="quiz__feedback"></div>
     </div>
-    <div class="quiz__q" data-answer="0" data-explain="x >= 10 is true, and only the FIRST true branch runs -- the elif is never even checked.">
-      <p class="prompt">With <code>x = 15</code>: <code>if x &gt;= 10: print("A")</code> / <code>elif x &gt;= 5: print("B")</code> — what prints?</p>
+    <div class="quiz__q" data-answer="2" data-explain="7 // 2 is 3 whole groups and 7 % 2 is the remainder 1.">
+      <p class="prompt">8. What are <code>7 // 2</code> and <code>7 % 2</code>?</p>
       <div class="quiz__options">
-        <div class="quiz__option">A</div>
-        <div class="quiz__option">A then B, since both conditions are true</div>
-        <div class="quiz__option">B</div>
+        <div class="quiz__option">3.5 and 0</div>
+        <div class="quiz__option">4 and -1</div>
+        <div class="quiz__option">3 and 1</div>
+      </div>
+      <div class="quiz__feedback"></div>
+    </div>
+    <div class="quiz__q" data-answer="1" data-explain="The loop starts at 3 and subtracts 1 each iteration. It stops after count reaches 0 because 0 > 0 is false.">
+      <p class="prompt">9. How many times does the block run? <code>count = 3; while count &gt; 0: count -= 1</code></p>
+      <div class="quiz__options">
+        <div class="quiz__option">2</div>
+        <div class="quiz__option">3</div>
+        <div class="quiz__option">Forever</div>
+      </div>
+      <div class="quiz__feedback"></div>
+    </div>
+    <div class="quiz__q" data-answer="0" data-explain="Start with the final traceback line: it names the error and usually describes the immediate problem. Then inspect the referenced line and current state.">
+      <p class="prompt">10. What should you read first when Python shows a traceback?</p>
+      <div class="quiz__options">
+        <div class="quiz__option">The final line containing the error type and message</div>
+        <div class="quiz__option">Only the first line</div>
+        <div class="quiz__option">Nothing—restart until it disappears</div>
       </div>
       <div class="quiz__feedback"></div>
     </div>
   </div>
 
+  <div class="callout callout--summary">
+    <h4>Ready for Module 02?</h4>
+    <p>You are ready when you can explain a short program line by line, predict its output,
+    and correct small type, naming, indentation, and loop errors. You do not need perfect
+    recall. Complete the notebook's three-part exit ticket—trace, write, repair—before
+    continuing. Module 02 builds on this foundation with your own functions and Python's
+    core containers: lists, tuples, dictionaries, and sets.</p>
+  </div>
+
   <div style="text-align:center; margin: var(--space-6) 0;">
     <button class="btn btn--primary" data-mark-done type="button">Mark module complete</button>
   </div>
+
+  <p class="back-to-top"><a href="#">Back to top ↑</a></p>
 
   <div class="module-footer-nav">
     <a class="prev" href="../00-orientation/index.html"><span class="dir">Previous</span>Orientation</a>
@@ -287,118 +1660,199 @@ print(x, "is", sign, "and", parity)</code></pre>
 <script>
 CourseProgress.initModuleButton("01");
 
-// ---------- Reusable trace player ----------
+// The shared quiz behavior supports clicks. Add keyboard semantics for this lesson.
+document.querySelectorAll(".quiz__option").forEach(function (option) {
+  option.setAttribute("role", "button");
+  option.setAttribute("tabindex", "0");
+  option.addEventListener("keydown", function (event) {
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      option.click();
+    }
+  });
+});
+document.querySelectorAll(".quiz__feedback").forEach(function (feedback) {
+  feedback.setAttribute("aria-live", "polite");
+});
+
+// Trace player: renders a pre-computed Python execution trace.
 function makeTracePlayer(rootId, codeLines, steps) {
   var root = document.getElementById(rootId);
   var codeEl = root.querySelector(".code");
   var varsBody = root.querySelector(".vars-table tbody");
   var consoleEl = root.querySelector(".console");
   var stepLabel = root.querySelector(".step-label");
-  var lineEls = codeLines.map(function (l) {
-    var s = document.createElement("span");
-    s.className = "ln";
-    s.textContent = l === "" ? " " : l;
-    codeEl.appendChild(s);
-    return s;
+  var lineEls = codeLines.map(function (line) {
+    var span = document.createElement("span");
+    span.className = "ln";
+    span.textContent = line === "" ? " " : line;
+    codeEl.appendChild(span);
+    return span;
   });
-  var idx = -1;
+  var index = -1;
 
   function render() {
     lineEls.forEach(function (el) { el.classList.remove("active"); });
     varsBody.innerHTML = "";
-    var vars = {}, out = [], prevVars = {};
-    if (idx >= 0) {
-      vars = steps[idx].vars; out = steps[idx].out;
-      if (idx > 0) prevVars = steps[idx - 1].vars;
-      if (steps[idx].line >= 0) lineEls[steps[idx].line].classList.add("active");
+    var variables = {};
+    var output = [];
+    var previousVariables = {};
+
+    if (index >= 0) {
+      variables = steps[index].vars;
+      output = steps[index].out;
+      if (index > 0) previousVariables = steps[index - 1].vars;
+      if (steps[index].line >= 0) lineEls[steps[index].line].classList.add("active");
     }
-    Object.keys(vars).forEach(function (name) {
-      var tr = document.createElement("tr");
-      if (String(prevVars[name]) !== String(vars[name])) tr.className = "changed";
-      var td1 = document.createElement("td"); td1.textContent = name;
-      var td2 = document.createElement("td"); td2.textContent = vars[name];
-      tr.appendChild(td1); tr.appendChild(td2);
-      varsBody.appendChild(tr);
+
+    Object.keys(variables).forEach(function (name) {
+      var row = document.createElement("tr");
+      if (String(previousVariables[name]) !== String(variables[name])) row.className = "changed";
+      var nameCell = document.createElement("td");
+      var valueCell = document.createElement("td");
+      nameCell.textContent = name;
+      valueCell.textContent = variables[name];
+      row.appendChild(nameCell);
+      row.appendChild(valueCell);
+      varsBody.appendChild(row);
     });
+
     if (varsBody.children.length === 0) {
-      varsBody.innerHTML = '<tr><td colspan="2" style="color:var(--text-muted)">(none yet)</td></tr>';
+      varsBody.innerHTML = '<tr><td colspan="2" style="color:var(--text-muted)">(no variables yet)</td></tr>';
     }
-    consoleEl.textContent = out.join("\n");
-    stepLabel.textContent = idx < 0 ? "Not started — click Step"
-      : (idx === steps.length - 1 ? "Finished (step " + (idx + 1) + " of " + steps.length + ")"
-      : "Step " + (idx + 1) + " of " + steps.length);
+    consoleEl.textContent = output.join("\n");
+    stepLabel.textContent = index < 0
+      ? "Not started"
+      : index === steps.length - 1
+        ? "Finished · step " + (index + 1) + " of " + steps.length
+        : "Step " + (index + 1) + " of " + steps.length;
   }
 
   root.querySelector('[data-act="step"]').addEventListener("click", function () {
-    if (idx < steps.length - 1) { idx++; render(); }
+    if (index < steps.length - 1) { index += 1; render(); }
   });
   root.querySelector('[data-act="back"]').addEventListener("click", function () {
-    if (idx > -1) { idx--; render(); }
+    if (index > -1) { index -= 1; render(); }
   });
   root.querySelector('[data-act="reset"]').addEventListener("click", function () {
-    idx = -1; render();
+    index = -1; render();
   });
   render();
 }
 
-// ---------- Demo 1: shopping-discount program ----------
-(function () {
+(function initTraceDemo() {
   var code = [
     'price = 120',
-    'discount = 0.25',
-    'final = price * (1 - discount)',
-    'print("Sale price:", final)',
-    '',
-    'for n in range(1, 4):',
-    '    print("bag", n, "costs", final)'
+    'discount_rate = 0.25',
+    'discount = price * discount_rate',
+    'sale_price = price - discount',
+    'print("Sale price:", sale_price)'
   ];
   var steps = [
     { line: 0, vars: { price: "120" }, out: [] },
-    { line: 1, vars: { price: "120", discount: "0.25" }, out: [] },
-    { line: 2, vars: { price: "120", discount: "0.25", final: "90.0" }, out: [] },
-    { line: 3, vars: { price: "120", discount: "0.25", final: "90.0" }, out: ["Sale price: 90.0"] },
-    { line: 5, vars: { price: "120", discount: "0.25", final: "90.0", n: "1" }, out: ["Sale price: 90.0"] },
-    { line: 6, vars: { price: "120", discount: "0.25", final: "90.0", n: "1" }, out: ["Sale price: 90.0", "bag 1 costs 90.0"] },
-    { line: 5, vars: { price: "120", discount: "0.25", final: "90.0", n: "2" }, out: ["Sale price: 90.0", "bag 1 costs 90.0"] },
-    { line: 6, vars: { price: "120", discount: "0.25", final: "90.0", n: "2" }, out: ["Sale price: 90.0", "bag 1 costs 90.0", "bag 2 costs 90.0"] },
-    { line: 5, vars: { price: "120", discount: "0.25", final: "90.0", n: "3" }, out: ["Sale price: 90.0", "bag 1 costs 90.0", "bag 2 costs 90.0"] },
-    { line: 6, vars: { price: "120", discount: "0.25", final: "90.0", n: "3" }, out: ["Sale price: 90.0", "bag 1 costs 90.0", "bag 2 costs 90.0", "bag 3 costs 90.0"] },
-    { line: -1, vars: { price: "120", discount: "0.25", final: "90.0", n: "3" }, out: ["Sale price: 90.0", "bag 1 costs 90.0", "bag 2 costs 90.0", "bag 3 costs 90.0", "", "-- program finished --"] }
+    { line: 1, vars: { price: "120", discount_rate: "0.25" }, out: [] },
+    { line: 2, vars: { price: "120", discount_rate: "0.25", discount: "30.0" }, out: [] },
+    { line: 3, vars: { price: "120", discount_rate: "0.25", discount: "30.0", sale_price: "90.0" }, out: [] },
+    { line: 4, vars: { price: "120", discount_rate: "0.25", discount: "30.0", sale_price: "90.0" }, out: ["Sale price: 90.0"] },
+    { line: -1, vars: { price: "120", discount_rate: "0.25", discount: "30.0", sale_price: "90.0" }, out: ["Sale price: 90.0"] }
   ];
   makeTracePlayer("stepper", code, steps);
 })();
 
-// ---------- Demo 2: branch highlighting ----------
-(function () {
+(function initOperatorDemo() {
+  var left = document.getElementById("op-left");
+  var right = document.getElementById("op-right");
+  var kind = document.getElementById("op-kind");
+  var result = document.getElementById("op-result");
+  var explain = document.getElementById("op-explain");
+  var meanings = {
+    "+": "Addition",
+    "-": "Subtraction",
+    "*": "Multiplication",
+    "/": "True division always produces a floating-point result",
+    "//": "Floor division rounds the quotient down",
+    "%": "Modulo returns the remainder",
+    "**": "Exponentiation raises the left operand to the right operand's power"
+  };
+
+  function update() {
+    var leftText = left.value.trim();
+    var rightText = right.value.trim();
+    var a = Number(leftText);
+    var b = Number(rightText);
+    var op = kind.value;
+    var value;
+    if (leftText === "" || rightText === "" || !Number.isInteger(a) || !Number.isInteger(b) ||
+        Math.abs(a) > 20 || Math.abs(b) > 20) {
+      result.textContent = "Enter whole numbers from -20 to 20";
+      explain.textContent = "This lab is limited to integers so its behavior matches Python exactly.";
+      return;
+    }
+    if ((op === "/" || op === "//" || op === "%") && b === 0) {
+      result.textContent = "ZeroDivisionError";
+      explain.textContent = "Python cannot divide by zero.";
+      return;
+    }
+    if (op === "**" && a === 0 && b < 0) {
+      result.textContent = "ZeroDivisionError";
+      explain.textContent = "Python cannot raise zero to a negative power.";
+      return;
+    }
+    if (op === "+") value = a + b;
+    if (op === "-") value = a - b;
+    if (op === "*") value = a * b;
+    if (op === "/") value = a / b;
+    if (op === "//") value = Math.floor(a / b);
+    if (op === "%") value = ((a % b) + b) % b;
+    if (op === "**") value = b >= 0 ? BigInt(a) ** BigInt(b) : a ** b;
+    var pythonType = op === "/" || (op === "**" && b < 0) ? "float result" : "int result";
+    var leftDisplay = op === "**" && a < 0 ? "(" + a + ")" : String(a);
+    result.textContent = leftDisplay + " " + op + " " + b + " = " + value;
+    explain.textContent = meanings[op] + " · " + pythonType +
+      ". The integer-only inputs make this result Python-faithful.";
+  }
+  [left, right, kind].forEach(function (el) { el.addEventListener("input", update); });
+  update();
+})();
+
+(function initBranchDemo() {
   var root = document.getElementById("branch");
   var codeEl = root.querySelector(".code");
   var lines = [
-    'if temp >= 30:',
+    'if temperature >= 30:',
     '    label = "hot"',
-    'elif temp >= 15:',
+    'elif temperature >= 15:',
     '    label = "mild"',
-    'elif temp >= 0:',
+    'elif temperature >= 0:',
     '    label = "cold"',
     'else:',
     '    label = "freezing"'
   ];
-  var lineEls = lines.map(function (l) {
-    var s = document.createElement("span");
-    s.className = "ln"; s.textContent = l;
-    codeEl.appendChild(s);
-    return s;
+  var lineEls = lines.map(function (line) {
+    var span = document.createElement("span");
+    span.className = "ln";
+    span.textContent = line;
+    codeEl.appendChild(span);
+    return span;
   });
   var slider = document.getElementById("temp");
 
   function update() {
-    var t = parseInt(slider.value, 10);
-    document.getElementById("temp-out").textContent = t;
-    var branch = t >= 30 ? 0 : t >= 15 ? 1 : t >= 0 ? 2 : 3;
+    var temperature = parseInt(slider.value, 10);
+    document.getElementById("temp-out").textContent = temperature;
+    var branch = temperature >= 30 ? 0 : temperature >= 15 ? 1 : temperature >= 0 ? 2 : 3;
     var labels = ["hot", "mild", "cold", "freezing"];
     var takenLines = [[0, 1], [2, 3], [4, 5], [6, 7]][branch];
-    lineEls.forEach(function (el, i) {
-      el.classList.remove("taken", "skipped");
-      el.classList.add(takenLines.indexOf(i) >= 0 ? "taken" : "skipped");
+    var falseConditionLines = [[], [0], [0, 2], [0, 2, 4]][branch];
+    lineEls.forEach(function (el, index) {
+      el.classList.remove("taken", "evaluated-false", "skipped");
+      if (takenLines.indexOf(index) >= 0) {
+        el.classList.add("taken");
+      } else if (falseConditionLines.indexOf(index) >= 0) {
+        el.classList.add("evaluated-false");
+      } else {
+        el.classList.add("skipped");
+      }
     });
     document.getElementById("branch-label").textContent = labels[branch];
   }
@@ -406,27 +1860,43 @@ function makeTracePlayer(rootId, codeLines, steps) {
   update();
 })();
 
-// ---------- Demo 3: range explorer ----------
-(function () {
-  var s = document.getElementById("r-start"), e = document.getElementById("r-stop"), p = document.getElementById("r-step");
+(function initRangeDemo() {
+  var startInput = document.getElementById("r-start");
+  var stopInput = document.getElementById("r-stop");
+  var stepInput = document.getElementById("r-step");
 
   function update() {
-    var start = +s.value, stop = +e.value, step = +p.value;
+    var start = Number(startInput.value);
+    var stop = Number(stopInput.value);
+    var step = Number(stepInput.value);
     document.getElementById("rs-out").textContent = start;
     document.getElementById("re-out").textContent = stop;
     document.getElementById("rp-out").textContent = step;
-    document.getElementById("r-args").textContent = step === 1 ? start + ", " + stop : start + ", " + stop + ", " + step;
-    var vals = [];
-    for (var n = start; n < stop; n += step) vals.push(n);
+    document.getElementById("r-args").textContent = start + ", " + stop + ", " + step;
+
     var box = document.getElementById("range-values");
-    box.innerHTML = vals.length
-      ? vals.map(function (v) { return '<span class="item">' + v + "</span>"; }).join("")
-      : '<span class="text-muted">(empty — the loop body never runs)</span>';
-    document.getElementById("range-caption").textContent = vals.length
-      ? "The loop body runs " + vals.length + " time" + (vals.length === 1 ? "" : "s") + ". Note: " + stop + " itself is never included."
-      : "start ≥ stop, so range() is empty and the loop is skipped entirely — no error, it just does nothing.";
+    if (step === 0) {
+      box.innerHTML = '<span class="text-muted">ValueError: range() step cannot be zero</span>';
+      document.getElementById("range-caption").textContent =
+        "A zero step would never move toward the stop, so Python rejects it.";
+      return;
+    }
+
+    var values = [];
+    if (step > 0) {
+      for (var n = start; n < stop && values.length < 30; n += step) values.push(n);
+    } else {
+      for (var m = start; m > stop && values.length < 30; m += step) values.push(m);
+    }
+    box.innerHTML = values.length
+      ? values.map(function (value) { return '<span class="item">' + value + "</span>"; }).join("")
+      : '<span class="text-muted">(empty range · the loop body does not run)</span>';
+    document.getElementById("range-caption").textContent = values.length
+      ? "The loop runs " + values.length + " time" + (values.length === 1 ? "" : "s") +
+        ". It starts at " + start + ", moves by " + step + ", and stops before " + stop + "."
+      : "The step moves in the wrong direction for this start and stop, so the range is empty.";
   }
-  [s, e, p].forEach(function (el) { el.addEventListener("input", update); });
+  [startInput, stopInput, stepInput].forEach(function (el) { el.addEventListener("input", update); });
   update();
 })();
 </script>

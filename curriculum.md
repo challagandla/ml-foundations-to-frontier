@@ -9,8 +9,8 @@ Single source of truth for course scope and order. Status reflects what's actual
 
 - **00 · Orientation & How This Course Works** — DONE  
   How the HTML + notebook format works, how deep-dive sections work, how progress is tracked.
-- **01 · Python I: Values, Variables & Control Flow** — DONE  
-  Your first programming language: values and types, variables, expressions, and the if/while/for statements that steer a program.
+- **01 · Python I: Fundamentals & First Programs** — DONE
+  A zero-assumption introduction to Python: terminology, values and types, variables, input/output, operators, decisions, loops, and debugging.
 - **02 · Python II: Functions & Data Structures** — DONE  
   Functions as reusable building blocks, plus Python's core containers -- lists, tuples, dicts, sets -- slicing, mutability, and comprehensions.
 - **03 · Python III: Errors, Files, Classes & Modules** — DONE  
