@@ -1,0 +1,385 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>03 · Python III: Errors, Files, Classes &amp; Modules · ML Course</title>
+<link rel="stylesheet" href="../../shared/css/theme.css">
+<link rel="stylesheet" href="../../shared/css/components.css">
+<style>
+  .tb { background: var(--surface-2); border-radius: var(--radius-sm); padding: var(--space-3) var(--space-4); font-family: var(--font-mono); font-size: 0.85rem; line-height: 1.8; margin: 0; white-space: pre-wrap; }
+  .tb .part { cursor: pointer; border-radius: 4px; padding: 1px 3px; border-bottom: 1px dashed var(--text-muted); }
+  .tb .part:hover { background: color-mix(in srgb, var(--phase-0) 14%, transparent); }
+  .tb .part.selected { background: color-mix(in srgb, var(--phase-0) 20%, transparent); border-bottom-style: solid; border-bottom-color: var(--phase-0); }
+  .tb-explain { border: 1px solid var(--border-hairline); border-left: 3px solid var(--phase-0); border-radius: 0 var(--radius-sm) var(--radius-sm) 0; padding: var(--space-3) var(--space-4); margin-top: var(--space-3); font-size: 0.9rem; min-height: 3.2em; }
+  .tb-explain .who { font-weight: 700; }
+  /* model widget */
+  .model-widget { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-4); align-items: start; }
+  @media (max-width: 640px) { .model-widget { grid-template-columns: 1fr; } }
+  .model-state { border: 1px solid var(--border-hairline); border-radius: var(--radius-sm); padding: var(--space-3) var(--space-4); font-family: var(--font-mono); font-size: 0.85rem; background: var(--surface-2); min-height: 5em; }
+  .model-state h5 { margin: 0 0 var(--space-2); font-family: var(--font-sans); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--text-muted); }
+  .console { background: var(--surface-2); border-radius: var(--radius-sm); padding: var(--space-2) var(--space-3); font-family: var(--font-mono); font-size: 0.85rem; min-height: 8em; white-space: pre-wrap; margin: 0; }
+  .model-buttons { display: flex; flex-wrap: wrap; gap: var(--space-2); margin-top: var(--space-3); }
+</style>
+</head>
+<body>
+<div class="course-shell">
+
+  <nav class="course-nav">
+    <div class="course-nav__crumbs">
+      <a href="../../index.html">Course</a> / Foundations / Module 03
+    </div>
+    <button class="theme-toggle" data-theme-toggle type="button">Dark mode</button>
+  </nav>
+
+  <span class="badge badge--phase-0">Foundations</span>
+  <h1><span class="module-header__num">03 ·</span> Python III: Errors, Files, Classes &amp; Modules</h1>
+  <p class="text-secondary">Later in this course you'll write
+  <code>model = LinearRegression()</code>, then <code>model.fit(X, y)</code>, then
+  <code>model.predict(X_new)</code> — and something will eventually go wrong, printing
+  a wall of red text. This module teaches you to read that red text calmly, and to
+  understand exactly what kind of thing <code>model</code> is and what the dots are doing.</p>
+
+  <div class="objectives">
+    <h3>Learning objectives</h3>
+    <ul>
+      <li>Read a traceback bottom-up and locate the failing line</li>
+      <li>Handle errors with try/except and raise your own</li>
+      <li>Read and write text files with context managers</li>
+      <li>Define a small class and explain what self is</li>
+    </ul>
+  </div>
+
+  <h2>Errors are messages, not verdicts</h2>
+  <p>When Python hits something impossible, it stops and prints a
+  <strong>traceback</strong> — a map of exactly where it was when things broke.
+  Beginners see a wall of scary text; professionals see the two most useful lines
+  first. The rule: <strong>read it bottom-up</strong>. The last line says <em>what</em>
+  went wrong, the lines above say <em>where</em>.</p>
+
+  <h2>Demo 1 — anatomy of a traceback</h2>
+  <p>Click each underlined part of this real traceback to see what it's telling you:</p>
+
+  <div class="demo" id="tb-demo">
+    <pre class="tb">Traceback (most recent call last):
+  File "analyze.py", line <span class="part" data-x="frame1">12</span>, in &lt;module&gt;
+    <span class="part" data-x="call1">result = average(scores)</span>
+  File "analyze.py", line <span class="part" data-x="frame2">7</span>, in <span class="part" data-x="fn">average</span>
+    <span class="part" data-x="call2">return total / len(values)</span>
+<span class="part" data-x="etype">ZeroDivisionError</span>: <span class="part" data-x="emsg">division by zero</span></pre>
+    <div class="tb-explain" id="tb-explain"><span class="who">Start at the bottom.</span>
+      Click <code>ZeroDivisionError</code> first — the last line is always where a
+      professional looks first.</div>
+    <p class="demo__caption">Reading order: ① last line — what went wrong · ② the line above
+    it — the exact code that failed · ③ walk upward to see the chain of calls that led there.</p>
+  </div>
+
+  <h2>Handling errors: try / except</h2>
+  <p>Sometimes an error is <em>expected</em> — a user types "abc" where a number
+  should be — and crashing is the wrong response. <code>try/except</code> lets you
+  attempt something and catch a specific failure:</p>
+
+  <pre><code>text = "3.7x"          # imagine this came from a messy CSV
+
+try:
+    value = float(text)
+except ValueError:
+    value = None        # our chosen "couldn't parse" signal
+
+print(value)             # None — program continues, no crash</code></pre>
+
+  <p>Catch the <em>narrowest</em> exception that you actually expect —
+  <code>except ValueError:</code>, not a bare <code>except:</code>, which would also
+  silently swallow typos and genuine bugs. You can also <code>raise</code> your own:
+  <code>raise ValueError("temperature below absolute zero")</code> — turning a silent
+  bad value into a loud, early, well-labeled failure.</p>
+
+  <h2>Files: reading and writing data</h2>
+  <p>Every ML project starts by reading data from disk. The idiom to memorize is
+  <code>with open(...)</code> — the <code>with</code> block (a <strong>context
+  manager</strong>) guarantees the file is properly closed even if an error occurs
+  mid-read:</p>
+
+  <pre><code>with open("scores.txt", "w") as f:     # "w" = write mode
+    f.write("90\n85\n77\n")
+
+with open("scores.txt") as f:           # default mode is read
+    scores = [int(line) for line in f]   # a file is a sequence of lines!
+
+print(scores)                            # [90, 85, 77]</code></pre>
+
+  <h2>Classes: why <code>model.fit()</code> looks the way it does</h2>
+  <p>A <strong>class</strong> bundles data and the functions that operate on that
+  data into one unit. Each <strong>instance</strong> (object) carries its own data
+  in attributes; <strong>methods</strong> are functions that automatically receive
+  the instance as their first parameter — that's all <code>self</code> is. Here is
+  a genuinely useful class: the simplest possible ML model, one that predicts the
+  mean of whatever it was trained on:</p>
+
+  <pre><code>class MeanModel:
+    def fit(self, values):
+        self.mean = sum(values) / len(values)   # learned "parameter"
+        return self
+
+    def predict(self):
+        return self.mean
+
+model = MeanModel()      # create an instance
+model.fit([4, 8, 6])     # it "learns" (stores) the mean: 6.0
+print(model.predict())   # 6.0</code></pre>
+
+  <p>This is not a toy analogy — it's literally scikit-learn's API shape. Every
+  model you'll use is a class; <code>.fit()</code> computes and stores learned
+  parameters as attributes; <code>.predict()</code> uses them. A mean is even a
+  real baseline model you'll compare against in Module 11.</p>
+
+  <h2>Demo 2 — drive the model API</h2>
+  <p>Click the buttons <em>in different orders</em>. In particular: try calling
+  <code>predict()</code> before <code>fit()</code> and read the traceback you get —
+  you now have the skills to understand it.</p>
+
+  <div class="demo">
+    <div class="model-buttons">
+      <button class="btn btn--primary" id="btn-create" type="button">model = MeanModel()</button>
+      <button class="btn" id="btn-fit" type="button">model.fit([4, 8, 6])</button>
+      <button class="btn" id="btn-predict" type="button">model.predict()</button>
+      <button class="btn" id="btn-reset" type="button">Reset</button>
+    </div>
+    <div class="model-widget" style="margin-top: var(--space-4);">
+      <div class="model-state">
+        <h5>Instance state</h5>
+        <div id="model-state-body">(no model yet)</div>
+      </div>
+      <div>
+        <h5 style="margin: 0 0 var(--space-2); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--text-muted); font-family: var(--font-sans);">Console</h5>
+        <pre class="console" id="model-console"></pre>
+      </div>
+    </div>
+    <p class="demo__caption">Notice: the attribute <code>mean</code> doesn't exist until
+    <code>fit()</code> creates it — attributes appear when code assigns to them, and
+    accessing a missing one raises <code>AttributeError</code>. scikit-learn behaves
+    exactly the same way (it calls this "not fitted yet").</p>
+  </div>
+
+  <h2>Modules: using other people's code</h2>
+  <p>A <strong>module</strong> is just a Python file you can <code>import</code>.
+  The standard library ships hundreds; the ML stack (NumPy, pandas, scikit-learn)
+  is "just" more modules:</p>
+  <pre><code>import math                    # use as math.sqrt(2)
+from statistics import mean    # or import one name directly
+
+print(math.sqrt(2))            # 1.4142135623730951
+print(mean([4, 8, 6]))         # 6 — the library version of our MeanModel!</code></pre>
+
+  <details class="deep-dive">
+    <summary><span class="deep-dive__tag">Math deep dive</span> The exception hierarchy, dunder methods, and how import finds things</summary>
+    <div class="deep-dive__body">
+      <p><strong>Exceptions form a class hierarchy.</strong> <code>ZeroDivisionError</code>
+      is a subclass of <code>ArithmeticError</code>, which is a subclass of
+      <code>Exception</code>. An <code>except ArithmeticError:</code> clause catches its
+      subclasses too — which is exactly why <code>except Exception:</code> is almost always
+      too broad: it catches nearly everything, including bugs you wanted to hear about.</p>
+      <p><strong>Dunder ("double underscore") methods</strong> are how classes plug into
+      Python's syntax. <code>len(x)</code> secretly calls <code>x.__len__()</code>;
+      <code>a + b</code> calls <code>a.__add__(b)</code>; <code>print(x)</code> uses
+      <code>x.__repr__()</code>; and <code>MeanModel()</code> itself calls
+      <code>__init__</code> if defined. When NumPy arrays support <code>a + b</code> or
+      <code>a @ b</code> in Module 07, it's these hooks doing the work — operator syntax in
+      Python is method calls wearing nicer clothes.</p>
+      <p><strong>How <code>import</code> finds modules:</strong> Python walks the directories
+      in <code>sys.path</code> — the script's own folder, then installed packages
+      (site-packages, where pip puts things). That's precisely why our notebooks do
+      <code>sys.path.append(...)</code> to reach <code>shared/notebook_utils</code>: we're
+      adding one more place to look. Compiled bytecode is cached in
+      <code>__pycache__</code> folders — safe to ignore and to gitignore.</p>
+    </div>
+  </details>
+
+  <h2>Worked example</h2>
+  <p>All four topics in eight lines — a robust file-loading function:</p>
+  <pre><code>def load_scores(path):
+    scores = []
+    with open(path) as f:               # file (auto-closed)
+        for line in f:
+            try:
+                scores.append(float(line))   # may fail on messy lines
+            except ValueError:               # narrow catch
+                print("skipping bad line:", line.strip())
+    return scores</code></pre>
+  <p>Given a file containing <code>90</code>, <code>85</code>, <code>oops</code>,
+  <code>77</code>, it returns <code>[90.0, 85.0, 77.0]</code> and prints one warning —
+  instead of crashing on line three. This skip-don't-crash pattern is 80% of real-world
+  data loading.</p>
+
+  <div class="callout callout--pitfall">
+    <h4>Common pitfalls</h4>
+    <p><strong>Bare <code>except:</code></strong> — catches <em>everything</em>, including
+    the bug you're currently hunting. Always name the exception you expect.<br>
+    <strong>Forgetting <code>self</code></strong> — writing <code>def fit(values):</code>
+    inside a class gives the confusing error "fit() takes 1 positional argument but 2 were
+    given": the instance is silently passed as the first argument, and there was no
+    <code>self</code> to receive it.<br>
+    <strong>Shadowing built-ins</strong> — naming a variable <code>list</code>,
+    <code>sum</code>, or <code>max</code> works... until three cells later when
+    <code>list(range(5))</code> mysteriously fails with "'list' object is not callable".</p>
+  </div>
+
+  <div class="callout">
+    <h4>Now, in the notebook</h4>
+    <p>Open <code>notebook.ipynb</code>: you'll crash a program <em>on purpose</em> and
+    read the traceback, write a robust number parser, do a full file write-and-read
+    round trip, and build <code>MeanModel</code> yourself — plus a <code>Vector2</code>
+    class with a <code>dot()</code> method that hands off perfectly to Module 04.</p>
+  </div>
+
+  <div class="callout callout--summary">
+    <h4>Key takeaways</h4>
+    <ul>
+      <li>Read tracebacks bottom-up: last line = what, lines above = where</li>
+      <li><code>try/except SpecificError:</code> for <em>expected</em> failures; <code>raise</code> to fail loudly on bad input</li>
+      <li><code>with open(...) as f:</code> — the file-handling idiom; a file behaves as a sequence of lines</li>
+      <li>A class bundles data (attributes) + behavior (methods); <code>self</code> is just "this instance"</li>
+      <li><code>.fit()</code> stores learned attributes, <code>.predict()</code> uses them — you now speak scikit-learn</li>
+    </ul>
+  </div>
+
+  <h2>Self-check</h2>
+  <div class="quiz">
+    <div class="quiz__q" data-answer="2" data-explain="Bottom-up: the last line names the exception and message; the frame just above it shows the exact line that raised it.">
+      <p class="prompt">Where do you look first in a long traceback?</p>
+      <div class="quiz__options">
+        <div class="quiz__option">The first line — errors read top-down like prose</div>
+        <div class="quiz__option">The middle — that's where your own code is</div>
+        <div class="quiz__option">The last line — it names what went wrong</div>
+      </div>
+      <div class="quiz__feedback"></div>
+    </div>
+    <div class="quiz__q" data-answer="1" data-explain="fit() assigned self.mean = 6.0 on the instance, and predict() reads it back. self is the instance the method was called on.">
+      <p class="prompt">After <code>m = MeanModel()</code> and <code>m.fit([4, 8, 6])</code>, what does <code>m.predict()</code> return?</p>
+      <div class="quiz__options">
+        <div class="quiz__option">Nothing — predict takes no arguments so it can't know the data</div>
+        <div class="quiz__option">6.0 — fit stored the mean on the instance as self.mean</div>
+        <div class="quiz__option">AttributeError — mean was local to fit</div>
+      </div>
+      <div class="quiz__feedback"></div>
+    </div>
+    <div class="quiz__q" data-answer="0" data-explain="except ValueError catches exactly the expected failure (unparseable text) while letting anything unexpected still crash loudly -- a bare except would hide real bugs.">
+      <p class="prompt">Parsing user input that might not be a number — which is the right catch?</p>
+      <div class="quiz__options">
+        <div class="quiz__option">except ValueError:</div>
+        <div class="quiz__option">except: — safest, catches everything</div>
+        <div class="quiz__option">No except — let it crash every time</div>
+      </div>
+      <div class="quiz__feedback"></div>
+    </div>
+  </div>
+
+  <div style="text-align:center; margin: var(--space-6) 0;">
+    <button class="btn btn--primary" data-mark-done type="button">Mark module complete</button>
+  </div>
+
+  <div class="module-footer-nav">
+    <a class="prev" href="../02-python-functions-data-structures/index.html"><span class="dir">Previous</span>Python II: Functions &amp; Data Structures</a>
+    <a class="next" href="../04-linear-algebra/index.html"><span class="dir">Next</span>Linear Algebra Essentials</a>
+  </div>
+
+</div>
+<script src="../../shared/js/course-common.js"></script>
+<script src="../../shared/js/progress.js"></script>
+<script>
+CourseProgress.initModuleButton("03");
+
+// ---------- Demo 1: traceback explorer ----------
+(function () {
+  var explains = {
+    etype: ["What went wrong.", "The exception's type. ZeroDivisionError means code divided by zero. The type alone often tells you the whole story — and it's what you'd name in an except clause."],
+    emsg: ["The details.", "A human-readable message from Python. Combined with the type, this is 'what happened'; everything above it is 'where'."],
+    call2: ["The failing line.", "The exact code that raised the error: len(values) must have been 0, so total / 0 exploded. This plus the last line usually solves it — average() was called with an empty list."],
+    frame2: ["Where, precisely.", "File and line number of the failing code: analyze.py, line 7. In a notebook this points into the cell that raised."],
+    fn: ["Which function.", "The error happened inside the function average — not at the top level of the script."],
+    call1: ["Who called it.", "One level up the call stack: line 12 called average(scores). If scores was empty, THIS may be where the actual mistake lives — the traceback shows the whole chain so you can find the true origin."],
+    frame1: ["The outermost frame.", "<module> means top-level script code (not inside any function). Tracebacks list calls oldest-first, which is why the freshest, most useful information is at the bottom."]
+  };
+  var parts = document.querySelectorAll("#tb-demo .part");
+  var panel = document.getElementById("tb-explain");
+  parts.forEach(function (p) {
+    p.addEventListener("click", function () {
+      parts.forEach(function (q) { q.classList.remove("selected"); });
+      p.classList.add("selected");
+      var e = explains[p.getAttribute("data-x")];
+      panel.innerHTML = '<span class="who"></span> <span class="body"></span>';
+      panel.querySelector(".who").textContent = e[0];
+      panel.querySelector(".body").textContent = e[1];
+    });
+  });
+})();
+
+// ---------- Demo 2: MeanModel API driver ----------
+(function () {
+  var model = null;          // null = no instance; {} = instance, maybe with mean
+  var consoleEl = document.getElementById("model-console");
+  var stateEl = document.getElementById("model-state-body");
+  var lines = [];
+
+  function log(text) {
+    lines.push(text);
+    if (lines.length > 12) lines = lines.slice(-12);
+    consoleEl.textContent = lines.join("\n");
+  }
+
+  function renderState() {
+    if (model === null) {
+      stateEl.textContent = "(no model yet)";
+    } else if (!("mean" in model)) {
+      stateEl.innerHTML = "model = &lt;MeanModel instance&gt;<br>attributes: (none yet — not fitted)";
+    } else {
+      stateEl.innerHTML = "model = &lt;MeanModel instance&gt;<br>attributes:<br>&nbsp;&nbsp;mean = " + model.mean;
+    }
+  }
+
+  document.getElementById("btn-create").addEventListener("click", function () {
+    model = {};
+    log(">>> model = MeanModel()");
+    renderState();
+  });
+
+  document.getElementById("btn-fit").addEventListener("click", function () {
+    log(">>> model.fit([4, 8, 6])");
+    if (model === null) {
+      log("NameError: name 'model' is not defined");
+      log("    (create the instance first)");
+    } else {
+      model.mean = 6.0;
+      log("<MeanModel instance>   (fit returned self)");
+    }
+    renderState();
+  });
+
+  document.getElementById("btn-predict").addEventListener("click", function () {
+    log(">>> model.predict()");
+    if (model === null) {
+      log("NameError: name 'model' is not defined");
+    } else if (!("mean" in model)) {
+      log("Traceback (most recent call last):");
+      log('  File "<stdin>", line 1, in <module>');
+      log('  File "meanmodel.py", line 6, in predict');
+      log("    return self.mean");
+      log("AttributeError: 'MeanModel' object has no attribute 'mean'");
+      log("    (read it bottom-up: predict needs fit to have run first)");
+    } else {
+      log(String(model.mean));
+    }
+    renderState();
+  });
+
+  document.getElementById("btn-reset").addEventListener("click", function () {
+    model = null; lines = [];
+    consoleEl.textContent = "";
+    renderState();
+  });
+
+  renderState();
+})();
+</script>
+</body>
+</html>

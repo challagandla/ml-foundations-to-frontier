@@ -1,0 +1,432 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>02 · Python II: Functions &amp; Data Structures · ML Course</title>
+<link rel="stylesheet" href="../../shared/css/theme.css">
+<link rel="stylesheet" href="../../shared/css/components.css">
+<style>
+  .trace { display: grid; grid-template-columns: 1.15fr 1fr; gap: var(--space-4); align-items: start; }
+  @media (max-width: 640px) { .trace { grid-template-columns: 1fr; } }
+  .trace pre.code { margin: 0; line-height: 1.7; }
+  .code .ln { display: block; padding: 1px 8px; border-radius: 4px; white-space: pre; }
+  .code .ln.active { background: color-mix(in srgb, var(--phase-0) 18%, transparent); outline: 1px solid var(--phase-0); }
+  .state-panel { display: flex; flex-direction: column; gap: var(--space-3); font-size: 0.9rem; }
+  .state-panel h5 { margin: 0 0 var(--space-1); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--text-muted); }
+  .console { background: var(--surface-2); border-radius: var(--radius-sm); padding: var(--space-2) var(--space-3); font-family: var(--font-mono); font-size: 0.85rem; min-height: 3em; white-space: pre-wrap; margin: 0; }
+  .trace-buttons { display: flex; gap: var(--space-2); align-items: center; margin-top: var(--space-3); }
+  .trace-buttons .step-label { font-size: 0.85rem; color: var(--text-muted); margin-left: auto; }
+  /* call-stack frames */
+  .stack { display: flex; flex-direction: column-reverse; gap: var(--space-2); }
+  .frame { border: 1px solid var(--border-hairline); border-radius: var(--radius-sm); padding: var(--space-2) var(--space-3); background: var(--surface-2); }
+  .frame.top { border-color: var(--phase-0); background: color-mix(in srgb, var(--phase-0) 10%, var(--surface-2)); }
+  .frame__name { font-family: var(--font-mono); font-weight: 600; font-size: 0.85rem; }
+  .frame__vars { font-family: var(--font-mono); font-size: 0.8rem; color: var(--text-secondary); margin-top: 2px; }
+  /* slice explorer */
+  .cells { display: flex; flex-wrap: wrap; gap: 3px; margin: var(--space-3) 0 var(--space-1); }
+  .cell-box { width: 44px; text-align: center; border: 1px solid var(--border-hairline); border-radius: 6px; padding: 6px 0 3px; background: var(--surface-2); font-family: var(--font-mono); }
+  .cell-box.picked { border-color: var(--phase-0); background: color-mix(in srgb, var(--phase-0) 18%, var(--surface-2)); }
+  .cell-box .ch { font-size: 1.05rem; display: block; }
+  .cell-box .ix { font-size: 0.68rem; color: var(--text-muted); display: block; }
+  .cell-box .nx { font-size: 0.68rem; color: var(--text-muted); display: block; }
+  /* aliasing diagram */
+  .alias-diagram { display: flex; align-items: center; gap: var(--space-5); flex-wrap: wrap; margin-top: var(--space-3); }
+  .alias-names { display: flex; flex-direction: column; gap: var(--space-3); }
+  .alias-name { font-family: var(--font-mono); font-weight: 600; border: 1px solid var(--border-hairline); border-radius: 6px; padding: 4px 14px; background: var(--surface-2); }
+  .alias-objs { display: flex; flex-direction: column; gap: var(--space-3); }
+  .alias-obj { font-family: var(--font-mono); border: 2px solid var(--phase-1); border-radius: var(--radius-sm); padding: 8px 16px; background: color-mix(in srgb, var(--phase-1) 10%, var(--surface-1)); }
+  .alias-arrows { font-size: 1.4rem; color: var(--text-muted); display: flex; flex-direction: column; gap: var(--space-3); }
+  .mode-buttons { display: flex; gap: var(--space-2); flex-wrap: wrap; }
+  .mode-buttons .btn.selected { border-color: var(--phase-0); background: color-mix(in srgb, var(--phase-0) 12%, var(--surface-1)); }
+</style>
+</head>
+<body>
+<div class="course-shell">
+
+  <nav class="course-nav">
+    <div class="course-nav__crumbs">
+      <a href="../../index.html">Course</a> / Foundations / Module 02
+    </div>
+    <button class="theme-toggle" data-theme-toggle type="button">Dark mode</button>
+  </nav>
+
+  <span class="badge badge--phase-0">Foundations</span>
+  <h1><span class="module-header__num">02 ·</span> Python II: Functions &amp; Data Structures</h1>
+  <p class="text-secondary">In Module 01 every program was a single top-to-bottom
+  script. Real code is built from <em>reusable named pieces</em> — functions — that
+  pass around <em>collections</em> of data. Master these two ideas and you can read
+  90% of the Python you'll ever meet, including scikit-learn's source code.</p>
+
+  <div class="objectives">
+    <h3>Learning objectives</h3>
+    <ul>
+      <li>Write and call functions with parameters and return values</li>
+      <li>Choose the right container (list/tuple/dict/set) for a job</li>
+      <li>Predict how aliasing affects mutable objects</li>
+      <li>Rewrite simple loops as comprehensions</li>
+    </ul>
+  </div>
+
+  <h2>Functions: named, reusable computation</h2>
+  <p>A function is a block of code with a name, inputs (<strong>parameters</strong>),
+  and usually an output (<strong>return value</strong>). Two moments matter:
+  <em>definition</em> (Python just memorizes the recipe — nothing runs) and
+  <em>call</em> (Python jumps into the function with the given arguments, runs it,
+  and comes back with the returned value).</p>
+
+  <pre><code>def area(w, h):          # definition: nothing runs yet
+    return w * h
+
+room = area(3, 2)        # call: w gets 3, h gets 2, comes back with 6</code></pre>
+
+  <h2>Demo 1 — the call stack</h2>
+  <p>When a function calls another function, Python keeps track using a
+  <strong>stack of frames</strong> — each frame holds one call's local variables.
+  Step through this program and watch frames get pushed (on call) and popped
+  (on return). The highlighted frame is where Python currently is.</p>
+
+  <div class="demo" id="stack-demo">
+    <div class="trace">
+      <pre class="code" aria-label="Program with nested function calls"></pre>
+      <div class="state-panel">
+        <div>
+          <h5>Call stack (top = currently running)</h5>
+          <div class="stack"></div>
+        </div>
+        <div>
+          <h5>Output</h5>
+          <pre class="console"></pre>
+        </div>
+      </div>
+    </div>
+    <div class="trace-buttons">
+      <button class="btn" data-act="back" type="button">◀ Back</button>
+      <button class="btn btn--primary" data-act="step" type="button">Step ▶</button>
+      <button class="btn" data-act="reset" type="button">Reset</button>
+      <span class="step-label"></span>
+    </div>
+    <p class="demo__caption">Key insight: <code>w</code> inside <code>area</code> and the
+    global <code>total</code> live in <em>different frames</em> — that's why variables
+    inside a function don't leak out. This is called <strong>scope</strong>.</p>
+  </div>
+
+  <h2>The four core containers</h2>
+  <div class="callout callout--formula">
+    <h4>When to use which</h4>
+    <p>
+    <code>list</code> — ordered, changeable: <code>scores = [90, 85, 77]</code>. Your default.<br>
+    <code>tuple</code> — ordered, <em>frozen</em>: <code>point = (3, 1)</code>. For fixed-shape records.<br>
+    <code>dict</code> — key → value lookup: <code>ages = {"ada": 36, "alan": 41}</code>. For "look up Y by X".<br>
+    <code>set</code> — unordered, no duplicates: <code>tags = {"ml", "python"}</code>. For membership tests.
+    </p>
+  </div>
+
+  <h2>Demo 2 — slicing, visually</h2>
+  <p>Indexing (<code>word[0]</code>) grabs one element; <strong>slicing</strong>
+  (<code>word[start:stop:step]</code>) grabs a sub-sequence. Same rule as
+  <code>range()</code>: stop is excluded. Negative indices count from the end.
+  Drag the sliders and watch which characters get picked:</p>
+
+  <div class="demo" id="slice-demo">
+    <p style="margin:0"><code>word = "TRANSFORMER"</code> &nbsp;&nbsp; <code>word[<span id="slice-expr">0:11:1</span>]</code> → <code id="slice-result">"TRANSFORMER"</code></p>
+    <div class="cells" id="slice-cells"></div>
+    <div class="demo__controls">
+      <div class="demo__control">
+        <label>start <output id="ss-out">0</output></label>
+        <input type="range" id="s-start" min="0" max="11" step="1" value="0">
+      </div>
+      <div class="demo__control">
+        <label>stop <output id="se-out">11</output></label>
+        <input type="range" id="s-stop" min="0" max="11" step="1" value="11">
+      </div>
+      <div class="demo__control">
+        <label>step <output id="sp-out">1</output></label>
+        <input type="range" id="s-step" min="1" max="3" step="1" value="1">
+      </div>
+    </div>
+    <p class="demo__caption">The top-left number is the index; the bottom number is the
+    negative index for the same cell. <code>word[-1]</code> is always the last element —
+    slicing works identically on lists.</p>
+  </div>
+
+  <h2>The big one: names point at objects</h2>
+  <p>This is the concept that separates people who <em>use</em> Python from people
+  who <em>fight</em> it. Assignment <strong>never copies</strong> — it makes another
+  name point at the <em>same object</em>. For immutable values (ints, strings,
+  tuples) you can't tell the difference. For <em>mutable</em> ones (lists, dicts),
+  changing the object through one name is visible through every name.</p>
+
+  <h2>Demo 3 — alias or copy?</h2>
+  <div class="demo" id="alias-demo">
+    <pre style="margin:0"><code>a = [1, 2, 3]
+<span id="alias-line">b = a</span>
+b.append(99)
+print(a)   → <strong id="alias-print">[1, 2, 3, 99]</strong></code></pre>
+    <div class="mode-buttons" style="margin-top: var(--space-3);">
+      <button class="btn selected" id="mode-alias" type="button">b = a &nbsp;(alias)</button>
+      <button class="btn" id="mode-copy" type="button">b = a.copy() &nbsp;(copy)</button>
+    </div>
+    <div class="alias-diagram" id="alias-diagram"></div>
+    <p class="demo__caption" id="alias-caption">One object, two names. <code>b.append(99)</code>
+    changes the object itself — so <code>a</code> sees it too.</p>
+  </div>
+
+  <details class="deep-dive">
+    <summary><span class="deep-dive__tag">Math deep dive</span> Names vs. objects, id(), and why dicts are fast</summary>
+    <div class="deep-dive__body">
+      <p><strong>Every value in Python is an object with an identity.</strong> <code>id(x)</code>
+      returns it (in CPython, its memory address). <code>a is b</code> asks "same object?"
+      while <code>a == b</code> asks "equal contents?" — the aliasing demo above is exactly the
+      case where <code>a is b</code> is <code>True</code>, and after <code>.copy()</code> it's
+      <code>False</code> while <code>a == b</code> would still start out <code>True</code>.</p>
+      <p><strong>Shallow vs. deep copy:</strong> <code>a.copy()</code> copies the list but not
+      the objects <em>inside</em> it. A list of lists copied shallowly still shares the inner
+      lists — <code>copy.deepcopy()</code> is the recursive version. This exact issue reappears
+      when you slice NumPy arrays (views!) in Module 07.</p>
+      <p><strong>Why dict lookup is O(1):</strong> a dict is a hash table. The key is run through
+      a hash function that maps it (near-)uniformly to a slot index in an internal array, so
+      looking up a key costs roughly constant time regardless of dict size — versus scanning a
+      list, which costs time proportional to its length. This is also why dict keys must be
+      immutable (hashable): if a key could mutate, its hash would change and the dict could
+      never find it again — the same reason a <code>set</code> can hold tuples but not lists.</p>
+    </div>
+  </details>
+
+  <h2>Comprehensions: loops as expressions</h2>
+  <p>Python has a compact syntax for the extremely common pattern "build a new list
+  by transforming/filtering another." You'll see it constantly in ML code:</p>
+  <pre><code>squares = [n ** 2 for n in range(1, 6)]          # [1, 4, 9, 16, 25]
+evens   = [n for n in range(10) if n % 2 == 0]    # [0, 2, 4, 6, 8]</code></pre>
+  <p>Read it inside-out: "for each <code>n</code> in the range (keeping only those
+  passing the <code>if</code>), put <code>n ** 2</code> in the new list." If a
+  comprehension needs more than one transform and one filter, use a normal loop —
+  clarity beats compactness.</p>
+
+  <h2>Worked example</h2>
+  <p>Count word frequencies — the "hello world" of dicts, and the ancestor of the
+  token counting you'll meet in the LLM modules:</p>
+  <pre><code>words = ["the", "cat", "sat", "on", "the", "mat", "the", "end"]
+
+counts = {}
+for w in words:
+    if w in counts:
+        counts[w] = counts[w] + 1
+    else:
+        counts[w] = 1
+
+print(counts)   # {'the': 3, 'cat': 1, 'sat': 1, 'on': 1, 'mat': 1, 'end': 1}</code></pre>
+  <p>Trace the first three iterations by hand: <code>"the"</code> isn't in the empty
+  dict, so it's added with count 1; <code>"cat"</code> likewise; when <code>"the"</code>
+  arrives again, the <code>if</code> branch runs and bumps it to 2.</p>
+
+  <div class="callout callout--pitfall">
+    <h4>Common pitfalls</h4>
+    <p><strong>Mutable default arguments</strong> — <code>def f(items=[])</code> creates
+    <em>one</em> list shared by every call that omits the argument. Use
+    <code>def f(items=None)</code> and create the list inside.<br>
+    <strong>Forgetting <code>return</code></strong> — a function without one returns
+    <code>None</code>; printing inside a function is not the same as returning from it.<br>
+    <strong>Modifying a list while looping over it</strong> — skips elements unpredictably.
+    Loop over a copy (<code>for x in items[:]</code>) or build a new list instead.</p>
+  </div>
+
+  <div class="callout">
+    <h4>Now, in the notebook</h4>
+    <p>Open <code>notebook.ipynb</code>: you'll implement <code>my_sum</code> and
+    <code>my_max</code> from scratch and compare them to the built-ins, run the
+    aliasing experiment with <code>id()</code>, build the word counter, and convert
+    loops to comprehensions.</p>
+  </div>
+
+  <div class="callout callout--summary">
+    <h4>Key takeaways</h4>
+    <ul>
+      <li>Define once, call many times — each call gets its own frame of local variables</li>
+      <li><code>list</code> = ordered &amp; changeable, <code>tuple</code> = frozen, <code>dict</code> = lookup, <code>set</code> = membership</li>
+      <li>Slicing follows the range rule: start included, stop excluded</li>
+      <li>Assignment never copies — mutable objects can be changed through any of their names</li>
+      <li><code>[f(x) for x in xs if cond]</code> builds a list in one readable line</li>
+    </ul>
+  </div>
+
+  <h2>Self-check</h2>
+  <div class="quiz">
+    <div class="quiz__q" data-answer="1" data-explain="b = a makes both names point at the same list object; append changes that one object, so a sees it too.">
+      <p class="prompt">After <code>a = [1, 2]</code>, <code>b = a</code>, <code>b.append(3)</code> — what is <code>a</code>?</p>
+      <div class="quiz__options">
+        <div class="quiz__option">[1, 2] — b is a copy</div>
+        <div class="quiz__option">[1, 2, 3] — a and b are the same object</div>
+        <div class="quiz__option">Error — you can't append to b while a exists</div>
+      </div>
+      <div class="quiz__feedback"></div>
+    </div>
+    <div class="quiz__q" data-answer="2" data-explain="Slices include start (index 1: 'B') and exclude stop (index 3), giving indices 1 and 2: 'BC'.">
+      <p class="prompt">What is <code>"ABCDE"[1:3]</code>?</p>
+      <div class="quiz__options">
+        <div class="quiz__option">"ABC"</div>
+        <div class="quiz__option">"BCD"</div>
+        <div class="quiz__option">"BC"</div>
+      </div>
+      <div class="quiz__feedback"></div>
+    </div>
+    <div class="quiz__q" data-answer="0" data-explain="You need to look values up by a key (the word), which is exactly what a dict is for -- a list would force a linear search per lookup.">
+      <p class="prompt">You need to map each word to how many times it appears. Which container?</p>
+      <div class="quiz__options">
+        <div class="quiz__option">dict</div>
+        <div class="quiz__option">list of (word, count) pairs</div>
+        <div class="quiz__option">set</div>
+      </div>
+      <div class="quiz__feedback"></div>
+    </div>
+  </div>
+
+  <div style="text-align:center; margin: var(--space-6) 0;">
+    <button class="btn btn--primary" data-mark-done type="button">Mark module complete</button>
+  </div>
+
+  <div class="module-footer-nav">
+    <a class="prev" href="../01-python-fundamentals/index.html"><span class="dir">Previous</span>Python I: Values, Variables &amp; Control Flow</a>
+    <a class="next" href="../03-python-oop-errors-files/index.html"><span class="dir">Next</span>Python III: Errors, Files, Classes &amp; Modules</a>
+  </div>
+
+</div>
+<script src="../../shared/js/course-common.js"></script>
+<script src="../../shared/js/progress.js"></script>
+<script>
+CourseProgress.initModuleButton("02");
+
+// ---------- Demo 1: call-stack stepper ----------
+(function () {
+  var root = document.getElementById("stack-demo");
+  var codeEl = root.querySelector(".code");
+  var stackEl = root.querySelector(".stack");
+  var consoleEl = root.querySelector(".console");
+  var stepLabel = root.querySelector(".step-label");
+
+  var code = [
+    'def area(w, h):',
+    '    return w * h',
+    '',
+    'def price(w, h, rate):',
+    '    a = area(w, h)',
+    '    return a * rate',
+    '',
+    'total = price(3, 2, 50)',
+    'print(total)'
+  ];
+  // Each step: highlighted line, stack of frames (bottom -> top), output.
+  var steps = [
+    { line: 0, stack: [["global", "defines area"]], out: [] },
+    { line: 3, stack: [["global", "defines price"]], out: [] },
+    { line: 7, stack: [["global", "calls price(3, 2, 50)"]], out: [] },
+    { line: 4, stack: [["global", ""], ["price(w=3, h=2, rate=50)", "calls area(3, 2)"]], out: [] },
+    { line: 1, stack: [["global", ""], ["price(w=3, h=2, rate=50)", ""], ["area(w=3, h=2)", "returns 6"]], out: [] },
+    { line: 4, stack: [["global", ""], ["price(w=3, h=2, rate=50)", "a = 6"]], out: [] },
+    { line: 5, stack: [["global", ""], ["price(w=3, h=2, rate=50)", "a = 6 → returns 300"]], out: [] },
+    { line: 7, stack: [["global", "total = 300"]], out: [] },
+    { line: 8, stack: [["global", "total = 300"]], out: ["300"] },
+    { line: -1, stack: [["global", "total = 300"]], out: ["300", "", "-- program finished --"] }
+  ];
+
+  var lineEls = code.map(function (l) {
+    var s = document.createElement("span");
+    s.className = "ln"; s.textContent = l === "" ? " " : l;
+    codeEl.appendChild(s);
+    return s;
+  });
+  var idx = -1;
+
+  function render() {
+    lineEls.forEach(function (el) { el.classList.remove("active"); });
+    stackEl.innerHTML = "";
+    consoleEl.textContent = "";
+    if (idx >= 0) {
+      var st = steps[idx];
+      if (st.line >= 0) lineEls[st.line].classList.add("active");
+      st.stack.forEach(function (fr, i) {
+        var d = document.createElement("div");
+        d.className = "frame" + (i === st.stack.length - 1 ? " top" : "");
+        d.innerHTML = '<span class="frame__name"></span><div class="frame__vars"></div>';
+        d.querySelector(".frame__name").textContent = fr[0];
+        d.querySelector(".frame__vars").textContent = fr[1];
+        stackEl.appendChild(d);
+      });
+      consoleEl.textContent = st.out.join("\n");
+    } else {
+      stackEl.innerHTML = '<div class="frame"><span class="frame__name">(not started)</span></div>';
+    }
+    stepLabel.textContent = idx < 0 ? "Not started — click Step"
+      : (idx === steps.length - 1 ? "Finished (step " + (idx + 1) + " of " + steps.length + ")"
+      : "Step " + (idx + 1) + " of " + steps.length);
+  }
+
+  root.querySelector('[data-act="step"]').addEventListener("click", function () { if (idx < steps.length - 1) { idx++; render(); } });
+  root.querySelector('[data-act="back"]').addEventListener("click", function () { if (idx > -1) { idx--; render(); } });
+  root.querySelector('[data-act="reset"]').addEventListener("click", function () { idx = -1; render(); });
+  render();
+})();
+
+// ---------- Demo 2: slice explorer ----------
+(function () {
+  var word = "TRANSFORMER";
+  var s = document.getElementById("s-start"), e = document.getElementById("s-stop"), p = document.getElementById("s-step");
+  var cellsEl = document.getElementById("slice-cells");
+
+  function update() {
+    var start = +s.value, stop = +e.value, step = +p.value;
+    document.getElementById("ss-out").textContent = start;
+    document.getElementById("se-out").textContent = stop;
+    document.getElementById("sp-out").textContent = step;
+    document.getElementById("slice-expr").textContent = start + ":" + stop + (step > 1 ? ":" + step : "");
+    var picked = {};
+    var result = "";
+    for (var i = start; i < stop; i += step) { picked[i] = true; result += word[i]; }
+    document.getElementById("slice-result").textContent = '"' + result + '"';
+    cellsEl.innerHTML = "";
+    for (var j = 0; j < word.length; j++) {
+      var d = document.createElement("div");
+      d.className = "cell-box" + (picked[j] ? " picked" : "");
+      d.innerHTML = '<span class="ix">' + j + '</span><span class="ch"></span><span class="nx">' + (j - word.length) + "</span>";
+      d.querySelector(".ch").textContent = word[j];
+      cellsEl.appendChild(d);
+    }
+  }
+  [s, e, p].forEach(function (el) { el.addEventListener("input", update); });
+  update();
+})();
+
+// ---------- Demo 3: alias vs copy ----------
+(function () {
+  var aliasBtn = document.getElementById("mode-alias");
+  var copyBtn = document.getElementById("mode-copy");
+  var diagram = document.getElementById("alias-diagram");
+  var mode = "alias";
+
+  function render() {
+    aliasBtn.classList.toggle("selected", mode === "alias");
+    copyBtn.classList.toggle("selected", mode === "copy");
+    document.getElementById("alias-line").textContent = mode === "alias" ? "b = a" : "b = a.copy()";
+    document.getElementById("alias-print").textContent = mode === "alias" ? "[1, 2, 3, 99]" : "[1, 2, 3]";
+    document.getElementById("alias-caption").textContent = mode === "alias"
+      ? "One object, two names. b.append(99) changes the object itself — so a sees it too."
+      : "Two separate objects. b.append(99) changes only b's object — a is untouched.";
+    if (mode === "alias") {
+      diagram.innerHTML =
+        '<div class="alias-names"><div class="alias-name">a</div><div class="alias-name">b</div></div>' +
+        '<div class="alias-arrows"><span>⟶</span><span style="transform:rotate(-25deg)">⟶</span></div>' +
+        '<div class="alias-objs"><div class="alias-obj">[1, 2, 3, 99]</div></div>';
+    } else {
+      diagram.innerHTML =
+        '<div class="alias-names"><div class="alias-name">a</div><div class="alias-name">b</div></div>' +
+        '<div class="alias-arrows"><span>⟶</span><span>⟶</span></div>' +
+        '<div class="alias-objs"><div class="alias-obj">[1, 2, 3]</div><div class="alias-obj">[1, 2, 3, 99]</div></div>';
+    }
+  }
+  aliasBtn.addEventListener("click", function () { mode = "alias"; render(); });
+  copyBtn.addEventListener("click", function () { mode = "copy"; render(); });
+  render();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,434 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>01 · Python I: Values, Variables &amp; Control Flow · ML Course</title>
+<link rel="stylesheet" href="../../shared/css/theme.css">
+<link rel="stylesheet" href="../../shared/css/components.css">
+<style>
+  /* Trace-player widget (shared look across the Python modules) */
+  .trace { display: grid; grid-template-columns: 1.15fr 1fr; gap: var(--space-4); align-items: start; }
+  @media (max-width: 640px) { .trace { grid-template-columns: 1fr; } }
+  .trace pre.code { margin: 0; line-height: 1.7; }
+  .code .ln { display: block; padding: 1px 8px; border-radius: 4px; white-space: pre; }
+  .code .ln.active { background: color-mix(in srgb, var(--phase-0) 18%, transparent); outline: 1px solid var(--phase-0); }
+  .state-panel { display: flex; flex-direction: column; gap: var(--space-3); font-size: 0.9rem; }
+  .state-panel h5 { margin: 0 0 var(--space-1); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--text-muted); }
+  .vars-table { width: 100%; border-collapse: collapse; font-family: var(--font-mono); font-size: 0.85rem; }
+  .vars-table td { border: 1px solid var(--border-hairline); padding: 3px 10px; }
+  .vars-table td:first-child { color: var(--text-secondary); width: 40%; }
+  .vars-table .changed td { background: color-mix(in srgb, var(--phase-2) 15%, transparent); }
+  .console { background: var(--surface-2); border-radius: var(--radius-sm); padding: var(--space-2) var(--space-3); font-family: var(--font-mono); font-size: 0.85rem; min-height: 4.5em; white-space: pre-wrap; margin: 0; }
+  .trace-buttons { display: flex; gap: var(--space-2); align-items: center; margin-top: var(--space-3); }
+  .trace-buttons .step-label { font-size: 0.85rem; color: var(--text-muted); margin-left: auto; }
+  .branch-demo .ln.taken { background: color-mix(in srgb, var(--phase-2) 20%, transparent); outline: 1px solid var(--phase-2); }
+  .branch-demo .ln.skipped { opacity: 0.45; }
+  .range-out { font-family: var(--font-mono); font-size: 1rem; margin-top: var(--space-2); }
+  .range-out .item { display: inline-block; background: var(--surface-2); border: 1px solid var(--border-hairline); border-radius: 6px; padding: 2px 10px; margin: 2px; }
+</style>
+</head>
+<body>
+<div class="course-shell">
+
+  <nav class="course-nav">
+    <div class="course-nav__crumbs">
+      <a href="../../index.html">Course</a> / Foundations / Module 01
+    </div>
+    <button class="theme-toggle" data-theme-toggle type="button">Dark mode</button>
+  </nav>
+
+  <span class="badge badge--phase-0">Foundations</span>
+  <h1><span class="module-header__num">01 ·</span> Python I: Values, Variables &amp; Control Flow</h1>
+  <p class="text-secondary">Every model in this course — from a fitted line to a
+  transformer — is ultimately a short Python program. This module assumes you have
+  <em>never programmed before</em>, and by the end you'll be able to read a program
+  and predict, line by line, exactly what it will do. That skill — tracing —
+  is the whole game.</p>
+
+  <div class="objectives">
+    <h3>Learning objectives</h3>
+    <ul>
+      <li>Trace a short Python program by hand, line by line</li>
+      <li>Use int/float/str/bool values and variables correctly</li>
+      <li>Steer a program with if/elif/else, while, and for loops</li>
+    </ul>
+  </div>
+
+  <h2>A program is a list of instructions</h2>
+  <p>Python reads your file top to bottom and executes one <strong>statement</strong>
+  at a time. At any moment, the state of the program is just two things: <em>which
+  line runs next</em>, and <em>what each variable currently holds</em>. If you can
+  track those two things, no program can surprise you.</p>
+
+  <p>The instructions operate on <strong>values</strong>, and every value has a
+  <strong>type</strong>. Four types cover most beginner code:</p>
+
+  <div class="callout callout--formula">
+    <h4>The four core types</h4>
+    <p>
+    <code>int</code> — whole numbers: <code>42</code>, <code>-7</code>, <code>0</code><br>
+    <code>float</code> — decimal numbers: <code>3.14</code>, <code>-0.5</code>, <code>2.0</code><br>
+    <code>str</code> — text in quotes: <code>"hello"</code>, <code>'ML'</code><br>
+    <code>bool</code> — truth values: <code>True</code>, <code>False</code>
+    </p>
+  </div>
+
+  <p>A <strong>variable</strong> is a name attached to a value with <code>=</code>:
+  <code>price = 120</code> means "make the name <code>price</code> refer to the value
+  120." Read <code>=</code> as <em>"gets"</em>, never as mathematical equality —
+  <code>count = count + 1</code> is nonsense as an equation but perfectly normal
+  code: compute the right side <em>first</em>, then attach the name to the result.</p>
+
+  <h2>Demo 1 — step through a real program</h2>
+  <p>This is the single most useful widget in the module. Click <strong>Step</strong>
+  and watch three things at once: the highlighted line (what runs next), the
+  variables table (the program's memory), and the output console. The green flash
+  marks the variable that just changed.</p>
+
+  <div class="demo" id="stepper">
+    <div class="trace">
+      <pre class="code" aria-label="Python program being traced"></pre>
+      <div class="state-panel">
+        <div>
+          <h5>Variables</h5>
+          <table class="vars-table"><tbody></tbody></table>
+        </div>
+        <div>
+          <h5>Output</h5>
+          <pre class="console"></pre>
+        </div>
+      </div>
+    </div>
+    <div class="trace-buttons">
+      <button class="btn" data-act="back" type="button">◀ Back</button>
+      <button class="btn btn--primary" data-act="step" type="button">Step ▶</button>
+      <button class="btn" data-act="reset" type="button">Reset</button>
+      <span class="step-label"></span>
+    </div>
+    <p class="demo__caption">Before each click, predict: which line runs next, and what
+    will change? Being wrong here is free — being wrong about your own mental model
+    later is expensive.</p>
+  </div>
+
+  <details class="deep-dive">
+    <summary><span class="deep-dive__tag">Math deep dive</span> What numbers really are inside Python</summary>
+    <div class="deep-dive__body">
+      <p><strong>Python's <code>int</code> is exact and unbounded.</strong> Unlike most
+      languages, <code>2 ** 1000</code> just works — Python grows the integer as needed,
+      so integer arithmetic never overflows or rounds.</p>
+      <p><strong><code>float</code> is neither.</strong> Floats are IEEE-754 double-precision:
+      64 bits holding a sign, an exponent, and 52 bits of fraction — a <em>binary</em>
+      scientific notation. Numbers like 0.1 have no finite binary representation (for the
+      same reason 1/3 has no finite decimal one), so Python stores the nearest representable
+      value. That's why:</p>
+      <pre><code>&gt;&gt;&gt; 0.1 + 0.2
+0.30000000000000004
+&gt;&gt;&gt; 0.1 + 0.2 == 0.3
+False</code></pre>
+      <p>This isn't a Python bug — every language using IEEE-754 (all mainstream ones) does
+      this. The practical rules: never compare floats with <code>==</code> (use
+      <code>abs(a - b) &lt; 1e-9</code> or <code>math.isclose</code>), and expect ~15-16
+      significant decimal digits of precision. This will matter again when gradient descent
+      accumulates millions of tiny float additions in later modules.</p>
+    </div>
+  </details>
+
+  <h2>Making decisions: if / elif / else</h2>
+  <p>Programs get interesting when they <em>branch</em>. Python checks each condition
+  top to bottom and runs the <strong>first</strong> block whose condition is
+  <code>True</code> — then skips the rest, even if later conditions would also be true.
+  Indentation isn't decoration in Python: the indented lines <em>are</em> the block.</p>
+
+  <h2>Demo 2 — which branch runs?</h2>
+  <p>Drag the temperature and watch which branch lights up. Note that 35° is also
+  ≥ 15 and ≥ 0 — but only the <em>first</em> true branch runs.</p>
+
+  <div class="demo branch-demo" id="branch">
+    <pre class="code" aria-label="if/elif/else code with the taken branch highlighted"></pre>
+    <div class="demo__controls">
+      <div class="demo__control">
+        <label>temp <output id="temp-out">22</output>°C</label>
+        <input type="range" id="temp" min="-15" max="45" step="1" value="22">
+      </div>
+    </div>
+    <p class="demo__caption">Result: <code>label = "<span id="branch-label">mild</span>"</code></p>
+  </div>
+
+  <h2>Repetition: while and for</h2>
+  <p>A <code>while</code> loop repeats its block as long as a condition stays true.
+  A <code>for</code> loop repeats once <em>per item</em> in a sequence — and the
+  beginner workhorse sequence is <code>range()</code>:</p>
+
+  <pre><code>total = 0
+for n in range(1, 6):   # n takes the values 1, 2, 3, 4, 5
+    total = total + n
+print(total)             # 15</code></pre>
+
+  <p>Two things trip everyone up at first: <code>range(1, 6)</code> <strong>excludes
+  the stop value</strong> (it ends at 5, not 6), and <code>range(5)</code> starts at 0.
+  Explore both below.</p>
+
+  <h2>Demo 3 — range() explorer</h2>
+  <div class="demo" id="range-demo">
+    <p style="margin:0"><code>for n in range(<span id="r-args">1, 6</span>):</code></p>
+    <div class="range-out" id="range-values"></div>
+    <div class="demo__controls">
+      <div class="demo__control">
+        <label>start <output id="rs-out">1</output></label>
+        <input type="range" id="r-start" min="0" max="10" step="1" value="1">
+      </div>
+      <div class="demo__control">
+        <label>stop <output id="re-out">6</output></label>
+        <input type="range" id="r-stop" min="0" max="12" step="1" value="6">
+      </div>
+      <div class="demo__control">
+        <label>step <output id="rp-out">1</output></label>
+        <input type="range" id="r-step" min="1" max="4" step="1" value="1">
+      </div>
+    </div>
+    <p class="demo__caption" id="range-caption"></p>
+  </div>
+
+  <h2>Worked example</h2>
+  <p>Classify a number as positive/negative and even/odd — the classic first
+  trace-by-hand exercise. Follow it on paper before checking below:</p>
+  <pre><code>x = -8
+
+if x &gt;= 0:
+    sign = "positive"
+else:
+    sign = "negative"
+
+if x % 2 == 0:          # % is remainder: -8 % 2 is 0
+    parity = "even"
+else:
+    parity = "odd"
+
+print(x, "is", sign, "and", parity)</code></pre>
+  <p>Trace: <code>x</code> gets -8. The first condition <code>-8 &gt;= 0</code> is
+  <code>False</code>, so the <code>else</code> block runs and <code>sign</code> gets
+  <code>"negative"</code>. Then <code>-8 % 2</code> is <code>0</code>, so <code>parity</code>
+  gets <code>"even"</code>. Output: <code>-8 is negative and even</code>.</p>
+
+  <div class="callout callout--pitfall">
+    <h4>Common pitfalls</h4>
+    <p><strong><code>=</code> vs <code>==</code></strong> — one <code>=</code> assigns, two
+    <code>==</code> compare. Writing <code>if x = 5:</code> is a syntax error; Python will
+    refuse to run it.<br>
+    <strong>Two kinds of division</strong> — <code>7 / 2</code> is <code>3.5</code> (always a
+    float); <code>7 // 2</code> is <code>3</code> (floor division).<br>
+    <strong>Indentation is syntax</strong> — mixing indent widths, or forgetting to indent
+    after a <code>:</code>, is an <code>IndentationError</code>. Pick 4 spaces and never
+    think about it again.</p>
+  </div>
+
+  <div class="callout">
+    <h4>Now, in the notebook</h4>
+    <p>Open <code>notebook.ipynb</code> in this folder. It has a "predict the output"
+    game (commit to an answer <em>before</em> running each cell) plus classic exercises:
+    FizzBuzz, sum of squares, and a countdown loop.</p>
+  </div>
+
+  <div class="callout callout--summary">
+    <h4>Key takeaways</h4>
+    <ul>
+      <li>A program's state is just: which line runs next + what each variable holds</li>
+      <li><code>=</code> means "gets" — right side evaluates first, then the name attaches</li>
+      <li>Only the <em>first</em> true branch of an if/elif/else chain runs</li>
+      <li><code>range(start, stop)</code> excludes <code>stop</code>; <code>range(n)</code> starts at 0</li>
+      <li>Indented lines after a <code>:</code> are the block — indentation is syntax</li>
+    </ul>
+  </div>
+
+  <h2>Self-check</h2>
+  <div class="quiz">
+    <div class="quiz__q" data-answer="2" data-explain="Right side first: a + 1 is 6, then the name a re-attaches to 6. The old 5 is simply no longer referenced.">
+      <p class="prompt">After <code>a = 5</code> then <code>a = a + 1</code>, what does <code>a</code> hold?</p>
+      <div class="quiz__options">
+        <div class="quiz__option">5 — you can't use a while assigning to it</div>
+        <div class="quiz__option">It's an error, like a circular equation</div>
+        <div class="quiz__option">6</div>
+      </div>
+      <div class="quiz__feedback"></div>
+    </div>
+    <div class="quiz__q" data-answer="1" data-explain="range(2, 8, 2) starts at 2, steps by 2, and stops BEFORE 8: 2, 4, 6.">
+      <p class="prompt">What values does <code>range(2, 8, 2)</code> produce?</p>
+      <div class="quiz__options">
+        <div class="quiz__option">2, 4, 6, 8</div>
+        <div class="quiz__option">2, 4, 6</div>
+        <div class="quiz__option">2, 3, 4, 5, 6, 7</div>
+      </div>
+      <div class="quiz__feedback"></div>
+    </div>
+    <div class="quiz__q" data-answer="0" data-explain="x >= 10 is true, and only the FIRST true branch runs -- the elif is never even checked.">
+      <p class="prompt">With <code>x = 15</code>: <code>if x &gt;= 10: print("A")</code> / <code>elif x &gt;= 5: print("B")</code> — what prints?</p>
+      <div class="quiz__options">
+        <div class="quiz__option">A</div>
+        <div class="quiz__option">A then B, since both conditions are true</div>
+        <div class="quiz__option">B</div>
+      </div>
+      <div class="quiz__feedback"></div>
+    </div>
+  </div>
+
+  <div style="text-align:center; margin: var(--space-6) 0;">
+    <button class="btn btn--primary" data-mark-done type="button">Mark module complete</button>
+  </div>
+
+  <div class="module-footer-nav">
+    <a class="prev" href="../00-orientation/index.html"><span class="dir">Previous</span>Orientation</a>
+    <a class="next" href="../02-python-functions-data-structures/index.html"><span class="dir">Next</span>Python II: Functions &amp; Data Structures</a>
+  </div>
+
+</div>
+<script src="../../shared/js/course-common.js"></script>
+<script src="../../shared/js/progress.js"></script>
+<script>
+CourseProgress.initModuleButton("01");
+
+// ---------- Reusable trace player ----------
+function makeTracePlayer(rootId, codeLines, steps) {
+  var root = document.getElementById(rootId);
+  var codeEl = root.querySelector(".code");
+  var varsBody = root.querySelector(".vars-table tbody");
+  var consoleEl = root.querySelector(".console");
+  var stepLabel = root.querySelector(".step-label");
+  var lineEls = codeLines.map(function (l) {
+    var s = document.createElement("span");
+    s.className = "ln";
+    s.textContent = l === "" ? " " : l;
+    codeEl.appendChild(s);
+    return s;
+  });
+  var idx = -1;
+
+  function render() {
+    lineEls.forEach(function (el) { el.classList.remove("active"); });
+    varsBody.innerHTML = "";
+    var vars = {}, out = [], prevVars = {};
+    if (idx >= 0) {
+      vars = steps[idx].vars; out = steps[idx].out;
+      if (idx > 0) prevVars = steps[idx - 1].vars;
+      if (steps[idx].line >= 0) lineEls[steps[idx].line].classList.add("active");
+    }
+    Object.keys(vars).forEach(function (name) {
+      var tr = document.createElement("tr");
+      if (String(prevVars[name]) !== String(vars[name])) tr.className = "changed";
+      var td1 = document.createElement("td"); td1.textContent = name;
+      var td2 = document.createElement("td"); td2.textContent = vars[name];
+      tr.appendChild(td1); tr.appendChild(td2);
+      varsBody.appendChild(tr);
+    });
+    if (varsBody.children.length === 0) {
+      varsBody.innerHTML = '<tr><td colspan="2" style="color:var(--text-muted)">(none yet)</td></tr>';
+    }
+    consoleEl.textContent = out.join("\n");
+    stepLabel.textContent = idx < 0 ? "Not started — click Step"
+      : (idx === steps.length - 1 ? "Finished (step " + (idx + 1) + " of " + steps.length + ")"
+      : "Step " + (idx + 1) + " of " + steps.length);
+  }
+
+  root.querySelector('[data-act="step"]').addEventListener("click", function () {
+    if (idx < steps.length - 1) { idx++; render(); }
+  });
+  root.querySelector('[data-act="back"]').addEventListener("click", function () {
+    if (idx > -1) { idx--; render(); }
+  });
+  root.querySelector('[data-act="reset"]').addEventListener("click", function () {
+    idx = -1; render();
+  });
+  render();
+}
+
+// ---------- Demo 1: shopping-discount program ----------
+(function () {
+  var code = [
+    'price = 120',
+    'discount = 0.25',
+    'final = price * (1 - discount)',
+    'print("Sale price:", final)',
+    '',
+    'for n in range(1, 4):',
+    '    print("bag", n, "costs", final)'
+  ];
+  var steps = [
+    { line: 0, vars: { price: "120" }, out: [] },
+    { line: 1, vars: { price: "120", discount: "0.25" }, out: [] },
+    { line: 2, vars: { price: "120", discount: "0.25", final: "90.0" }, out: [] },
+    { line: 3, vars: { price: "120", discount: "0.25", final: "90.0" }, out: ["Sale price: 90.0"] },
+    { line: 5, vars: { price: "120", discount: "0.25", final: "90.0", n: "1" }, out: ["Sale price: 90.0"] },
+    { line: 6, vars: { price: "120", discount: "0.25", final: "90.0", n: "1" }, out: ["Sale price: 90.0", "bag 1 costs 90.0"] },
+    { line: 5, vars: { price: "120", discount: "0.25", final: "90.0", n: "2" }, out: ["Sale price: 90.0", "bag 1 costs 90.0"] },
+    { line: 6, vars: { price: "120", discount: "0.25", final: "90.0", n: "2" }, out: ["Sale price: 90.0", "bag 1 costs 90.0", "bag 2 costs 90.0"] },
+    { line: 5, vars: { price: "120", discount: "0.25", final: "90.0", n: "3" }, out: ["Sale price: 90.0", "bag 1 costs 90.0", "bag 2 costs 90.0"] },
+    { line: 6, vars: { price: "120", discount: "0.25", final: "90.0", n: "3" }, out: ["Sale price: 90.0", "bag 1 costs 90.0", "bag 2 costs 90.0", "bag 3 costs 90.0"] },
+    { line: -1, vars: { price: "120", discount: "0.25", final: "90.0", n: "3" }, out: ["Sale price: 90.0", "bag 1 costs 90.0", "bag 2 costs 90.0", "bag 3 costs 90.0", "", "-- program finished --"] }
+  ];
+  makeTracePlayer("stepper", code, steps);
+})();
+
+// ---------- Demo 2: branch highlighting ----------
+(function () {
+  var root = document.getElementById("branch");
+  var codeEl = root.querySelector(".code");
+  var lines = [
+    'if temp >= 30:',
+    '    label = "hot"',
+    'elif temp >= 15:',
+    '    label = "mild"',
+    'elif temp >= 0:',
+    '    label = "cold"',
+    'else:',
+    '    label = "freezing"'
+  ];
+  var lineEls = lines.map(function (l) {
+    var s = document.createElement("span");
+    s.className = "ln"; s.textContent = l;
+    codeEl.appendChild(s);
+    return s;
+  });
+  var slider = document.getElementById("temp");
+
+  function update() {
+    var t = parseInt(slider.value, 10);
+    document.getElementById("temp-out").textContent = t;
+    var branch = t >= 30 ? 0 : t >= 15 ? 1 : t >= 0 ? 2 : 3;
+    var labels = ["hot", "mild", "cold", "freezing"];
+    var takenLines = [[0, 1], [2, 3], [4, 5], [6, 7]][branch];
+    lineEls.forEach(function (el, i) {
+      el.classList.remove("taken", "skipped");
+      el.classList.add(takenLines.indexOf(i) >= 0 ? "taken" : "skipped");
+    });
+    document.getElementById("branch-label").textContent = labels[branch];
+  }
+  slider.addEventListener("input", update);
+  update();
+})();
+
+// ---------- Demo 3: range explorer ----------
+(function () {
+  var s = document.getElementById("r-start"), e = document.getElementById("r-stop"), p = document.getElementById("r-step");
+
+  function update() {
+    var start = +s.value, stop = +e.value, step = +p.value;
+    document.getElementById("rs-out").textContent = start;
+    document.getElementById("re-out").textContent = stop;
+    document.getElementById("rp-out").textContent = step;
+    document.getElementById("r-args").textContent = step === 1 ? start + ", " + stop : start + ", " + stop + ", " + step;
+    var vals = [];
+    for (var n = start; n < stop; n += step) vals.push(n);
+    var box = document.getElementById("range-values");
+    box.innerHTML = vals.length
+      ? vals.map(function (v) { return '<span class="item">' + v + "</span>"; }).join("")
+      : '<span class="text-muted">(empty — the loop body never runs)</span>';
+    document.getElementById("range-caption").textContent = vals.length
+      ? "The loop body runs " + vals.length + " time" + (vals.length === 1 ? "" : "s") + ". Note: " + stop + " itself is never included."
+      : "start ≥ stop, so range() is empty and the loop is skipped entirely — no error, it just does nothing.";
+  }
+  [s, e, p].forEach(function (el) { el.addEventListener("input", update); });
+  update();
+})();
+</script>
+</body>
+</html>

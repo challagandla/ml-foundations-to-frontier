@@ -5,9 +5,9 @@ matplotlib>=3.8
 scikit-learn>=1.4
 jupyter>=1.0
 
-# Needed starting Phase 2 (Deep Learning, modules 25+)
+# Needed starting Phase 2 (Deep Learning, modules 28+)
 torch>=2.2
 
-# Needed starting Phase 3 (Applied/LLM track, modules 36+)
+# Needed starting Phase 3 (Applied/LLM track, modules 39+)
 # Uncomment when you reach that phase:
 # sentence-transformers>=2.5

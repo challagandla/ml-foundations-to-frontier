@@ -2,7 +2,7 @@
 
 A self-paced machine learning course, beginner to advanced, built one module at
 a time. Start at [index.html](index.html)
-(open it in a browser) — that's the dashboard for all 42 modules.
+(open it in a browser) — that's the dashboard for all 45 modules.
 
 ## How this course works
 
@@ -32,8 +32,8 @@ jupyter notebook
 ```
 
 The `torch` dependency is only needed starting the Deep Learning phase
-(module 25+); the LLM-track extras (commented out in `requirements.txt`) only
-matter from module 36 onward — install them when you get there.
+(module 28+); the LLM-track extras (commented out in `requirements.txt`) only
+matter from module 39 onward — install them when you get there.
 
 ## Structure
 
