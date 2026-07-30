@@ -8,17 +8,32 @@
   "use strict";
 
   var KEY = "ml-course-progress-v1";
+  var memoryMap = {};
+  var preferMemory = false;
 
   function readAll() {
+    if (preferMemory) return Object.assign({}, memoryMap);
     try {
-      return JSON.parse(localStorage.getItem(KEY)) || {};
+      var parsed = JSON.parse(localStorage.getItem(KEY));
+      if (parsed && typeof parsed === "object" && !Array.isArray(parsed)) {
+        memoryMap = Object.assign({}, parsed);
+        return parsed;
+      }
     } catch (e) {
-      return {};
+      // Fall through to the current-session copy.
     }
+    return Object.assign({}, memoryMap);
   }
 
   function writeAll(map) {
-    localStorage.setItem(KEY, JSON.stringify(map));
+    memoryMap = Object.assign({}, map);
+    try {
+      localStorage.setItem(KEY, JSON.stringify(map));
+      preferMemory = false;
+    } catch (e) {
+      // Avoid reloading stale storage after a quota or read-only failure.
+      preferMemory = true;
+    }
   }
 
   var CourseProgress = {

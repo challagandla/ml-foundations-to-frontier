@@ -13,8 +13,12 @@ Every module has two files, in `modules/NN-slug/`:
 - **`notebook.ipynb`** — hands-on Jupyter notebook with runnable code that mirrors
   the lesson, plus exercises.
 
+Some modules also include small supporting artifacts when they improve learning, such
+as a runnable `.py` script or a dataset. The HTML lesson and notebook remain the two
+primary learner entry points.
+
 Modules are built **incrementally, in order** — see `curriculum.md` for the full
-list and current status. Only a couple of modules are fully built right now;
+list and current status. Five modules are fully built right now;
 the rest exist as short stub pages (title + objectives) until you reach them.
 Start with **[Module 00 — Orientation](modules/00-orientation/index.html)**.
 

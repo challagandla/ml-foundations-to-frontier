@@ -12,9 +12,9 @@ Single source of truth for course scope and order. Status reflects what's actual
 - **01 · Python I: Fundamentals & First Programs** — DONE
   A zero-assumption introduction to Python: terminology, values and types, variables, input/output, operators, decisions, loops, and debugging.
 - **02 · Python II: Functions & Data Structures** — DONE  
-  Functions as reusable building blocks, plus Python's core containers -- lists, tuples, dicts, sets -- slicing, mutability, and comprehensions.
+  A zero-assumption build-up from Module 01: defining and calling functions, returning vs printing, parameters/arguments/defaults, scope and shadowing, the four core containers, slicing, mutability and aliasing, and comprehensions.
 - **03 · Python III: Errors, Files, Classes & Modules** — DONE  
-  Reading tracebacks, handling exceptions, working with files, and just enough object-oriented Python to read any ML library's API.
+  A zero-assumption build-up from Module 02: reading tracebacks and finding root causes, the exception hierarchy, try/except/else/finally, raising and chaining, a debugging routine, paths and the working directory, file modes and encoding, CSV and JSON, classes and dunder methods, inheritance and duck typing, the scikit-learn estimator shape, and modules, packages and the standard library.
 - **04 · Linear Algebra Essentials** — DONE  
   Vectors, matrices, dot products, norms, and matrix multiplication as geometric transformations.
 - **05 · Calculus for ML** — stub  

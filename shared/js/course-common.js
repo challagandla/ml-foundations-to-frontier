@@ -5,7 +5,12 @@
 
   function initThemeToggle() {
     var root = document.documentElement;
-    var stored = localStorage.getItem("ml-course-theme");
+    var stored = null;
+    try {
+      stored = localStorage.getItem("ml-course-theme");
+    } catch (error) {
+      // Some browsers or privacy modes block local storage.
+    }
     if (stored) root.setAttribute("data-theme", stored);
 
     var btn = document.querySelector("[data-theme-toggle]");
@@ -21,7 +26,11 @@
         (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
       var next = current === "dark" ? "light" : "dark";
       root.setAttribute("data-theme", next);
-      localStorage.setItem("ml-course-theme", next);
+      try {
+        localStorage.setItem("ml-course-theme", next);
+      } catch (error) {
+        // The theme still changes for this page even when it cannot be saved.
+      }
       setLabel();
     });
   }
@@ -30,6 +39,7 @@
   // .quiz__option buttons in document order. Clicking grades instantly.
   function initQuizzes() {
     document.querySelectorAll(".quiz__q").forEach(function (q) {
+      if (q.closest("[data-custom-quiz]")) return;
       var correctIdx = parseInt(q.getAttribute("data-answer"), 10);
       var options = Array.prototype.slice.call(q.querySelectorAll(".quiz__option"));
       var feedback = q.querySelector(".quiz__feedback");

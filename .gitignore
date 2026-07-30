@@ -1,5 +1,6 @@
 .venv/
 __pycache__/
 .ipynb_checkpoints/
+modules/*/sandbox/
 *.pyc
 .DS_Store
