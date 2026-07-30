@@ -1,0 +1,9 @@
+name,date,minutes,topic
+maya,2026-03-02,45,functions
+maya,2026-03-03,30,lists
+maya,2026-03-04,60,dicts
+ravi,2026-03-02,20,functions
+ravi,2026-03-03,25,lists
+ravi,2026-03-05,15,sets
+ada,2026-03-02,90,comprehensions
+ada,2026-03-04,75,aliasing

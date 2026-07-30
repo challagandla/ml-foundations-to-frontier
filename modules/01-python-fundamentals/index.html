@@ -36,6 +36,107 @@
     font-size: 0.82rem;
     background: var(--surface-1);
   }
+  .path-picker {
+    margin: var(--space-5) 0;
+    border: 1px solid var(--border-hairline);
+    border-radius: var(--radius-lg);
+    padding: var(--space-5);
+    background: var(--surface-1);
+  }
+  .path-picker h2 { margin: 0 0 var(--space-2); font-size: 1.15rem; }
+  .path-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-3);
+    margin: var(--space-4) 0;
+  }
+  .path-card {
+    border: 1px solid var(--border-hairline);
+    border-radius: var(--radius-md);
+    padding: var(--space-4);
+    background: var(--surface-page);
+    color: var(--text-primary);
+    text-align: left;
+    cursor: pointer;
+    font: inherit;
+  }
+  .path-card:hover, .path-card:focus-visible { border-color: var(--phase-0); }
+  .path-card.is-selected {
+    border: 2px solid var(--phase-0);
+    background: color-mix(in srgb, var(--phase-0) 8%, var(--surface-1));
+  }
+  .path-card strong { display: block; margin-bottom: var(--space-1); }
+  .path-card span { display: block; color: var(--text-secondary); font-size: 0.88rem; }
+  .path-route {
+    border-top: 1px solid var(--border-hairline);
+    padding-top: var(--space-3);
+    margin-top: var(--space-3);
+    color: var(--text-secondary);
+  }
+  .path-route p:last-child { margin-bottom: 0; }
+  .path-route a { white-space: nowrap; }
+  .module-progress {
+    border: 1px solid var(--border-hairline);
+    border-radius: var(--radius-md);
+    padding: var(--space-4) var(--space-5);
+    margin: var(--space-5) 0;
+    background: var(--surface-1);
+  }
+  .module-progress__top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3);
+    margin-bottom: var(--space-2);
+  }
+  .module-progress__top strong { font-size: 0.92rem; }
+  .module-progress__label { color: var(--text-secondary); font-size: 0.85rem; }
+  .module-progress .progress-bar { margin: var(--space-2) 0; }
+  .module-progress__parts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin-top: var(--space-3);
+  }
+  .module-progress__part {
+    width: 25px;
+    height: 25px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    border: 1px solid var(--border-hairline);
+    color: var(--text-muted);
+    font-size: 0.72rem;
+    background: var(--surface-2);
+    text-decoration: none;
+  }
+  .module-progress__part:hover,
+  .module-progress__part:focus-visible { text-decoration: none; }
+  .module-progress__part.is-complete {
+    background: var(--status-good);
+    border-color: var(--status-good);
+    color: #fff;
+  }
+  .section-complete {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--space-3);
+    border-top: 1px dashed var(--border-hairline);
+    border-bottom: 1px dashed var(--border-hairline);
+    margin: var(--space-6) 0 var(--space-4);
+    padding: var(--space-3) 0;
+    color: var(--text-secondary);
+    font-size: 0.88rem;
+  }
+  .section-complete.is-complete { color: var(--text-success); }
+  .section-complete .btn { flex: 0 0 auto; }
+  .section-complete .btn--mark-done,
+  [data-mark-done].btn--mark-done {
+    background: #006300;
+    border-color: #006300;
+    color: #fff;
+  }
   .toc {
     border: 1px solid var(--border-hairline);
     border-radius: var(--radius-md);
@@ -120,6 +221,22 @@
   .checkpoint details { margin-top: var(--space-2); }
   .checkpoint summary { cursor: pointer; font-weight: 600; color: var(--phase-0); }
   .checkpoint p:last-child { margin-bottom: 0; }
+  .practice-set {
+    border: 1px solid var(--border-hairline);
+    border-radius: var(--radius-md);
+    padding: var(--space-4) var(--space-5);
+    background: var(--surface-1);
+    margin: var(--space-5) 0;
+  }
+  .practice-set h3 { margin: 0 0 var(--space-2); font-size: 1rem; }
+  .practice-set ol { padding-left: 1.25rem; }
+  .practice-set li { margin-bottom: var(--space-2); }
+  .practice-set details {
+    border-top: 1px solid var(--border-hairline);
+    margin-top: var(--space-3);
+    padding-top: var(--space-3);
+  }
+  .practice-set summary { cursor: pointer; color: var(--phase-0); font-weight: 600; }
   .code-pair {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -246,12 +363,60 @@
     margin: var(--space-5) 0;
   }
   .mini-project h3 { margin-top: 0; }
+  .milestone-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-3);
+    margin: var(--space-4) 0;
+  }
+  .milestone {
+    border: 1px solid var(--border-hairline);
+    border-radius: var(--radius-md);
+    padding: var(--space-4);
+    background: var(--surface-1);
+  }
+  .milestone strong { display: block; margin-bottom: var(--space-1); }
+  .milestone p { margin: 0; color: var(--text-secondary); font-size: 0.88rem; }
+  .rubric td:first-child { font-weight: 700; }
+  .rubric td:last-child { width: 68px; text-align: center; font-weight: 700; }
+  .script-bridge {
+    border: 1px solid var(--border-hairline);
+    border-radius: var(--radius-lg);
+    padding: var(--space-5);
+    margin: var(--space-5) 0;
+    background: var(--surface-1);
+  }
+  .script-bridge h3 { margin-top: 0; }
+  .quiz-dashboard {
+    border: 1px solid var(--border-hairline);
+    border-radius: var(--radius-md);
+    padding: var(--space-4);
+    margin: var(--space-4) 0 var(--space-5);
+    background: var(--surface-1);
+  }
+  .quiz-dashboard__row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+  }
+  .quiz-dashboard__score { font-weight: 700; }
+  .quiz-dashboard__actions { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+  .quiz-dashboard__mastery { margin: var(--space-3) 0 0; color: var(--text-secondary); }
+  .quiz__review { display: inline-block; margin-top: var(--space-2); font-weight: 600; }
   .quiz code { white-space: normal; }
   .quiz__option:focus-visible {
     outline: 3px solid color-mix(in srgb, var(--phase-0) 45%, transparent);
     outline-offset: 2px;
   }
   .back-to-top { text-align: right; font-size: 0.85rem; margin-top: var(--space-5); }
+  @media (max-width: 640px) {
+    .path-grid, .milestone-grid { grid-template-columns: 1fr; }
+    .section-complete { align-items: flex-start; }
+    .module-progress__top { align-items: flex-start; flex-direction: column; }
+    table { display: block; max-width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  }
 </style>
 </head>
 <body>
@@ -272,7 +437,7 @@
   short Python programs—the foundation for every machine-learning model later in the course.</p>
 
   <div class="lesson-meta" aria-label="Lesson information">
-    <span>Beginner · no prerequisites</span>
+    <span>Beginner · no coding prerequisites</span>
     <span>4–6 hours including practice</span>
     <span>Lesson + runnable notebook</span>
     <span>10-part knowledge check</span>
@@ -298,6 +463,97 @@
     Typing the code yourself matters: programming is a practical skill, like playing an
     instrument. If a section feels dense, stop at its checkpoint and return later.</p>
   </div>
+
+  <div class="callout callout--formula" id="setup">
+    <h4>First run: open a working Python environment</h4>
+    <p>If you already completed Module 00 setup, continue to the learning-path selector.
+    Otherwise, install Python 3 from <a href="https://www.python.org/downloads/">python.org</a>,
+    reopen your terminal, and use the commands for your system. These install only
+    Jupyter—the tool this module needs—not the heavier libraries used later in the course.</p>
+    <p><strong>Windows PowerShell</strong> (run from the course repository):</p>
+    <pre><code>py --version
+py -m venv .venv
+.\.venv\Scripts\python.exe -m pip install jupyter
+.\.venv\Scripts\python.exe -m jupyter notebook</code></pre>
+    <p>If Windows says <code>py</code> is not recognized, replace <code>py</code> in
+    the first two lines with <code>python</code>. If neither command works, Python is
+    not installed or the terminal has not been reopened since installation. The commands
+    above call the virtual environment's Python directly, so PowerShell's script
+    execution policy does not need to be changed.</p>
+    <p><strong>macOS or Linux terminal</strong> (run from the course repository):</p>
+    <pre><code>python3 --version
+python3 -m venv .venv
+./.venv/bin/python -m pip install jupyter
+./.venv/bin/python -m jupyter notebook</code></pre>
+    <p>Jupyter opens in your browser; keep the terminal open and navigate to
+    <code>modules/01-python-fundamentals/notebook.ipynb</code>. Clicking the
+    <code>.ipynb</code> file directly outside Jupyter may show raw text instead of a
+    runnable notebook. If the browser does not open automatically, copy the
+    <code>http://localhost:...</code> address printed in the terminal into your browser.
+    Press <kbd>Ctrl</kbd>+<kbd>C</kbd> in the terminal when you want to stop Jupyter.
+    The repository <a href="../../README.md#setup">full-course setup</a> installs the
+    additional libraries needed by later modules.</p>
+  </div>
+
+  <section class="path-picker" aria-labelledby="path-title">
+    <h2 id="path-title">Choose your learning path</h2>
+    <p>Your choice changes the recommended route, not the content available. It is saved
+    in this browser and can be changed at any time.</p>
+    <div class="path-grid">
+      <button class="path-card" type="button" data-path-choice="beginner" aria-pressed="false">
+        <strong>First time programming · 4–6 hours</strong>
+        <span>Follow Parts 1–8 in order, complete every checkpoint, and work through the notebook exercises.</span>
+      </button>
+      <button class="path-card" type="button" data-path-choice="fast" aria-pressed="false">
+        <strong>I know another language · 90–120 minutes</strong>
+        <span>Use the diagnostic route, focus on Python-specific syntax, and prove mastery with the exit ticket.</span>
+      </button>
+    </div>
+    <div class="path-route" id="path-route" aria-live="polite"></div>
+  </section>
+
+  <section class="module-progress" aria-labelledby="progress-title">
+    <div class="module-progress__top">
+      <strong id="progress-title">Your progress through this module</strong>
+      <span class="module-progress__label" id="section-progress-label">0 of 8 parts complete</span>
+    </div>
+    <div class="progress-bar" role="progressbar" aria-labelledby="section-progress-label"
+         aria-valuemin="0" aria-valuemax="8" aria-valuenow="0" id="section-progress-bar">
+      <div class="progress-bar__fill" id="section-progress-fill" style="width:0"></div>
+    </div>
+    <div class="module-progress__parts" id="section-progress-parts" aria-label="Part completion">
+      <a class="module-progress__part" data-progress-part="part-1" href="#what-is-programming" title="Resume Part 1">1</a>
+      <a class="module-progress__part" data-progress-part="part-2" href="#values-types" title="Resume Part 2">2</a>
+      <a class="module-progress__part" data-progress-part="part-3" href="#print-input" title="Resume Part 3">3</a>
+      <a class="module-progress__part" data-progress-part="part-4" href="#booleans" title="Resume Part 4">4</a>
+      <a class="module-progress__part" data-progress-part="part-5" href="#loops" title="Resume Part 5">5</a>
+      <a class="module-progress__part" data-progress-part="part-6" href="#errors" title="Resume Part 6">6</a>
+      <a class="module-progress__part" data-progress-part="part-7" href="#project" title="Resume Part 7">7</a>
+      <a class="module-progress__part" data-progress-part="part-8" href="#reference" title="Resume Part 8">8</a>
+    </div>
+    <button class="btn" type="button" id="reset-section-progress" style="margin-top:var(--space-3)">Reset section progress</button>
+  </section>
+
+  <details class="deep-dive">
+    <summary><span class="deep-dive__tag">Companion map</span> Match each HTML part to the notebook</summary>
+    <div class="deep-dive__body">
+      <table>
+        <thead><tr><th>HTML lesson</th><th>Notebook sections</th><th>Practice connection</th></tr></thead>
+        <tbody>
+          <tr><td>Part 1 · Mental model</td><td>0–1 · Notebook use and first output</td><td>Checkpoint 1</td></tr>
+          <tr><td>Part 2 · Values and variables</td><td>2–4 · Types, variables, conversion</td><td>Checkpoint 2; Exercises 1–3</td></tr>
+          <tr><td>Part 3 · Communicate and calculate</td><td>5–6 · Strings and operators</td><td>Labs A–B; Exercises 2–4</td></tr>
+          <tr><td>Part 4 · Make choices</td><td>7–8 · Boolean logic and decisions</td><td>Lab C; Exercises 5–6</td></tr>
+          <tr><td>Part 5 · Repeat work</td><td>9 · Loops</td><td>Lab D; Exercises 7–8</td></tr>
+          <tr><td>Part 6 · Learn from mistakes</td><td>10 · Errors</td><td>Lab E; debugging repair</td></tr>
+          <tr><td>Part 7 · Put it together</td><td>12 · Mini-project and script</td><td>Six project tests and rubric</td></tr>
+          <tr><td>Part 8 · Reference and assess</td><td>15–16 · Exit ticket and self-assessment</td><td>Self-check and exit ticket</td></tr>
+        </tbody>
+      </table>
+      <p class="text-muted">Notebook numbering also includes guided practice, solutions,
+      and optional challenges between these sections.</p>
+    </div>
+  </details>
 
   <nav class="toc" aria-label="Lesson contents">
     <h2>Lesson map</h2>
@@ -420,6 +676,11 @@ print("C")</code></pre>
 C</div>
       <p>The middle line is a comment, so Python ignores it.</p>
     </details>
+  </div>
+
+  <div class="section-complete" data-section-card="part-1">
+    <span>Part 1 complete when you can explain code, Python, and the interpreter—and predict three simple <code>print()</code> statements.</span>
+    <button class="btn" type="button" data-section-done="part-1">Mark Part 1 complete</button>
   </div>
 
   <span class="part-label">Part 2 · Represent and store information</span>
@@ -640,6 +901,11 @@ a = 9</code></pre>
     </details>
   </div>
 
+  <div class="section-complete" data-section-card="part-2">
+    <span>Part 2 complete when you can identify basic types, convert numeric text, and trace reassignment without running the code.</span>
+    <button class="btn" type="button" data-section-done="part-2">Mark Part 2 complete</button>
+  </div>
+
   <span class="part-label">Part 3 · Communicate and calculate</span>
   <h2 id="print-input">Output, strings, and input</h2>
 
@@ -764,6 +1030,33 @@ print(clean_name.replace("Maya", "Sara"))  # Sara Ahmed</code></pre>
   <code>.replace(old, new)</code> replaces matching text. Strings are
   <dfn>immutable</dfn>: these methods create new strings; they do not edit the original.
   Store the returned value if you need it later.</p>
+
+  <div class="practice-set">
+    <h3>Practice lab A · Input, strings, and formatting</h3>
+    <ol>
+      <li><strong>Convert:</strong> starting with <code>typed = " 42 "</code>, produce the
+      integer <code>50</code> using a string method, conversion, and addition.</li>
+      <li><strong>Format:</strong> with <code>item = "Notebook"</code> and
+      <code>price = 12.5</code>, print exactly <code>Notebook: AED 12.50</code>.</li>
+      <li><strong>Diagnose:</strong> explain why
+      <code>age = input("Age: "); print(age + 1)</code> fails when the user types 20,
+      then write the corrected second statement.</li>
+    </ol>
+    <details>
+      <summary>Check your solutions</summary>
+      <pre><code>typed = " 42 "
+answer = int(typed.strip()) + 8
+
+item = "Notebook"
+price = 12.5
+print(f"{item}: AED {price:.2f}")
+
+age = input("Age: ")
+print(int(age) + 1)</code></pre>
+      <p><code>input()</code> returns text, so the original code tried to add a string and
+      integer. Conversion creates a numeric value first.</p>
+    </details>
+  </div>
 
   <div class="callout callout--pitfall">
     <h4><code>print()</code> is not the same as a notebook's last value</h4>
@@ -890,6 +1183,24 @@ print(divider)</code></pre>
     </tbody>
   </table>
 
+  <div class="practice-set">
+    <h3>Practice lab B · Arithmetic and expressions</h3>
+    <ol>
+      <li><strong>Predict:</strong> calculate <code>10 + 2 ** 3 * 2</code> without running it.</li>
+      <li><strong>Decompose:</strong> use <code>//</code> and <code>%</code> to turn
+      137 minutes into complete hours and remaining minutes.</li>
+      <li><strong>Repair:</strong> fix <code>"Total: " + 25</code> in two different ways.</li>
+    </ol>
+    <details>
+      <summary>Check your solutions</summary>
+      <p>The first answer is <code>26</code>. For time:
+      <code>hours = 137 // 60</code> and <code>minutes = 137 % 60</code>, giving 2 hours
+      and 17 minutes.</p>
+      <pre><code>print("Total:", 25)
+print(f"Total: {25}")</code></pre>
+    </details>
+  </div>
+
   <div class="checkpoint">
     <h3>Checkpoint 3 · Evaluate expressions</h3>
     <p>Without running Python, calculate <code>10 + 2 ** 3 * 2</code> and
@@ -901,6 +1212,11 @@ print(divider)</code></pre>
       <p><code>(10 + 2) ** 2 % 5</code> → <code>12 ** 2 % 5</code> →
       <code>144 % 5</code> → <code>4</code>.</p>
     </details>
+  </div>
+
+  <div class="section-complete" data-section-card="part-3">
+    <span>Part 3 complete when you can produce formatted output and evaluate arithmetic expressions in the correct order.</span>
+    <button class="btn" type="button" data-section-done="part-3">Mark Part 3 complete</button>
   </div>
 
   <span class="part-label">Part 4 · Make choices</span>
@@ -991,6 +1307,23 @@ print(18 &lt;= age &lt; 65)</code></pre>
   Python style uses <code>value is None</code> or <code>value is not None</code>.
   The <code>is</code> operator asks about object identity; Module 02 explains that
   distinction in depth.</p>
+
+  <div class="practice-set">
+    <h3>Practice lab C · Compound conditions</h3>
+    <ol>
+      <li><strong>Write:</strong> create one condition that is true when
+      <code>age</code> is from 18 through 64 and <code>has_id</code> is true.</li>
+      <li><strong>Predict:</strong> what does <code>bool("False")</code> return, and why?</li>
+      <li><strong>Membership:</strong> write a condition that checks whether
+      <code>"@"</code> occurs in <code>email</code> and <code>email</code> is not empty.</li>
+    </ol>
+    <details>
+      <summary>Check your solutions</summary>
+      <pre><code>18 &lt;= age &lt; 65 and has_id
+bool("False")  # True: the string is not empty
+email != "" and "@" in email</code></pre>
+    </details>
+  </div>
 
   <h2 id="conditionals">Decisions with <code>if</code>, <code>elif</code>, and <code>else</code></h2>
 
@@ -1096,6 +1429,11 @@ else:
       <p><code>B</code>. The first condition is false, the second is true, and Python skips
       all later branches after that match.</p>
     </details>
+  </div>
+
+  <div class="section-complete" data-section-card="part-4">
+    <span>Part 4 complete when you can build a compound condition and explain which branch runs—and why the others do not.</span>
+    <button class="btn" type="button" data-section-done="part-4">Mark Part 4 complete</button>
   </div>
 
   <span class="part-label">Part 5 · Repeat work</span>
@@ -1267,6 +1605,25 @@ print(total)  # 15</code></pre>
     else:
         print(f"{number} is odd")</code></pre>
 
+  <div class="practice-set">
+    <h3>Practice lab D · Choose and trace loops</h3>
+    <ol>
+      <li><strong>Choose:</strong> select <code>for</code> or <code>while</code> for
+      (a) printing exactly five labels, and (b) asking until a password is correct.</li>
+      <li><strong>Trace:</strong> find the final <code>total</code> when a loop visits
+      1 through 4 and adds only the even values.</li>
+      <li><strong>Repair:</strong> identify why
+      <code>count = 3; while count &gt; 0: print(count)</code> never ends.</li>
+    </ol>
+    <details>
+      <summary>Check your solutions</summary>
+      <p>Use <code>for</code> for the known five repetitions and <code>while</code> for
+      an unknown number of password attempts. The even-value total is
+      <code>2 + 4 = 6</code>. The final loop never updates <code>count</code>; add
+      <code>count -= 1</code> inside its block.</p>
+    </details>
+  </div>
+
   <div class="checkpoint">
     <h3>Checkpoint 5 · Trace the loop</h3>
     <p>What is the final value of <code>total</code>?</p>
@@ -1279,6 +1636,11 @@ for n in range(1, 5):
       <p><code>total</code> is <code>6</code>. The loop visits 1, 2, 3, and 4. Only 2 and
       4 are even, so the updates are <code>0 + 2 + 4</code>.</p>
     </details>
+  </div>
+
+  <div class="section-complete" data-section-card="part-5">
+    <span>Part 5 complete when you can choose <code>for</code> or <code>while</code>, trace a loop, and identify its stopping rule.</span>
+    <button class="btn" type="button" data-section-done="part-5">Mark Part 5 complete</button>
   </div>
 
   <span class="part-label">Part 6 · Learn from mistakes</span>
@@ -1358,12 +1720,40 @@ discounted_price = price * 1.20</code></pre>
     <li><strong>Change one thing and re-run.</strong><p>Confirm that the change explains the result; do not make several guesses at once.</p></li>
   </ol>
 
+  <div class="practice-set">
+    <h3>Practice lab E · Debug real failures</h3>
+    <ol>
+      <li><strong>Name the error:</strong> what error should
+      <code>print(total_points)</code> raise if that name was never assigned?</li>
+      <li><strong>Repair the type:</strong> correct
+      <code>price = "12.5"; total = price * 2</code> so <code>total</code> is the number 25.0,
+      not repeated text.</li>
+      <li><strong>Repair the logic:</strong> a 20% discount uses
+      <code>price * 1.20</code>. Explain the mistake and correct the expression.</li>
+    </ol>
+    <details>
+      <summary>Check your solutions</summary>
+      <p>The first is a <code>NameError</code>.</p>
+      <pre><code>price = float("12.5")
+total = price * 2
+
+discounted_price = price * (1 - 0.20)</code></pre>
+      <p>Multiplying by 1.20 increases a value by 20%; multiplying by 0.80 keeps the
+      remaining 80%.</p>
+    </details>
+  </div>
+
   <div class="callout">
     <h4>Notebook-specific debugging</h4>
     <p>Cells can be run out of order, so the visible notebook may not match the interpreter's
     current state. When results become mysterious, restart the kernel and run all cells from
     top to bottom. A <dfn>kernel</dfn> is the running process that stores notebook variables
     and executes cells.</p>
+  </div>
+
+  <div class="section-complete" data-section-card="part-6">
+    <span>Part 6 complete when you can read the final traceback line, locate the failure, and repair one type or naming error.</span>
+    <button class="btn" type="button" data-section-done="part-6">Mark Part 6 complete</button>
   </div>
 
   <span class="part-label">Part 7 · Put it together</span>
@@ -1382,6 +1772,26 @@ discounted_price = price * 1.20</code></pre>
       <li>Calculate an average and classify the habit as “strong,” “building,” or “start small.”</li>
       <li>Print a readable report with f-strings.</li>
     </ol>
+  </div>
+
+  <h3>Build it in four milestones</h3>
+  <div class="milestone-grid">
+    <div class="milestone">
+      <strong>1 · Make one correct calculation</strong>
+      <p>Store the learner, days, and minutes; calculate the total without a loop; print it.</p>
+    </div>
+    <div class="milestone">
+      <strong>2 · Replace repetition with a loop</strong>
+      <p>Visit each day with <code>range()</code>, update the accumulator, and print daily progress.</p>
+    </div>
+    <div class="milestone">
+      <strong>3 · Add the decision</strong>
+      <p>Calculate the average and use one <code>if</code>/<code>elif</code>/<code>else</code> chain to classify it.</p>
+    </div>
+    <div class="milestone">
+      <strong>4 · Make the report readable</strong>
+      <p>Use descriptive names, headings, f-strings, units, and intentional decimal formatting.</p>
+    </div>
   </div>
 
   <pre><code>learner_name = "Maya"
@@ -1444,12 +1854,69 @@ Habit: building</div>
     <li><strong>Stretch.</strong><p>Ask for different minutes on each day and accumulate them in the loop. This is completed in the notebook.</p></li>
   </ol>
 
+  <h3>Project test checklist</h3>
+  <p>Change the inputs and verify each case. A program is not finished because it worked
+  once; it is finished when you deliberately tried to make it fail.</p>
+  <table>
+    <thead><tr><th>Test case</th><th>Expected behavior</th><th>Done?</th></tr></thead>
+    <tbody>
+      <tr><td>5 days × 35 minutes</td><td>Total 175, average 35.0, habit “building”</td><td>□</td></tr>
+      <tr><td>1 day × 60 minutes</td><td>Total 60, average 60.0, habit “strong”</td><td>□</td></tr>
+      <tr><td>7 days × 10 minutes</td><td>Total 70, average 10.0, habit “start small”</td><td>□</td></tr>
+      <tr><td>Boundary: 20 minutes</td><td>Exactly 20 is “building”</td><td>□</td></tr>
+      <tr><td>Boundary: 45 minutes</td><td>Exactly 45 is “strong”</td><td>□</td></tr>
+      <tr><td>Different learner name</td><td>The heading changes without editing print text</td><td>□</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Self-assessment rubric · 10 points</h3>
+  <table class="rubric">
+    <thead><tr><th>Criterion</th><th>Full-credit evidence</th><th>Points</th></tr></thead>
+    <tbody>
+      <tr><td>Correctness</td><td>All six test cases match their expected behavior.</td><td>4</td></tr>
+      <tr><td>Control flow</td><td>The loop has a clear range and the branch boundaries are correct.</td><td>2</td></tr>
+      <tr><td>Readability</td><td>Names communicate meaning and units; indentation is consistent.</td><td>2</td></tr>
+      <tr><td>Output</td><td>The report has labels, units, and intentional number formatting.</td><td>1</td></tr>
+      <tr><td>Explanation</td><td>You can trace one iteration and explain the final classification.</td><td>1</td></tr>
+    </tbody>
+  </table>
+  <p><strong>Mastery target:</strong> 8/10 or better, with all correctness points.
+  If a test fails, record the input, expected output, actual output, and the first line
+  where your trace differs.</p>
+
+  <div class="script-bridge" id="script-bridge">
+    <h3>From notebook to a real Python script</h3>
+    <p>A notebook remembers state across cells. A <code>.py</code> file is a normal Python
+    program: each run starts at the first line with fresh state. Download or open
+    <a href="study_report.py"><code>study_report.py</code></a>, then run it from a terminal:</p>
+    <pre><code>cd modules\01-python-fundamentals
+python study_report.py</code></pre>
+    <p>If <code>python</code> is not recognized on Windows, try
+    <code>py study_report.py</code>. Enter a learner name, a number of days, and the
+    minutes for each day when prompted. Then run it again: notice that no values from the
+    previous run survive.</p>
+    <ol>
+      <li>Open the script and connect each part to the lesson: input, conversion, loop,
+      accumulator, conditional, and output.</li>
+      <li>Run the provided sample and compare it with the project checklist.</li>
+      <li>Change one label in the file, save, and run again to prove which source file Python executed.</li>
+    </ol>
+    <p class="text-muted">The script rejects negative minutes but expects numeric
+    whole-number text. Handling input such as <code>"thirty"</code> safely with exceptions
+    is taught in Module 03.</p>
+  </div>
+
   <div class="callout">
     <h4>Continue in the notebook</h4>
     <p><a href="notebook.ipynb">Open the companion notebook</a> for short experiments after
     every concept, predict-the-output questions, auto-checked exercises, the full interactive
     mini-project, and optional challenges. The notebook is designed to run from top to bottom
     without third-party packages.</p>
+  </div>
+
+  <div class="section-complete" data-section-card="part-7">
+    <span>Part 7 complete when your study-report project passes its test checklist and you can run the saved <code>.py</code> script.</span>
+    <button class="btn" type="button" data-section-done="part-7">Mark Part 7 complete</button>
   </div>
 
   <span class="part-label">Part 8 · Keep a reference</span>
@@ -1540,9 +2007,22 @@ for n in range(1, 6):                 # 1, 2, 3, 4, 5
   </div>
 
   <h2 id="self-check">Self-check</h2>
-  <p>Choose an answer before clicking. The explanation matters more than the score.</p>
-  <div class="quiz">
-    <div class="quiz__q" data-answer="1" data-explain="A string is text inside quotes. Quotation marks make &quot;3.14&quot; text, even though its characters look numeric.">
+  <p>Choose an answer before clicking. Use your score to decide what to review, then retry
+  missed questions until you can explain the answer—not merely recognize it.</p>
+  <div class="quiz-dashboard">
+    <div class="quiz-dashboard__row">
+      <span class="quiz-dashboard__score" id="quiz-score" aria-live="polite">0 of 10 answered · 0 correct</span>
+      <div class="quiz-dashboard__actions">
+        <button class="btn" type="button" id="retry-missed" disabled>Retry missed questions</button>
+        <button class="btn" type="button" id="reset-quiz">Reset all answers</button>
+      </div>
+    </div>
+    <p class="quiz-dashboard__mastery" id="quiz-mastery" aria-live="polite">
+      Mastery guidance appears after all ten questions.
+    </p>
+  </div>
+  <div class="quiz" data-custom-quiz>
+    <div class="quiz__q" data-answer="1" data-review="#values-types" data-explain="A string is text inside quotes. Quotation marks make &quot;3.14&quot; text, even though its characters look numeric.">
       <p class="prompt">1. What is the type of <code>"3.14"</code>?</p>
       <div class="quiz__options">
         <div class="quiz__option"><code>float</code></div>
@@ -1551,7 +2031,7 @@ for n in range(1, 6):                 # 1, 2, 3, 4, 5
       </div>
       <div class="quiz__feedback"></div>
     </div>
-    <div class="quiz__q" data-answer="2" data-explain="Python evaluates the right side first: the current 5 plus 1 is 6. It then reassigns a to that result.">
+    <div class="quiz__q" data-answer="2" data-review="#variables" data-explain="Python evaluates the right side first: the current 5 plus 1 is 6. It then reassigns a to that result.">
       <p class="prompt">2. After <code>a = 5</code> and <code>a = a + 1</code>, what does <code>a</code> hold?</p>
       <div class="quiz__options">
         <div class="quiz__option">5</div>
@@ -1560,7 +2040,7 @@ for n in range(1, 6):                 # 1, 2, 3, 4, 5
       </div>
       <div class="quiz__feedback"></div>
     </div>
-    <div class="quiz__q" data-answer="0" data-explain="Exponentiation happens before addition: 3 ** 2 is 9, then 2 + 9 is 11.">
+    <div class="quiz__q" data-answer="0" data-review="#operators" data-explain="Exponentiation happens before addition: 3 ** 2 is 9, then 2 + 9 is 11.">
       <p class="prompt">3. What is <code>2 + 3 ** 2</code>?</p>
       <div class="quiz__options">
         <div class="quiz__option">11</div>
@@ -1569,7 +2049,7 @@ for n in range(1, 6):                 # 1, 2, 3, 4, 5
       </div>
       <div class="quiz__feedback"></div>
     </div>
-    <div class="quiz__q" data-answer="1" data-explain="input() always returns a string. Convert it with int() or float() before numeric arithmetic.">
+    <div class="quiz__q" data-answer="1" data-review="#print-input" data-explain="input() always returns a string. Convert it with int() or float() before numeric arithmetic.">
       <p class="prompt">4. A user types <code>25</code> into <code>age = input("Age: ")</code>. What type is <code>age</code>?</p>
       <div class="quiz__options">
         <div class="quiz__option"><code>int</code></div>
@@ -1578,7 +2058,7 @@ for n in range(1, 6):                 # 1, 2, 3, 4, 5
       </div>
       <div class="quiz__feedback"></div>
     </div>
-    <div class="quiz__q" data-answer="2" data-explain="Zero is falsy, so bool(0) produces False.">
+    <div class="quiz__q" data-answer="2" data-review="#booleans" data-explain="Zero is falsy, so bool(0) produces False.">
       <p class="prompt">5. What is the result of <code>bool(0)</code>?</p>
       <div class="quiz__options">
         <div class="quiz__option"><code>0</code></div>
@@ -1587,7 +2067,7 @@ for n in range(1, 6):                 # 1, 2, 3, 4, 5
       </div>
       <div class="quiz__feedback"></div>
     </div>
-    <div class="quiz__q" data-answer="0" data-explain="x >= 10 is the first true condition. After its block runs, the rest of the elif chain is skipped.">
+    <div class="quiz__q" data-answer="0" data-review="#conditionals" data-explain="x >= 10 is the first true condition. After its block runs, the rest of the elif chain is skipped.">
       <p class="prompt">6. With <code>x = 15</code>, an <code>if x &gt;= 10</code> branch prints A and a later <code>elif x &gt;= 5</code> prints B. What prints?</p>
       <div class="quiz__options">
         <div class="quiz__option">A only</div>
@@ -1596,7 +2076,7 @@ for n in range(1, 6):                 # 1, 2, 3, 4, 5
       </div>
       <div class="quiz__feedback"></div>
     </div>
-    <div class="quiz__q" data-answer="1" data-explain="range includes the start, adds 2 each time, and excludes the stop: 2, 4, 6.">
+    <div class="quiz__q" data-answer="1" data-review="#loops" data-explain="range includes the start, adds 2 each time, and excludes the stop: 2, 4, 6.">
       <p class="prompt">7. What values does <code>range(2, 8, 2)</code> provide?</p>
       <div class="quiz__options">
         <div class="quiz__option">2, 4, 6, 8</div>
@@ -1605,7 +2085,7 @@ for n in range(1, 6):                 # 1, 2, 3, 4, 5
       </div>
       <div class="quiz__feedback"></div>
     </div>
-    <div class="quiz__q" data-answer="2" data-explain="7 // 2 is 3 whole groups and 7 % 2 is the remainder 1.">
+    <div class="quiz__q" data-answer="2" data-review="#operators" data-explain="7 // 2 is 3 whole groups and 7 % 2 is the remainder 1.">
       <p class="prompt">8. What are <code>7 // 2</code> and <code>7 % 2</code>?</p>
       <div class="quiz__options">
         <div class="quiz__option">3.5 and 0</div>
@@ -1614,7 +2094,7 @@ for n in range(1, 6):                 # 1, 2, 3, 4, 5
       </div>
       <div class="quiz__feedback"></div>
     </div>
-    <div class="quiz__q" data-answer="1" data-explain="The loop starts at 3 and subtracts 1 each iteration. It stops after count reaches 0 because 0 > 0 is false.">
+    <div class="quiz__q" data-answer="1" data-review="#loops" data-explain="The loop starts at 3 and subtracts 1 each iteration. It stops after count reaches 0 because 0 > 0 is false.">
       <p class="prompt">9. How many times does the block run? <code>count = 3; while count &gt; 0: count -= 1</code></p>
       <div class="quiz__options">
         <div class="quiz__option">2</div>
@@ -1623,7 +2103,7 @@ for n in range(1, 6):                 # 1, 2, 3, 4, 5
       </div>
       <div class="quiz__feedback"></div>
     </div>
-    <div class="quiz__q" data-answer="0" data-explain="Start with the final traceback line: it names the error and usually describes the immediate problem. Then inspect the referenced line and current state.">
+    <div class="quiz__q" data-answer="0" data-review="#errors" data-explain="Start with the final traceback line: it names the error and usually describes the immediate problem. Then inspect the referenced line and current state.">
       <p class="prompt">10. What should you read first when Python shows a traceback?</p>
       <div class="quiz__options">
         <div class="quiz__option">The final line containing the error type and message</div>
@@ -1632,6 +2112,11 @@ for n in range(1, 6):                 # 1, 2, 3, 4, 5
       </div>
       <div class="quiz__feedback"></div>
     </div>
+  </div>
+
+  <div class="section-complete" data-section-card="part-8">
+    <span>Part 8 complete when you score at least 9/10, correct any missed questions with Retry, and pass all three exit-ticket tasks. A perfect first attempt needs no retry.</span>
+    <button class="btn" type="button" data-section-done="part-8">Mark Part 8 complete</button>
   </div>
 
   <div class="callout callout--summary">
@@ -1660,20 +2145,215 @@ for n in range(1, 6):                 # 1, 2, 3, 4, 5
 <script>
 CourseProgress.initModuleButton("01");
 
-// The shared quiz behavior supports clicks. Add keyboard semantics for this lesson.
-document.querySelectorAll(".quiz__option").forEach(function (option) {
-  option.setAttribute("role", "button");
-  option.setAttribute("tabindex", "0");
-  option.addEventListener("keydown", function (event) {
-    if (event.key === "Enter" || event.key === " ") {
-      event.preventDefault();
-      option.click();
-    }
+// ---------- Learning path selector ----------
+(function initLearningPath() {
+  var key = "ml-course-module-01-path-v1";
+  var buttons = Array.prototype.slice.call(document.querySelectorAll("[data-path-choice]"));
+  var route = document.getElementById("path-route");
+  var routes = {
+    beginner: '<p><strong>Complete beginner route selected.</strong> Start with ' +
+      '<a href="#what-is-programming">Part 1</a>, proceed in order, mark each part complete, ' +
+      'complete at least six of eight guided notebook exercises, all five lesson labs, ' +
+      'the project, and the exit ticket.</p>',
+    fast: '<p><strong>Fast-track route selected.</strong> First take the ' +
+      '<a href="#self-check">self-check</a>. Then review Python-specific sections: ' +
+      '<a href="#values-types">types</a> → <a href="#operators">operators</a> → ' +
+      '<a href="#conditionals">conditionals</a> → <a href="#loops">loops</a> → ' +
+      '<a href="#errors">tracebacks</a>. Build the <a href="#project">project</a> and ' +
+      'pass the notebook exit ticket. Return to Parts 1–3 only for missed concepts.</p>'
+  };
+
+  function selectPath(name) {
+    if (!routes[name]) name = "beginner";
+    buttons.forEach(function (button) {
+      var selected = button.getAttribute("data-path-choice") === name;
+      button.classList.toggle("is-selected", selected);
+      button.setAttribute("aria-pressed", selected ? "true" : "false");
+    });
+    route.innerHTML = routes[name];
+    try { localStorage.setItem(key, name); } catch (error) { /* storage may be unavailable */ }
+  }
+
+  buttons.forEach(function (button) {
+    button.addEventListener("click", function () {
+      selectPath(button.getAttribute("data-path-choice"));
+    });
   });
-});
-document.querySelectorAll(".quiz__feedback").forEach(function (feedback) {
-  feedback.setAttribute("aria-live", "polite");
-});
+  var saved = "beginner";
+  try { saved = localStorage.getItem(key) || "beginner"; } catch (error) { /* use default */ }
+  selectPath(saved);
+})();
+
+// ---------- Saved progress for the eight lesson parts ----------
+(function initSectionProgress() {
+  var key = "ml-course-module-01-sections-v1";
+  var sectionIds = ["part-1", "part-2", "part-3", "part-4", "part-5", "part-6", "part-7", "part-8"];
+  var completed = {};
+  try {
+    var savedProgress = JSON.parse(localStorage.getItem(key));
+    completed = savedProgress && typeof savedProgress === "object" && !Array.isArray(savedProgress)
+      ? savedProgress : {};
+  } catch (error) {
+    completed = {};
+  }
+
+  function save() {
+    try { localStorage.setItem(key, JSON.stringify(completed)); } catch (error) { /* storage may be unavailable */ }
+  }
+
+  function render() {
+    var count = sectionIds.filter(function (id) { return completed[id]; }).length;
+    var percent = count / sectionIds.length * 100;
+    document.getElementById("section-progress-label").textContent =
+      count + " of " + sectionIds.length + " parts complete";
+    document.getElementById("section-progress-fill").style.width = percent + "%";
+    document.getElementById("section-progress-bar").setAttribute("aria-valuenow", String(count));
+
+    sectionIds.forEach(function (id) {
+      var done = Boolean(completed[id]);
+      var dot = document.querySelector('[data-progress-part="' + id + '"]');
+      var card = document.querySelector('[data-section-card="' + id + '"]');
+      var button = document.querySelector('[data-section-done="' + id + '"]');
+      if (dot) {
+        dot.classList.toggle("is-complete", done);
+        dot.textContent = done ? "✓" : id.replace("part-", "");
+        dot.setAttribute("aria-label", id.replace("-", " ") + (done ? " complete" : " incomplete"));
+      }
+      if (card) card.classList.toggle("is-complete", done);
+      if (button) {
+        button.textContent = done ? "Completed ✓" : "Mark " + id.replace("-", " ") + " complete";
+        button.classList.toggle("btn--mark-done", done);
+        button.setAttribute("aria-pressed", done ? "true" : "false");
+      }
+    });
+  }
+
+  document.querySelectorAll("[data-section-done]").forEach(function (button) {
+    button.addEventListener("click", function () {
+      var id = button.getAttribute("data-section-done");
+      completed[id] = !completed[id];
+      save();
+      render();
+    });
+  });
+  document.getElementById("reset-section-progress").addEventListener("click", function () {
+    completed = {};
+    save();
+    render();
+  });
+  render();
+})();
+
+// ---------- Scored, retryable, keyboard-accessible mastery quiz ----------
+(function initMasteryQuiz() {
+  var quiz = document.querySelector("[data-custom-quiz]");
+  var questions = Array.prototype.slice.call(quiz.querySelectorAll(".quiz__q"));
+  var score = document.getElementById("quiz-score");
+  var mastery = document.getElementById("quiz-mastery");
+  var retryButton = document.getElementById("retry-missed");
+  var resetButton = document.getElementById("reset-quiz");
+
+  function resetQuestion(question) {
+    delete question.dataset.answered;
+    delete question.dataset.correct;
+    question.querySelectorAll(".quiz__option").forEach(function (option) {
+      option.classList.remove("is-correct", "is-incorrect");
+      option.removeAttribute("aria-disabled");
+      option.setAttribute("aria-pressed", "false");
+      option.setAttribute("tabindex", "0");
+    });
+    question.querySelector(".quiz__feedback").innerHTML = "";
+  }
+
+  function updateScore() {
+    var answered = questions.filter(function (q) { return q.dataset.answered === "true"; }).length;
+    var correct = questions.filter(function (q) { return q.dataset.correct === "true"; }).length;
+    var missed = questions.filter(function (q) {
+      return q.dataset.answered === "true" && q.dataset.correct === "false";
+    }).length;
+    score.textContent = answered + " of " + questions.length + " answered · " + correct + " correct";
+    retryButton.disabled = missed === 0;
+
+    if (answered < questions.length) {
+      mastery.textContent = "Answer all ten questions for a mastery recommendation.";
+    } else if (correct >= 9) {
+      mastery.textContent = "Mastery reached: " + correct + "/10. Complete the notebook exit ticket before Module 02.";
+    } else if (correct >= 7) {
+      mastery.textContent = "Nearly there: " + correct + "/10. Review the linked topics and retry missed questions.";
+    } else {
+      mastery.textContent = "Keep building: " + correct + "/10. Revisit the linked lesson sections, practise, then retry.";
+    }
+  }
+
+  function answerQuestion(question, selectedIndex) {
+    if (question.dataset.answered === "true") return;
+    var correctIndex = parseInt(question.getAttribute("data-answer"), 10);
+    var correct = selectedIndex === correctIndex;
+    var options = Array.prototype.slice.call(question.querySelectorAll(".quiz__option"));
+    question.dataset.answered = "true";
+    question.dataset.correct = correct ? "true" : "false";
+
+    options.forEach(function (option, index) {
+      option.classList.toggle("is-correct", index === correctIndex);
+      option.classList.toggle("is-incorrect", !correct && index === selectedIndex);
+      option.setAttribute("aria-disabled", "true");
+      option.setAttribute("aria-pressed", index === selectedIndex ? "true" : "false");
+      option.setAttribute("tabindex", "-1");
+    });
+
+    var feedback = question.querySelector(".quiz__feedback");
+    feedback.textContent = (correct ? "Correct. " : "Not quite. ") +
+      (question.getAttribute("data-explain") || "");
+    if (!correct) {
+      var link = document.createElement("a");
+      link.className = "quiz__review";
+      link.href = question.getAttribute("data-review") || "#reference";
+      link.textContent = "Review this topic ↑";
+      feedback.appendChild(document.createElement("br"));
+      feedback.appendChild(link);
+    }
+    updateScore();
+  }
+
+  questions.forEach(function (question, questionIndex) {
+    var prompt = question.querySelector(".prompt");
+    var feedback = question.querySelector(".quiz__feedback");
+    var promptId = "quiz-question-" + (questionIndex + 1);
+    prompt.id = promptId;
+    question.setAttribute("role", "group");
+    question.setAttribute("aria-labelledby", promptId);
+    feedback.setAttribute("aria-live", "polite");
+    question.querySelectorAll(".quiz__option").forEach(function (option, index) {
+      option.setAttribute("role", "button");
+      option.setAttribute("tabindex", "0");
+      option.setAttribute("aria-pressed", "false");
+      option.addEventListener("click", function () { answerQuestion(question, index); });
+      option.addEventListener("keydown", function (event) {
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          option.click();
+        }
+      });
+    });
+  });
+
+  retryButton.addEventListener("click", function () {
+    var firstMissed = questions.find(function (question) {
+      return question.dataset.correct === "false";
+    });
+    questions.forEach(function (question) {
+      if (question.dataset.correct === "false") resetQuestion(question);
+    });
+    updateScore();
+    if (firstMissed) firstMissed.querySelector(".quiz__option").focus();
+  });
+  resetButton.addEventListener("click", function () {
+    questions.forEach(resetQuestion);
+    updateScore();
+    questions[0].querySelector(".quiz__option").focus();
+  });
+  updateScore();
+})();
 
 // Trace player: renders a pre-computed Python execution trace.
 function makeTracePlayer(rootId, codeLines, steps) {
