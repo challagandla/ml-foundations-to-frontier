@@ -1,6 +1,7 @@
 .venv/
 __pycache__/
 .ipynb_checkpoints/
+graphify-out/
 modules/*/sandbox/
 *.pyc
 .DS_Store
